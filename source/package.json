@@ -1,0 +1,23 @@
+{
+  "name": "communication-service",
+  "version": "1.0.0",
+  "description": "Node api for communication",
+  "main": "app.js ",
+  "scripts": {
+    "test": "jest --silent",
+    "production": "npm install && npm test && npm prune --production"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "latest",
+    "consign": "0.1.6",
+    "express": "4.16.4",
+    "express-list-endpoints": "4.0.1",
+    "mongoose": "5.7.6"
+  },
+  "devDependencies": {
+    "jest": "24.9.0"
+  }
+}
