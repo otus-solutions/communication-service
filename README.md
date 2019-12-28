@@ -4,7 +4,7 @@
 `npm run production --prefix source/` 
 
 # Build Image
-`docker build -t account-service .` 
+`docker build -t communication-service .` 
 
 # Run Container
 `sudo docker run -d -p 80:8080 
