@@ -12,4 +12,13 @@ module.exports = function (application) {
       res.status(err.code).send(err.body)
     }
   });
+
+  application.post('/mail', function (req, res) {
+    try {
+      CommunicationController.sendMail();
+      res.status(200).send('OK');
+    } catch (err) {
+      res.status(err.code).send(err.body)
+    }
+  });
 };
