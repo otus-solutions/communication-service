@@ -1,14 +1,70 @@
 describe('MailService.js Tests', function () {
-    var app, assert;
+    var service, assert, application;
+    const Mock = {};
+
+    jest.mock("nodemailer");
 
     beforeEach(function () {
-        app = require("../../app/services/MailService");
+        mocks();
+
+        application = require("../../config/server");
+
+        Mock.nodemailer = require('nodemailer');
+        Mock.Response = application.app.utils.Response;
+
+        service = require("../../app/services/MailService")(application);
         assert = require('assert');
     });
 
-    it('should call sendMail', function () {
-        console.log(app)
-        let test = app();
-        console.log(test.sendMail())
+    it('service should defined', function () {
+        expect(service).toBeDefined();
     });
+
+    it('should call sendMail method to send', async () => {
+        jest.spyOn(Mock.nodemailer, 'createTransport').mockImplementation(() => Mock.transport);
+        jest.spyOn(Mock.Response, 'success').mockImplementation(() => Promise.resolve("Ok"));
+
+        const result = await service.sendMail(Mock.data);
+
+        expect(service.sendMail).toBeDefined();
+        expect(Mock.Response.success).toHaveBeenCalledTimes(1);
+        expect(Mock.Response.success).toHaveBeenCalledWith("info");
+        expect(result).toEqual("Ok");
+    });
+
+    /*it('should call sendMail method to send retunr error', async () => {
+        jest.spyOn(Mock.nodemailer, 'createTransport').mockImplementation(() => Mock.transportNull);
+        jest.spyOn(Mock.Response, 'internalServerError').mockImplementation(() => Promise.resolve( Promise.reject()));
+        const result = await service.sendMail(Mock.data);
+
+        expect(service.sendMail).toBeDefined();
+        expect(Mock.Response.internalServerError).toHaveBeenCalledTimes(1);
+        expect(Mock.Response.internalServerError).toHaveBeenCalledWith("info");
+        expect(result).toEqual("Ok");
+    });*/
+
+    function mocks() {
+            Mock.data = {
+                from: "any@nubmi9.catchall.delivery",
+                to: ["fulano@gmail.com", "fulano2@gmail.com"],
+                cc: "fulano@hotmail.com",
+                subject: "Sem assunto",
+                html: "<h1>TEXTO</h1>"
+            },
+            Mock.transport = {
+                host: 'localhost',
+                port: 1025,
+                secure: false,
+                auth: {
+                    user: 'project.1',
+                    pass: 'secret.1'
+                },
+                sendMail: (options, callback) => callback(undefined, 'info'),
+                close: function () { }
+            },
+            Mock.transportNull = {
+                sendMail: (options, callback) => callback(new Error('err'), undefined),
+                close: function () { }
+            }
+    }
 });
