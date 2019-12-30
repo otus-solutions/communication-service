@@ -22,7 +22,7 @@ const Response = application.app.utils.Response;
                 html: "Enviado com sucesso."
             };
 
-            let secure = MAILER_SECURE === "false" ? false : true;
+            let secure = MAILER_SECURE === "true" ? true : false;
 
             const transporter = nodemailer.createTransport({
                 host: MAILER_HOST,
