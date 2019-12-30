@@ -11,7 +11,7 @@ const {
 
 /** @namespace application.app.services.MailService **/
 module.exports = function (application) {
-//const Response = application.app.utils.Response;
+const Response = application.app.utils.Response;
 
     return {
         sendMail() {
@@ -22,27 +22,30 @@ module.exports = function (application) {
                 html: "Enviado com sucesso."
             };
 
+            let secure = MAILER_SECURE === "false" ? false : true;
+
             const transporter = nodemailer.createTransport({
                 host: MAILER_HOST,
                 port: MAILER_PORT,
-                secure: MAILER_SECURE,
+                secure: secure,
                 auth: {
                     user: MAILER_AUTH_USER,
                     pass: MAILER_AUTH_PASS
-                },
-                tls: { rejectUnauthorized: true }
-            });
-            console.log(mailOptions);
-
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log("nao passou")
-                    //return Response.internalServerError();
-                    return error
-                } else {
-                    console.log("passou")
-                    return "E-mail enviado com sucesso!";
                 }
+            });
+
+            return new Promise(async (resolve, reject) => {
+                await transporter.sendMail(mailOptions, async (err, info) => {
+                    if (err) {
+                        transporter.close();
+                        console.log(err);
+                        reject(Response.internalServerError());
+                    } else {
+                        transporter.close();
+                        console.log(info);
+                        resolve(Response.success(info));
+                    }
+                });
             });
         }
     };

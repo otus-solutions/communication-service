@@ -13,12 +13,15 @@ module.exports = function (application) {
     }
   });
 
-  application.post('/mail', function (req, res) {
-    try {
-      CommunicationController.sendMail();
-      res.status(200).send('OK');
-    } catch (err) {
-      res.status(err.code).send(err.body)
-    }
+  application.post('/mail', jsonParser, async function (req, res) {
+    await CommunicationController.sendMail()
+        .then((data) => {
+          let result = data;
+          res.status(result.code).send(result.body);
+        })
+        .catch ((err) => {
+              res.status(err.code).send(err.body)
+            }
+        )
   });
 };

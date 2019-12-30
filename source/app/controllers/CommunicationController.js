@@ -7,8 +7,7 @@ module.exports = function (application) {
     async communication(data) {
       return CommunicationService.communication(data)
     },
-
-    sendMail() {
+    async sendMail() {
       return MailService.sendMail()
     }
   };
