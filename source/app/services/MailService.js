@@ -11,15 +11,17 @@ const {
 
 /** @namespace application.app.services.MailService **/
 module.exports = function (application) {
-const Response = application.app.utils.Response;
+    const Response = application.app.utils.Response;
 
     return {
-        sendMail() {
-            let mailOptions = {
+        sendMail(data) {
+            let message = {
                 from: MAILER_FROM,
-                to: "adonis.garcia.adg@gmail.com",
-                subject: "Teste",
-                html: "Enviado com sucesso."
+                to: data.to ? data.to : "",
+                cc: data.cc ? data.cc : "",
+                subject: data.subject ? data.subject : "",
+                text: data.text ? data.text : "",
+                html: data.html ? data.html : ""
             };
 
             let secure = MAILER_SECURE === "true" ? true : false;
@@ -35,11 +37,11 @@ const Response = application.app.utils.Response;
             });
 
             return new Promise(async (resolve, reject) => {
-                await transporter.sendMail(mailOptions, async (err, info) => {
+                await transporter.sendMail(message, async (err, info) => {
                     if (err) {
                         transporter.close();
                         console.log(err);
-                        reject(Response.internalServerError());
+                        reject(Response.internalServerError(err));
                     } else {
                         transporter.close();
                         console.log(info);

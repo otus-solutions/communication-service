@@ -14,14 +14,13 @@ module.exports = function (application) {
   });
 
   application.post('/mail', jsonParser, async function (req, res) {
-    await CommunicationController.sendMail()
+    await CommunicationController.sendMail(req.body)
         .then((data) => {
           let result = data;
           res.status(result.code).send(result.body);
         })
         .catch ((err) => {
-              res.status(err.code).send(err.body)
-            }
-        )
+          res.status(err.code).send(err.body)
+        })
   });
 };
