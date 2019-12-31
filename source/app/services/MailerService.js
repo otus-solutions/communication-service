@@ -9,7 +9,7 @@ const {
     MAILER_AUTH_PASS
 } = process.env;
 
-/** @namespace application.app.services.MailService **/
+/** @namespace application.app.services.MailerService **/
 module.exports = function (application) {
     const Response = application.app.utils.Response;
 

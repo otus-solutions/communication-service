@@ -1,4 +1,4 @@
-describe('MailService.js Tests', function () {
+describe('MailerService.js Tests', function () {
     var service, assert, application;
     const Mock = {};
 
@@ -12,7 +12,7 @@ describe('MailService.js Tests', function () {
         Mock.nodemailer = require('nodemailer');
         Mock.Response = application.app.utils.Response;
 
-        service = require("../../app/services/MailService")(application);
+        service = require("../../app/services/MailerService")(application);
         assert = require('assert');
     });
 
@@ -31,17 +31,6 @@ describe('MailService.js Tests', function () {
         expect(Mock.Response.success).toHaveBeenCalledWith("info");
         expect(result).toEqual("Ok");
     });
-
-    /*it('should call sendMail method to send retunr error', async () => {
-        jest.spyOn(Mock.nodemailer, 'createTransport').mockImplementation(() => Mock.transportNull);
-        jest.spyOn(Mock.Response, 'internalServerError').mockImplementation(() => Promise.resolve( Promise.reject()));
-        const result = await service.sendMail(Mock.data);
-
-        expect(service.sendMail).toBeDefined();
-        expect(Mock.Response.internalServerError).toHaveBeenCalledTimes(1);
-        expect(Mock.Response.internalServerError).toHaveBeenCalledWith("info");
-        expect(result).toEqual("Ok");
-    });*/
 
     function mocks() {
             Mock.data = {
