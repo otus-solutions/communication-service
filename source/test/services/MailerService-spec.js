@@ -2,8 +2,6 @@ describe('MailerService.js Tests', function () {
     var service, assert, application;
     const Mock = {};
 
-    jest.mock("nodemailer");
-
     beforeEach(function () {
         mocks();
 

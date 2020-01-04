@@ -6,7 +6,7 @@ module.exports = function (application) {
 
   application.post('/communication', jsonParser, async function (req, res) {
     try {
-      let result = await CommunicationController.communication(req.body);
+      let result = await CommunicationController.sendTemplate(req.body);
       res.status(result.code).send(result.body)
     } catch (err) {
       res.status(err.code).send(err.body)

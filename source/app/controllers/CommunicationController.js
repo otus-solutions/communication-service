@@ -1,11 +1,11 @@
 /** @namespace application.app.controllers.CommunicationController**/
 module.exports = function (application) {
-  const CommunicationService = application.app.services.CommunicationService;
+  const CommunicationTemplateService = application.app.services.CommunicationTemplateService;
   const MailerService = application.app.services.MailerService;
 
   return {
-    async communication(data) {
-      return CommunicationService.communication(data)
+    async sendTemplate(data) {
+      return CommunicationTemplateService.sendTemplate(data)
     },
     async sendMail(data) {
       return MailerService.sendMail(data)
