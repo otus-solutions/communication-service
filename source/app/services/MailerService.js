@@ -35,13 +35,15 @@ module.exports = function (application) {
                     return Response.internalServerError(err);
                 } else {
                     for (const [key, value] of Object.entries(data.variables)) {
-                        const substitute = new RegExp("{" + key + "}", "g");
+                        const substitute = new RegExp("\{\{" + key + "\}\}", "g");
                         if (obj.template.indexOf(key)) {
                             template = obj.template.toString().replace(substitute, value);
+                            obj.template = template;
                         } else {
-                            return Response.notAcceptable('Campo obrigatório.');
+                            return Response.notAcceptable('Variável não foi encontrada.');
                         }
                     }
+                    console.log(template)
                     message.html = template;
                     return  message;
                 }
@@ -61,7 +63,7 @@ module.exports = function (application) {
 
             return new Promise(async (resolve, reject) => {
                 if (!message.to) {
-                    reject(Response.notAcceptable('Campo obrigatório.'));
+                    reject(Response.notAcceptable('Campo de e-mail é obrigatório.'));
                 } else {
                     transporter.sendMail(message, async (err, info) => {
                         if (err) {
