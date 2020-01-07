@@ -1,4 +1,6 @@
 const nodemailer = require('nodemailer');
+const mongoose = require("mongoose");
+const communicationModel = mongoose.model('communication');
 
 const {
     MAILER_FROM,
@@ -14,15 +16,36 @@ module.exports = function (application) {
     const Response = application.app.utils.Response;
 
     return {
-        sendMail(data) {
-            let message = {
+        async sendMail(data) {
+
+            let message = {};
+            let template;
+
+            message = {
                 from: MAILER_FROM,
-                to: data.to ? data.to : "",
+                to: data.email ? data.email : "",
                 cc: data.cc ? data.cc : "",
                 subject: data.subject ? data.subject : "",
                 text: data.text ? data.text : "",
-                html: data.html ? data.html : ""
+                html: template ? template : ""
             };
+
+            await communicationModel.findOne({'_id': data.id}, async function (err, obj) {
+                if (err) {
+                    return Response.internalServerError(err);
+                } else {
+                    for (const [key, value] of Object.entries(data.variables)) {
+                        const substitute = new RegExp("{" + key + "}", "g");
+                        if (obj.template.indexOf(key)) {
+                            template = obj.template.toString().replace(substitute, value);
+                        } else {
+                            return Response.notAcceptable('Campo obrigatório.');
+                        }
+                    }
+                    message.html = template;
+                    return  message;
+                }
+            });
 
             let secure = MAILER_SECURE === "true" ? true : false;
 
@@ -37,17 +60,21 @@ module.exports = function (application) {
             });
 
             return new Promise(async (resolve, reject) => {
-                await transporter.sendMail(message, async (err, info) => {
-                    if (err) {
-                        transporter.close();
-                        console.log(err);
-                        reject(Response.internalServerError(err));
-                    } else {
-                        transporter.close();
-                        console.log(info);
-                        resolve(Response.success(info));
-                    }
-                });
+                if (!message.to) {
+                    reject(Response.notAcceptable('Campo obrigatório.'));
+                } else {
+                    transporter.sendMail(message, async (err, info) => {
+                        if (err) {
+                            transporter.close();
+                            console.log(err);
+                            reject(Response.internalServerError(err));
+                        } else {
+                            transporter.close();
+                            console.log(info);
+                            resolve(Response.success(info));
+                        }
+                    });
+                }
             });
         }
     };
