@@ -43,7 +43,6 @@ module.exports = function (application) {
                             return Response.notAcceptable('Variável não foi encontrada.');
                         }
                     }
-                    console.log(template)
                     message.html = template;
                     return  message;
                 }
