@@ -37,7 +37,7 @@ module.exports = function (application) {
                     for (const [key, value] of Object.entries(data.variables)) {
                         const substitute = new RegExp("\{\{" + key + "\}\}", "g");
                         if (obj.template.indexOf(key)) {
-                            template = obj.template.toString().replace(substitute, value);
+                            template = obj.template.toString().replace(substitute, value.toString());
                             obj.template = template;
                         } else {
                             return Response.notAcceptable('Variável não foi encontrada.');
