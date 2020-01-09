@@ -5,6 +5,21 @@ module.exports = function (application) {
   return {
     async sendMail(data) {
       return MailerService.sendMail(data)
+    },
+    async create(data) {
+      //return MailerService.sendMail(data)
+    },
+    async get(data) {
+      //return MailerService.sendMail(data)
+    },
+    async getAll(data) {
+      //return MailerService.sendMail(data)
+    },
+    async update(data) {
+      //return MailerService.sendMail(data)
+    },
+    async delete(data) {
+      //return MailerService.sendMail(data)
     }
   };
 };
