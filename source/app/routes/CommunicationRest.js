@@ -15,7 +15,7 @@ module.exports = function (application) {
             })
     });
 
-    application.post('/create', jsonParser, async function (req, res) {
+    application.post('/api/create-communication', jsonParser, async function (req, res) {
         try {
             let result = await CommunicationController.create(req.body);
             res.status(result.code).send(result.body)
@@ -24,7 +24,7 @@ module.exports = function (application) {
         }
     });
 
-    application.get('/get', jsonParser, async function (req, res) {
+    application.post('/api/find-communication', jsonParser, async function (req, res) {
         try {
             let result = await CommunicationController.get(req.body);
             res.status(result.code).send(result.body)
@@ -33,16 +33,16 @@ module.exports = function (application) {
         }
     });
 
-    application.get('/getAll', jsonParser, async function (req, res) {
+    application.get('/api/get-all-communication', async function (req, res) {
         try {
-            let result = await CommunicationController.getAll(req.body);
+            let result = await CommunicationController.getAll();
             res.status(result.code).send(result.body)
         } catch (err) {
             res.status(err.code).send(err.body)
         }
     });
 
-    application.put('/update', jsonParser, async function (req, res) {
+    application.put('/api/update-communication', jsonParser, async function (req, res) {
         try {
             let result = await CommunicationController.update(req.body);
             res.status(result.code).send(result.body)
@@ -51,7 +51,7 @@ module.exports = function (application) {
         }
     });
 
-    application.delete('/delete', jsonParser, async function (req, res) {
+    application.delete('/api/delete-communication', jsonParser, async function (req, res) {
         try {
             let result = await CommunicationController.delete(req.body);
             res.status(result.code).send(result.body)

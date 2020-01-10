@@ -1,25 +1,26 @@
 /** @namespace application.app.controllers.CommunicationController**/
 module.exports = function (application) {
   const MailerService = application.app.services.MailerService;
+  const Communication = application.app.services.CommunicationService;
 
   return {
     async sendMail(data) {
       return MailerService.sendMail(data)
     },
     async create(data) {
-      //return MailerService.sendMail(data)
+      return Communication.create(data)
     },
     async get(data) {
-      //return MailerService.sendMail(data)
+      return Communication.get(data)
     },
-    async getAll(data) {
-      //return MailerService.sendMail(data)
+    async getAll() {
+      return Communication.getAll()
     },
     async update(data) {
-      //return MailerService.sendMail(data)
+      return Communication.update(data)
     },
     async delete(data) {
-      //return MailerService.sendMail(data)
+      return Communication.delete(data)
     }
   };
 };

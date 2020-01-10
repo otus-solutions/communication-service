@@ -9,7 +9,7 @@ module.exports = function (application) {
         async create(data) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    await communicationModel.save({'name': data.name, 'template': data.template}, async function (err, obj) {
+                    await communicationModel.create({'name': data.name, 'template': data.template},  function (err, obj) {
                         if (err) {
                             reject(Response.internalServerError(err));
                         } else {
@@ -54,11 +54,11 @@ module.exports = function (application) {
         async update(data) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    await communicationModel.findOneAndUpdate({'_id': data.id}, {'name':data.name,'template':data.template},{upsert : false ,  returnNewDocument  :  true },async function (err, obj) {
+                    await communicationModel.updateOne({'_id': data.id}, {'name':data.name,'template':data.template},{upsert : false },async function (err, obj) {
                         if (err) {
                             reject(Response.internalServerError(err));
                         } else {
-                            resolve(Response.success(obj))
+                            resolve(Response.success())
                         }
                     });
                 } catch (err) {
