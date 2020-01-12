@@ -17,7 +17,8 @@ module.exports = function (application) {
 
     application.post('/api/create-communication', jsonParser, async function (req, res) {
         try {
-            let result = await CommunicationController.create(req.body);
+            let formatJson = await CommunicationController.validation(req.body);
+            let result = await CommunicationController.create(formatJson);
             res.status(result.code).send(result.body)
         } catch (err) {
             res.status(err.code).send(err.body)
@@ -26,7 +27,8 @@ module.exports = function (application) {
 
     application.post('/api/find-communication', jsonParser, async function (req, res) {
         try {
-            let result = await CommunicationController.get(req.body);
+            let formatJson = await CommunicationController.validation(req.body);
+            let result = await CommunicationController.get(formatJson);
             res.status(result.code).send(result.body)
         } catch (err) {
             res.status(err.code).send(err.body)
@@ -44,7 +46,8 @@ module.exports = function (application) {
 
     application.put('/api/update-communication', jsonParser, async function (req, res) {
         try {
-            let result = await CommunicationController.update(req.body);
+            let formatJson = await CommunicationController.validation(req.body);
+            let result = await CommunicationController.update(formatJson);
             res.status(result.code).send(result.body)
         } catch (err) {
             res.status(err.code).send(err.body)
@@ -53,7 +56,8 @@ module.exports = function (application) {
 
     application.delete('/api/delete-communication', jsonParser, async function (req, res) {
         try {
-            let result = await CommunicationController.delete(req.body);
+            let formatJson = await CommunicationController.validation(req.body);
+            let result = await CommunicationController.delete(formatJson);
             res.status(result.code).send(result.body)
         } catch (err) {
             res.status(err.code).send(err.body)

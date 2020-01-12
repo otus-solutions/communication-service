@@ -19,13 +19,12 @@ module.exports = function (application) {
         async get(data) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    await communicationModel.findOne({'_id': data.id}, async function (err, obj) {
-                        if (err) {
-                            reject(Response.internalServerError(err));
-                        } else {
-                            resolve(Response.success(obj))
-                        }
-                    });
+                    let result = await communicationModel.findOne({'_id': data.id});
+                    if(result){
+                        resolve(Response.success(result))
+                    } else {
+                        reject(Response.notFound());
+                    }
                 } catch (err) {
                     reject(Response.internalServerError());
                 }
@@ -34,13 +33,8 @@ module.exports = function (application) {
         async getAll() {
             return new Promise(async (resolve, reject) => {
                 try {
-                    await communicationModel.find({}, async function (err, obj) {
-                        if (err) {
-                            reject(Response.internalServerError(err));
-                        } else {
-                            resolve(Response.success(obj))
-                        }
-                    });
+                    let result = await communicationModel.find({});
+                    resolve(Response.success(result))
                 } catch (err) {
                     reject(Response.internalServerError());
                 }
@@ -49,13 +43,8 @@ module.exports = function (application) {
         async update(data) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    await communicationModel.updateOne({'_id': data.id}, {'name':data.name,'template':data.template},{upsert : false },async function (err, obj) {
-                        if (err) {
-                            reject(Response.internalServerError(err));
-                        } else {
-                            resolve(Response.success())
-                        }
-                    });
+                    await communicationModel.updateOne({'_id': data.id}, {'name':data.name,'template':data.template},{upsert : false });
+                    resolve(Response.success())
                 } catch (err) {
                     reject(Response.internalServerError());
                 }
@@ -64,13 +53,8 @@ module.exports = function (application) {
         async delete(data) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    await communicationModel.deleteOne({'_id': data.id}, async function (err, obj) {
-                        if (err) {
-                            reject(Response.internalServerError(err));
-                        } else {
-                            resolve(Response.success())
-                        }
-                    });
+                    await communicationModel.deleteOne({'_id': data.id});
+                    resolve(Response.success())
                 } catch (err) {
                     reject(Response.internalServerError());
                 }
