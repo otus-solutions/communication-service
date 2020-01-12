@@ -9,13 +9,8 @@ module.exports = function (application) {
         async create(data) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    await communicationModel.create({'name': data.name, 'template': data.template},  function (err, obj) {
-                        if (err) {
-                            reject(Response.internalServerError(err));
-                        } else {
-                            resolve(Response.success())
-                        }
-                    });
+                    await communicationModel.create({'name': data.name, 'template': data.template});
+                    resolve(Response.success())
                 } catch (err) {
                     reject(Response.internalServerError());
                 }
