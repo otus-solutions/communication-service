@@ -60,14 +60,14 @@ describe('MailerService.js Tests', function () {
         Mock.data = {
             "email":"teste@gmail.com",
             "variables":{
-                "name":"adriano"
+                "name":"fulano"
             },
             "id":"5e17cab5b613222e9d19a76e"
         };
         Mock.dataTwo = {
             "email":"teste@gmail.com",
             "variables":{
-                "name":"adriano",
+                "name":"fulano",
                 "id":"3536232"
             },
             "id":"5e17cab5b613222e9d19a76e"
