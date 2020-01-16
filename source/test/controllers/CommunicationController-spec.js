@@ -1,5 +1,3 @@
-const mongoose = require('mongoose');
-
 describe('CommunicationController.js Tests', function () {
     let CommunicationController;
     let Mock = {};
@@ -45,11 +43,11 @@ describe('CommunicationController.js Tests', function () {
     });
 
     test('sendMail return error', function () {
-        jest.spyOn(ResponseService, "notFound");
+        jest.spyOn(ResponseService, "notAcceptable");
 
         let result = CommunicationController.sendMail({"id":"5e17cab5b613222e9d19a76e"});
         expect(result).toEqual(Promise.resolve({}));
-        expect(ResponseService.notFound).toHaveBeenCalledTimes(1);
+        expect(ResponseService.notAcceptable).toHaveBeenCalledTimes(1);
     });
 
     test('create', function () {
@@ -62,11 +60,11 @@ describe('CommunicationController.js Tests', function () {
     });
 
     test('create return error', function () {
-        jest.spyOn(ResponseService, "notFound");
+        jest.spyOn(ResponseService, "notAcceptable");
 
         let result = CommunicationController.create({"name":"name"});
         expect(result).toEqual(Promise.resolve({}));
-        expect(ResponseService.notFound).toHaveBeenCalledTimes(1);
+        expect(ResponseService.notAcceptable).toHaveBeenCalledTimes(1);
 
     });
 
@@ -79,11 +77,11 @@ describe('CommunicationController.js Tests', function () {
     });
 
     test('get return error', function () {
-        jest.spyOn(ResponseService, "notFound");
+        jest.spyOn(ResponseService, "notAcceptable");
 
         let result = CommunicationController.get({"name":"name"});
         expect(result).toEqual(Promise.resolve({}));
-        expect(ResponseService.notFound).toHaveBeenCalledTimes(1);
+        expect(ResponseService.notAcceptable).toHaveBeenCalledTimes(1);
 
     });
 
@@ -105,11 +103,11 @@ describe('CommunicationController.js Tests', function () {
     });
 
      test('update return error', function () {
-        jest.spyOn(ResponseService, "notFound");
+        jest.spyOn(ResponseService, "notAcceptable");
 
         let result = CommunicationController.update({"name":"name"});
         expect(result).toEqual(Promise.resolve({}));
-        expect(ResponseService.notFound).toHaveBeenCalledTimes(1);
+        expect(ResponseService.notAcceptable).toHaveBeenCalledTimes(1);
 
     });
 
@@ -122,12 +120,11 @@ describe('CommunicationController.js Tests', function () {
     });
 
     test('delete return error', function () {
-        jest.spyOn(ResponseService, "notFound");
+        jest.spyOn(ResponseService, "notAcceptable");
 
         let result = CommunicationController.delete({"name":"name"});
         expect(result).toEqual(Promise.resolve({}));
-        expect(ResponseService.notFound).toHaveBeenCalledTimes(1);
-
+        expect(ResponseService.notAcceptable).toHaveBeenCalledTimes(1);
     });
 
     function mock(){
