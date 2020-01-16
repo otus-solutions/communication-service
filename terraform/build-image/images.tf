@@ -20,7 +20,7 @@ variable "communication-service-npmtest" {
   default = "npm test"
 }
 variable "communication-service-cleanup" {
-  default = "rm -rf source/node_modules source/dist source/package-lock.json"
+  default = "rm -rf node_modules dist package-lock.json"
 }
 variable "communication-service-npmprune" {
   default = "npm prune --production"
