@@ -16,7 +16,8 @@
     "express": "4.16.4",
     "express-list-endpoints": "4.0.1",
     "mongoose": "5.7.6",
-    "nodemailer": "6.4.2"
+    "nodemailer": "6.4.2",
+    "supertest": "4.0.2"
   },
   "devDependencies": {
     "jest": "24.9.0"
