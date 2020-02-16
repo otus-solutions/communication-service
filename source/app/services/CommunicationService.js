@@ -9,17 +9,18 @@ module.exports = function (application) {
         async create(data) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    await communicationModel.create({'name': data.name, 'template': data.template});
+                    let template = new communicationModel(data);
+                    await template.save();
                     resolve(Response.success())
                 } catch (err) {
                     reject(Response.internalServerError());
                 }
             });
         },
-        async get(data) {
+        async get(id) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    let result = await communicationModel.findOne({'_id': data.id});
+                    let result = await communicationModel.findOne({'_id': id});
                     if(result){
                         resolve(Response.success(result))
                     } else {
@@ -43,17 +44,18 @@ module.exports = function (application) {
         async update(data) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    await communicationModel.updateOne({'_id': data.id}, {'name':data.name,'template':data.template},{upsert : false });
+                    let template = new communicationModel(data);
+                    await communicationModel.updateOne({'_id': template._id}, template,{upsert : false });
                     resolve(Response.success())
                 } catch (err) {
                     reject(Response.internalServerError());
                 }
             });
         },
-        async delete(data) {
+        async delete(id) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    await communicationModel.deleteOne({'_id': data.id});
+                    await communicationModel.deleteOne({'_id': id});
                     resolve(Response.success())
                 } catch (err) {
                     reject(Response.internalServerError());

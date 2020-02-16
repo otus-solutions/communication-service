@@ -25,12 +25,12 @@ describe('CommunicationRest.js Tests', () => {
     expect(server.app.controllers.CommunicationController.create).toBeCalledTimes(1);
   });
 
-  test('/api/find-communication', async () => {
+  test('/api/find-communication/', async () => {
     jest.spyOn(server.app.controllers.CommunicationController, "get").mockImplementation(()=>{
       return Promise.resolve({code:200,body:{}})
     });
     await request(server)
-      .post('/api/find-communication')
+      .get('/api/find-communication/5e17cab5b613222e9d19a76e')
       .expect('Content-Type', /json/)
       .expect(200);
     expect(server.app.controllers.CommunicationController.get).toBeCalledTimes(1);
@@ -63,7 +63,7 @@ describe('CommunicationRest.js Tests', () => {
       return Promise.resolve({code:200,body:{}})
     });
     await request(server)
-      .delete('/api/delete-communication')
+      .delete('/api/delete-communication/5e17cab5b613222e9d19a76e')
       .expect('Content-Type', /json/)
       .expect(200);
     expect(server.app.controllers.CommunicationController.delete).toBeCalledTimes(1);

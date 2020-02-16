@@ -71,9 +71,9 @@ describe('CommunicationController.js Tests', function () {
     test('get', function () {
         jest.spyOn(CommunicationService, "get");
 
-        let result = CommunicationController.get({"id":"5e17cab5b613222e9d19a76e"});
+        let result = CommunicationController.get("5e17cab5b613222e9d19a76e");
         expect(result).toEqual(Promise.resolve({}));
-        expect(CommunicationService.get).toBeCalledWith({"id":"5e17cab5b613222e9d19a76e"});
+        expect(CommunicationService.get).toBeCalledWith("5e17cab5b613222e9d19a76e");
     });
 
     test('get return error', function () {
@@ -95,11 +95,11 @@ describe('CommunicationController.js Tests', function () {
 
     test('update', function () {
         jest.spyOn(CommunicationService, "update");
-        Mock.communication.id = "5e17cab5b613222e9d19a76e";
+        Mock.communication._id = "5e17cab5b613222e9d19a76e";
 
         let result = CommunicationController.update(Mock.communication);
         expect(result).toEqual(Promise.resolve({}));
-        expect(CommunicationService.update).toBeCalledWith({"id":"5e17cab5b613222e9d19a76e","name": "name","template": "template"});
+        expect(CommunicationService.update).toBeCalledWith({"_id":"5e17cab5b613222e9d19a76e","name": "name","template": "template"});
     });
 
      test('update return error', function () {
@@ -114,9 +114,9 @@ describe('CommunicationController.js Tests', function () {
     test('delete', function () {
         jest.spyOn(CommunicationService, "delete");
 
-        let result = CommunicationController.delete({"id":"5e17cab5b613222e9d19a76e"});
+        let result = CommunicationController.delete("5e17cab5b613222e9d19a76e");
         expect(result).toEqual(Promise.resolve({}));
-        expect(CommunicationService.delete).toBeCalledWith({"id":"5e17cab5b613222e9d19a76e"});
+        expect(CommunicationService.delete).toBeCalledWith("5e17cab5b613222e9d19a76e");
     });
 
     test('delete return error', function () {

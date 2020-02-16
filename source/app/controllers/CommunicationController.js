@@ -22,9 +22,9 @@ module.exports = function (application) {
         return Response.notAcceptable();
       }
     },
-    async get(data) {
-      if(ObjectId.isValid(data.id)){
-        return CommunicationService.get(data)
+    async get(id) {
+      if(ObjectId.isValid(id)){
+        return CommunicationService.get(id)
       } else {
         return Response.notAcceptable();
       }
@@ -33,7 +33,7 @@ module.exports = function (application) {
       return CommunicationService.getAll()
     },
     async update(data) {
-      if(ObjectId.isValid(data.id)) {
+      if(ObjectId.isValid(data._id)) {
         if (data.name && data.template) {
           return CommunicationService.update(data)
         } else {
@@ -43,9 +43,9 @@ module.exports = function (application) {
         return Response.notAcceptable();
       }
     },
-    async delete(data) {
-      if(ObjectId.isValid(data.id)){
-        return CommunicationService.delete(data)
+    async delete(id) {
+      if(ObjectId.isValid(id)){
+        return CommunicationService.delete(id)
       } else {
         return Response.notAcceptable();
       }

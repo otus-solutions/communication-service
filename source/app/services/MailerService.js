@@ -4,9 +4,7 @@ const communicationModel = mongoose.model('communication');
 
 const {
     MAILER_FROM,
-    MAILER_HOST,
-    MAILER_PORT,
-    MAILER_SECURE,
+    MAILER_SERVICE,
     MAILER_AUTH_USER,
     MAILER_AUTH_PASS
 } = process.env;
@@ -22,10 +20,10 @@ module.exports = function (application) {
                 let template;
 
                 message = {
-                    from: MAILER_FROM,
+                    from: 'Plataforma Otus <' + MAILER_FROM + '>',
                     to: data.email ? data.email : "",
                     cc: data.cc ? data.cc : "",
-                    subject: data.subject ? data.subject : "",
+                    subject: data.subject ? data.subject : "Plataforma Otus",
                     text: data.text ? data.text : "",
                     html: template ? template : ""
                 };
@@ -34,6 +32,7 @@ module.exports = function (application) {
                     let result = await communicationModel.findOne({'_id': data.id});
 
                     if(result){
+
                         for (const [key, value] of Object.entries(data.variables)) {
                             const substitute = new RegExp("\{\{" + key + "\}\}", "g");
                             if (result.template.includes(key)) {
@@ -43,15 +42,13 @@ module.exports = function (application) {
                                 reject(Response.notAcceptable('Variável não foi encontrada.'));
                             }
                         }
-
+                        message.subject = result.subject;
+                        message.cc = result.cc;
                         message.html = template;
-
-                        let secure = MAILER_SECURE === "true" ? true : false;
+                        message.text = template;
 
                         const transporter = nodemailer.createTransport({
-                            host: MAILER_HOST,
-                            port: MAILER_PORT,
-                            secure: secure,
+                            service: MAILER_SERVICE,
                             auth: {
                                 user: MAILER_AUTH_USER,
                                 pass: MAILER_AUTH_PASS

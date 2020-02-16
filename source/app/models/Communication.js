@@ -3,7 +3,22 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const communication = new Schema({
-    "name": String,
-    "template": String});
+    name: {
+        type: String,
+        required: true
+    },
+    cc: {
+        type: String
+    },
+    subject: {
+        type: String,
+        required: true
+    },
+    template: {
+        type: String,
+        required: true
+    }
+});
 
 mongoose.model('communication', communication, 'communication');
+

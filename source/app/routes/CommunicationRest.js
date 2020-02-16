@@ -22,9 +22,9 @@ module.exports = function (application) {
         }
     });
 
-    application.post('/api/find-communication', jsonParser, async function (req, res) {
+    application.get('/api/find-communication/:id', jsonParser, async function (req, res) {
         try {
-            let result = await CommunicationController.get(req.body);
+            let result = await CommunicationController.get(req.params.id);
             res.status(result.code).send(result.body)
         } catch (err) {
             res.status(err.code).send(err.body)
@@ -49,9 +49,9 @@ module.exports = function (application) {
         }
     });
 
-    application.delete('/api/delete-communication', jsonParser, async function (req, res) {
+    application.delete('/api/delete-communication/:id', jsonParser, async function (req, res) {
         try {
-            let result = await CommunicationController.delete(req.body);
+            let result = await CommunicationController.delete(req.params.id);
             res.status(result.code).send(result.body)
         } catch (err) {
             res.status(err.code).send(err.body)

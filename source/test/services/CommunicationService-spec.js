@@ -15,12 +15,13 @@ describe('CommunicationService.js Tests', function () {
     });
 
     test('create', async function () {
+        jest.setTimeout(30000);
         let communication = {
             "name": "name",
             "template": "template"
         };
         try {
-            jest.spyOn(CommunicationModel, "create").mockImplementation(() => {
+            jest.spyOn(CommunicationModel.prototype, "save").mockImplementation(() => {
                 return Promise.resolve();
             });
             jest.spyOn(ResponseService, 'success');
@@ -32,7 +33,7 @@ describe('CommunicationService.js Tests', function () {
                 },
                 "code": 200
             });
-            expect(CommunicationModel.create).toBeCalledWith({'name': "name", 'template': "template"})
+            expect(CommunicationModel.prototype.save).toBeCalled()
             expect(ResponseService.success).toHaveBeenCalledTimes(1);
         } catch (err) {
             expect(err).toBe(false)
@@ -44,7 +45,7 @@ describe('CommunicationService.js Tests', function () {
             jest.spyOn(CommunicationModel, "findOne").mockImplementation(() => {
                 return Promise.resolve({name:"fulano", template:"<html></html>"});
             });
-            let result = await CommunicationService.get({id:"5d7baf82ba5ad56a6bae98c2"});
+            let result = await CommunicationService.get("5d7baf82ba5ad56a6bae98c2");
 
             expect(result).toEqual(
                 { code: 200,
@@ -114,7 +115,7 @@ describe('CommunicationService.js Tests', function () {
             jest.spyOn(CommunicationModel, 'deleteOne').mockImplementation(() => {
                 return Promise.resolve()});
 
-            await CommunicationService.delete({id:"5d7baf82ba5ad56a6bae98c2"});
+            await CommunicationService.delete("5d7baf82ba5ad56a6bae98c2");
             expect(CommunicationModel.deleteOne).toBeCalledWith({_id:"5d7baf82ba5ad56a6bae98c2"})
             expect(CommunicationModel.deleteOne).toHaveBeenCalledTimes(1);
         } catch (err) {
