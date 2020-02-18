@@ -5,6 +5,9 @@ const communicationModel = mongoose.model('communication');
 const {
     MAILER_FROM,
     MAILER_SERVICE,
+    MAILER_HOST,
+    MAILER_PORT,
+    MAILER_SECURE,
     MAILER_AUTH_USER,
     MAILER_AUTH_PASS
 } = process.env;
@@ -28,10 +31,10 @@ module.exports = function (application) {
                     html: template ? template : ""
                 };
 
-                try{
+                try {
                     let result = await communicationModel.findOne({'_id': data.id});
 
-                    if(result){
+                    if (result) {
 
                         for (const [key, value] of Object.entries(data.variables)) {
                             const substitute = new RegExp("\{\{" + key + "\}\}", "g");
@@ -47,18 +50,14 @@ module.exports = function (application) {
                         message.html = template;
                         message.text = template;
 
-                        const transporter = nodemailer.createTransport({
-                            service: MAILER_SERVICE,
-                            auth: {
-                                user: MAILER_AUTH_USER,
-                                pass: MAILER_AUTH_PASS
-                            }
-                        });
+                        let secure = MAILER_SECURE === "true" ? true : false;
+
+                        const transporter = getTransporter();
 
                         if (!message.to) {
                             reject(Response.notAcceptable('Campo de e-mail é obrigatório.'));
                         } else {
-                           await transporter.sendMail(message, async (err, info) => {
+                            await transporter.sendMail(message, async (err, info) => {
                                 if (err) {
                                     transporter.close();
                                     console.log(err);
@@ -80,4 +79,26 @@ module.exports = function (application) {
         }
     };
 };
+
+function getTransporter() {
+    if (MAILER_SERVICE != '') {
+        return nodemailer.createTransport({
+            service: MAILER_SERVICE,
+            auth: {
+                user: MAILER_AUTH_USER,
+                pass: MAILER_AUTH_PASS
+            }
+        });
+    } else {
+        return nodemailer.createTransport({
+            host: MAILER_HOST,
+            port: MAILER_PORT,
+            secure: secure,
+            auth: {
+                user: MAILER_AUTH_USER,
+                pass: MAILER_AUTH_PASS
+            }
+        });
+    }
+}
 
