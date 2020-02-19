@@ -32,7 +32,7 @@ module.exports = function (application) {
                 };
 
                 try {
-                    let result = await communicationModel.findOne({'_id': data.id});
+                    let result = await communicationModel.findOne({'_id': data._id});
 
                     if (result) {
 

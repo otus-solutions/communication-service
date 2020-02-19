@@ -10,8 +10,8 @@ resource "docker_image" "communication-service" {
   name = "${var.communication-service-name}"
 }
 
-resource "docker_network" "communication-network"{
-  name = "communication-service-network"
+variable "communication-network"{
+  default = "otus-platform-network"
 }
 
 resource "docker_container" "communication-service" {
@@ -21,7 +21,9 @@ resource "docker_container" "communication-service" {
 	internal = 8080
 	external = "${var.communication-service-port}"
   }
+
   networks_advanced {
-    name = "${docker_network.communication-network.name}"
+    name = "${var.communication-network}"
   }
+
 }

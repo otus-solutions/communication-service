@@ -9,7 +9,7 @@ module.exports = function (application) {
 
   return {
     async sendMail(data) {
-      if(ObjectId.isValid(data.id) && data.variables) {
+      if(ObjectId.isValid(data._id) && data.variables) {
         return MailerService.sendMail(data)
       } else {
         return Response.notAcceptable();
