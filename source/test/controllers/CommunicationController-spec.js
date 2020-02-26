@@ -137,7 +137,7 @@ describe('CommunicationController.js Tests', function () {
             "variables":{
                 "name":"fulano"
             },
-            "id":"5e17cab5b613222e9d19a76e"
+            "_id":"5e17cab5b613222e9d19a76e"
         };
     }
 });

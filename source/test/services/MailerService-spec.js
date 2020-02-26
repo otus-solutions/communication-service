@@ -62,7 +62,7 @@ describe('MailerService.js Tests', function () {
             "variables":{
                 "name":"fulano"
             },
-            "id":"5e17cab5b613222e9d19a76e"
+            "_id":"5e17cab5b613222e9d19a76e"
         };
         Mock.dataTwo = {
             "email":"teste@gmail.com",
@@ -70,7 +70,7 @@ describe('MailerService.js Tests', function () {
                 "name":"fulano",
                 "id":"3536232"
             },
-            "id":"5e17cab5b613222e9d19a76e"
+            "_id":"5e17cab5b613222e9d19a76e"
         };
         Mock.transport = {
             host: 'localhost',
