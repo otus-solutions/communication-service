@@ -32,11 +32,15 @@ module.exports = function (application) {
                         if (arrayVariablesTemplate.length == arrayVariables.length) {
                             for (const [key, value] of Object.entries(data.variables)) {
                                 const substitute = new RegExp("\{\{" + key + "\}\}", "g");
-                                template = result.template.toString().replace(substitute, value.toString());
-                                result.template = template;
+                                if (result.template.search(substitute) != -1) {
+                                    template = result.template.toString().replace(substitute, value.toString());
+                                    result.template = template;
+                                } else {
+                                    return reject(Response.notAcceptable('Variável não foi encontrada.'));
+                                }
                             }
                         } else {
-                            return reject(Response.notAcceptable('Variável não foi encontrada.'));
+                            return reject(Response.notAcceptable('Variável não possui a mesma quantidade.'));
                         }
 
                         let message = {
