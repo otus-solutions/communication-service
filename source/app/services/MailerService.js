@@ -20,28 +20,32 @@ module.exports = function (application) {
         async sendMail(data) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    let message = {};
                     let template;
-
-                    message = {
-                        from: 'Plataforma Otus <' + MAILER_FROM + '>',
-                        to: data.email ? data.email : "",
-                        cc: data.cc ? data.cc : "",
-                        subject: data.subject ? data.subject : "Plataforma Otus"                      
-                    };
 
                     let result = await communicationModel.findOne({ '_id': data._id });
 
                     if (result) {
-                        for (const [key, value] of Object.entries(data.variables)) {
-                            const substitute = new RegExp("\{\{" + key + "\}\}", "g");
-                            if (result.template.includes(key)) {
+                        const regExp = /{{.*?}}/ig;
+                        const arrayVariablesTemplate = result.template.match(regExp);
+                        const arrayVariables = Object.keys(data.variables)
+
+                        if (arrayVariablesTemplate.length == arrayVariables.length) {
+                            for (const [key, value] of Object.entries(data.variables)) {
+                                const substitute = new RegExp("\{\{" + key + "\}\}", "g");
                                 template = result.template.toString().replace(substitute, value.toString());
                                 result.template = template;
-                            } else {
-                                reject(Response.notAcceptable('Variável não foi encontrada.'));
                             }
+                        } else {
+                            return reject(Response.notAcceptable('Variável não foi encontrada.'));
                         }
+
+                        let message = {
+                            from: 'Plataforma Otus <' + MAILER_FROM + '>',
+                            to: data.email ? data.email : "",
+                            cc: data.cc ? data.cc : "",
+                            subject: data.subject ? data.subject : "Plataforma Otus"
+                        };
+
                         message.subject = result.subject ? result.subject : message.subject;
                         message.cc = result.cc ? result.cc : message.cc;
                         message.html = template ? template : result.template;
@@ -76,7 +80,7 @@ module.exports = function (application) {
 };
 
 function getTransporter() {
-    let secure = MAILER_SECURE === "true" ? true : false;
+    let secure = MAILER_SECURE == "true" ? true : false;
 
     if (MAILER_SERVICE != '') {
         return nodemailer.createTransport({
