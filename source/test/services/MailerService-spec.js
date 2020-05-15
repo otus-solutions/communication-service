@@ -54,7 +54,7 @@ describe('MailerService.js Tests', function () {
             {
                 "code": 406,
                 "body": {
-                    "data": "Variável não foi encontrada."
+                    "data": "A variable quantity is not established according to the template."
                 }
             };
         Mock.data = {

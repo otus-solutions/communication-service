@@ -20,28 +20,36 @@ module.exports = function (application) {
         async sendMail(data) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    let message = {};
                     let template;
-
-                    message = {
-                        from: 'Plataforma Otus <' + MAILER_FROM + '>',
-                        to: data.email ? data.email : "",
-                        cc: data.cc ? data.cc : "",
-                        subject: data.subject ? data.subject : "Plataforma Otus"                      
-                    };
 
                     let result = await communicationModel.findOne({ '_id': data._id });
 
                     if (result) {
-                        for (const [key, value] of Object.entries(data.variables)) {
-                            const substitute = new RegExp("\{\{" + key + "\}\}", "g");
-                            if (result.template.includes(key)) {
-                                template = result.template.toString().replace(substitute, value.toString());
-                                result.template = template;
-                            } else {
-                                reject(Response.notAcceptable('Variável não foi encontrada.'));
+                        const regExp = /{{.*?}}/ig;
+                        const arrayVariablesTemplate = result.template.match(regExp);
+                        const arrayVariables = Object.keys(data.variables)
+
+                        if (arrayVariablesTemplate.length == arrayVariables.length) {
+                            for (const [key, value] of Object.entries(data.variables)) {
+                                const substitute = new RegExp("\{\{" + key + "\}\}", "g");
+                                if (result.template.search(substitute) != -1) {
+                                    template = result.template.toString().replace(substitute, value.toString());
+                                    result.template = template;
+                                } else {
+                                    return reject(Response.notAcceptable('Variable was not found.'));
+                                }
                             }
+                        } else {
+                            return reject(Response.notAcceptable('A variable quantity is not established according to the template.'));
                         }
+
+                        let message = {
+                            from: 'Plataforma Otus <' + MAILER_FROM + '>',
+                            to: data.email ? data.email : "",
+                            cc: data.cc ? data.cc : "",
+                            subject: data.subject ? data.subject : "Plataforma Otus"
+                        };
+
                         message.subject = result.subject ? result.subject : message.subject;
                         message.cc = result.cc ? result.cc : message.cc;
                         message.html = template ? template : result.template;
@@ -50,7 +58,7 @@ module.exports = function (application) {
                         const transporter = getTransporter();
 
                         if (!message.to) {
-                            reject(Response.notAcceptable('Campo de e-mail é obrigatório.'));
+                            reject(Response.notAcceptable('E-mail field is mandatory.'));
                         } else {
                             await transporter.sendMail(message, async (err, info) => {
                                 if (err) {
@@ -76,7 +84,7 @@ module.exports = function (application) {
 };
 
 function getTransporter() {
-    let secure = MAILER_SECURE === "true" ? true : false;
+    let secure = MAILER_SECURE == "true" ? true : false;
 
     if (MAILER_SERVICE != '') {
         return nodemailer.createTransport({
