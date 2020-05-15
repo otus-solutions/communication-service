@@ -54,7 +54,7 @@ describe('MailerService.js Tests', function () {
             {
                 "code": 406,
                 "body": {
-                    "data": "The variable does not have the same amount."
+                    "data": "A variable quantity is not established according to the template."
                 }
             };
         Mock.data = {
