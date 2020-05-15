@@ -26,8 +26,10 @@ module.exports = function (application) {
 
                     if (result) {
                         const regExp = /{{.*?}}/ig;
-                        const arrayVariablesTemplate = result.template.match(regExp);
-                        const arrayVariables = Object.keys(data.variables)
+                        const resultArrayVariablesTemplate = result.template.match(regExp);
+                        const resultArrayVariables = Object.keys(data.variables);
+                        const arrayVariablesTemplate = resultArrayVariablesTemplate ? resultArrayVariablesTemplate : [];
+                        const arrayVariables = resultArrayVariables ? resultArrayVariables : [];
 
                         if (arrayVariablesTemplate.length == arrayVariables.length) {
                             for (const [key, value] of Object.entries(data.variables)) {
@@ -63,7 +65,7 @@ module.exports = function (application) {
                             await transporter.sendMail(message, async (err, info) => {
                                 if (err) {
                                     transporter.close();
-                                    console.log(err);
+                                    console.error(err);
                                     reject(Response.internalServerError(err));
                                 } else {
                                     transporter.close();
@@ -76,6 +78,7 @@ module.exports = function (application) {
                         reject(Response.notFound());
                     }
                 } catch (err) {
+                    console.error(err) 
                     reject(Response.internalServerError(err));
                 }
             });
