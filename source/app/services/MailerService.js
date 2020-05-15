@@ -36,11 +36,11 @@ module.exports = function (application) {
                                     template = result.template.toString().replace(substitute, value.toString());
                                     result.template = template;
                                 } else {
-                                    return reject(Response.notAcceptable('Variável não foi encontrada.'));
+                                    return reject(Response.notAcceptable('Variable was not found.'));
                                 }
                             }
                         } else {
-                            return reject(Response.notAcceptable('Variável não possui a mesma quantidade.'));
+                            return reject(Response.notAcceptable('The variable does not have the same amount.'));
                         }
 
                         let message = {
@@ -58,7 +58,7 @@ module.exports = function (application) {
                         const transporter = getTransporter();
 
                         if (!message.to) {
-                            reject(Response.notAcceptable('Campo de e-mail é obrigatório.'));
+                            reject(Response.notAcceptable('E-mail field is mandatory.'));
                         } else {
                             await transporter.sendMail(message, async (err, info) => {
                                 if (err) {
