@@ -40,7 +40,7 @@ module.exports = function (application) {
                                 }
                             }
                         } else {
-                            return reject(Response.notAcceptable('The variable does not have the same amount.'));
+                            return reject(Response.notAcceptable('A variable quantity is not established according to the template.'));
                         }
 
                         let message = {
