@@ -23,22 +23,26 @@ describe('MailerService.js Tests', function () {
 
     it('should call sendMail method to send', async () => {
         jest.spyOn(CommunicationModel, "findOne").mockImplementation(() => {
-            return Promise.resolve({name:"fulano", template:"<html>{{name}}</html>"});
+            return Promise.resolve({ "name": "fulano", "template": "<html>{{name}}</html>" });
         });
-        jest.spyOn(Mock.nodemailer, 'createTransport').mockImplementation(() => Mock.transport);
-        jest.spyOn(Mock.Response, 'success').mockImplementation(() => Promise.resolve("Ok"));
+        try {
+            jest.spyOn(Mock.nodemailer, 'createTransport').mockImplementation(() => Mock.transport);
+            jest.spyOn(Mock.Response, 'success').mockImplementation(() => Promise.resolve("Ok"));
 
-        const result = await service.sendMail(Mock.data);
-        expect(service.sendMail).toBeDefined();
-        expect(CommunicationModel.findOne).toBeCalledWith({_id:"5e17cab5b613222e9d19a76e"});
-        expect(Mock.Response.success).toHaveBeenCalledTimes(1);
-        expect(result).toEqual('Ok')
+            const result = await service.sendMail(Mock.data);
+            expect(service.sendMail).toBeDefined();
+            expect(CommunicationModel.findOne).toBeCalledWith({ _id: "5e17cab5b613222e9d19a76e" });
+            expect(Mock.Response.success).toHaveBeenCalledTimes(1);
+            expect(result).toEqual('Ok')
+        } catch (err) {
+            expect(err).toBe(false)
+        }
     });
 
     it('should call sendMail method to send return Error', async () => {
         try {
             jest.spyOn(CommunicationModel, "findOne").mockImplementation(() => {
-                return Promise.resolve({name:"fulano", template:"<html>{{name}}</html>"});
+                return Promise.resolve({ name: "fulano", template: "<html>{{name}}</html>" });
             });
             jest.spyOn(Mock.Response, 'notFound');
 
@@ -51,26 +55,26 @@ describe('MailerService.js Tests', function () {
 
     function mocks() {
         Mock.error =
-            {
-                "code": 406,
-                "body": {
-                    "data": "A variable quantity is not established according to the template."
-                }
-            };
+        {
+            "code": 406,
+            "body": {
+                "data": "Variable was not found."
+            }
+        };
         Mock.data = {
-            "email":"teste@gmail.com",
-            "variables":{
-                "name":"fulano"
+            "email": "teste@gmail.com",
+            "variables": {
+                "name": "fulano"
             },
-            "_id":"5e17cab5b613222e9d19a76e"
+            "_id": "5e17cab5b613222e9d19a76e"
         };
         Mock.dataTwo = {
-            "email":"teste@gmail.com",
-            "variables":{
-                "name":"fulano",
-                "id":"3536232"
+            "email": "teste@gmail.com",
+            "variables": {
+                "name": "fulano",
+                "id": "3536232"
             },
-            "_id":"5e17cab5b613222e9d19a76e"
+            "_id": "5e17cab5b613222e9d19a76e"
         };
         Mock.transport = {
             host: 'localhost',
