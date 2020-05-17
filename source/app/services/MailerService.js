@@ -31,7 +31,7 @@ module.exports = function (application) {
                         const arrayVariablesTemplate = resultArrayVariablesTemplate ? resultArrayVariablesTemplate : [];
                         const arrayVariables = resultArrayVariables ? resultArrayVariables : [];
 
-                        if (arrayVariablesTemplate.length > 0 && arrayVariables.length > 0) {
+                        if (arrayVariablesTemplate.length > 0 || arrayVariables.length > 0) {
                             let resultTemplate = arrayVariablesTemplate.filter(item => !arrayVariables.includes(item.replace('\{\{', '').replace('\}\}', '')));
 
                             if (resultTemplate != 0) {
