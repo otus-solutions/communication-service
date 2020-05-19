@@ -14,9 +14,50 @@ variable "communication-network"{
   default = "otus-api-network"
 }
 
+variable "communication-memory"{
+  default = "1024"
+}
+
+variable "communication-mailer-service"{
+  default = "gmail"
+}
+
+variable "communication-mailer-from"{
+  default = "email@gmail.com"
+}
+
+variable "communication-auth-user"{
+  default = "email@gmail.com"
+}
+
+variable "communication-auth-pass"{
+  default = "senha"
+}
+
+variable "communication-database-user"{
+  default = "communication"
+}
+
+variable "communication-database-pass"{
+  default = "communication"
+}
+
+variable "communication-database-hostname"{
+  default = "otus-database"
+}
 resource "docker_container" "communication-service" {
   name = "communication-service"
   image = "${docker_image.communication-service.name}"
+  env = [
+    "MEMORY=${var.communication-memory}",
+    "MAILER_SERVICE=${var.communication-mailer-service}",
+    "MAILER_FROM=${var.communication-mailer-from}",
+    "MAILER_AUTH_USER=${var.communication-auth-user}",
+    "MAILER_AUTH_PASS=${var.communication-auth-pass}",
+    "DATABASE_USER=${var.communication-database-user}",
+    "DATABASE_PASS=${var.communication-database-pass}",
+    "DATABASE_HOSTNAME=${var.communication-database-hostname}"
+  ]
   ports {
 	internal = 8080
 	external = "${var.communication-service-port}"
