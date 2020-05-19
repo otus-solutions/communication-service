@@ -31,7 +31,12 @@ module.exports = function (application) {
                         const arrayVariablesTemplate = resultArrayVariablesTemplate ? resultArrayVariablesTemplate : [];
                         const arrayVariables = resultArrayVariables ? resultArrayVariables : [];
 
-                        if (arrayVariablesTemplate.length == arrayVariables.length) {
+                        if (arrayVariablesTemplate.length > 0 || arrayVariables.length > 0) {
+                            let resultTemplate = arrayVariablesTemplate.filter(item => !arrayVariables.includes(item.replace('\{\{', '').replace('\}\}', '')));
+
+                            if (resultTemplate != 0) {
+                                return reject(Response.notAcceptable('Not established according to the template. Not identified ' + resultTemplate + '.'));
+                            }
                             for (const [key, value] of Object.entries(data.variables)) {
                                 const substitute = new RegExp("\{\{" + key + "\}\}", "g");
                                 if (result.template.search(substitute) != -1) {
@@ -41,8 +46,6 @@ module.exports = function (application) {
                                     return reject(Response.notAcceptable('Variable was not found.'));
                                 }
                             }
-                        } else {
-                            return reject(Response.notAcceptable('A variable quantity is not established according to the template.'));
                         }
 
                         let message = {
@@ -78,7 +81,7 @@ module.exports = function (application) {
                         reject(Response.notFound());
                     }
                 } catch (err) {
-                    console.error(err) 
+                    console.error(err)
                     reject(Response.internalServerError(err));
                 }
             });
