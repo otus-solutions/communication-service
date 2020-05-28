@@ -11,8 +11,7 @@ const communication = new Schema({
         type: String
     },
     subject: {
-        type: String,
-        required: true
+        type: String
     },
     template: {
         type: String,
