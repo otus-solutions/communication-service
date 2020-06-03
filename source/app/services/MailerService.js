@@ -49,7 +49,7 @@ module.exports = function (application) {
                         }
 
                         let message = {
-                            from: 'Plataforma Otus <' + MAILER_FROM + '>',
+                            from: data.from ? data.from : "",
                             to: data.email ? data.email : "",
                             cc: data.cc ? data.cc : "",
                             subject: data.subject ? data.subject : "Plataforma Otus"
@@ -57,6 +57,7 @@ module.exports = function (application) {
 
                         message.subject = result.subject ? result.subject : message.subject;
                         message.cc = result.cc ? result.cc : message.cc;
+                        message.from = result.from ? result.from + '<' + MAILER_FROM + '>': message.from + '<' + MAILER_FROM + '>';
                         message.html = template ? template : result.template;
                         message.text = template ? template : result.template;
 

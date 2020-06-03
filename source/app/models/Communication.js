@@ -13,6 +13,9 @@ const communication = new Schema({
     subject: {
         type: String
     },
+    from: {
+        type: String
+    },
     template: {
         type: String,
         required: true
