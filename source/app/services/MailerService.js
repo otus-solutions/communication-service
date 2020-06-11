@@ -1,13 +1,12 @@
 const nodemailer = require('nodemailer');
 const mongoose = require("mongoose");
 const communicationModel = mongoose.model('communication');
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const {
     MAILER_FROM,
     MAILER_SERVICE,
-    MAILER_HOST,
-    MAILER_PORT,
-    MAILER_SECURE,
     MAILER_AUTH_USER,
     MAILER_AUTH_PASS
 } = process.env;
@@ -61,22 +60,29 @@ module.exports = function (application) {
                         message.html = template ? template : result.template;
                         message.text = template ? template : result.template;
 
-                        const transporter = getTransporter();
-
                         if (!message.to) {
                             reject(Response.notAcceptable('E-mail field is mandatory.'));
                         } else {
-                            await transporter.sendMail(message, async (err, info) => {
-                                if (err) {
+                            try {
+                                if (MAILER_SERVICE === 'GMAIL') {
+                                    const transporter = nodemailer.createTransport({
+                                        service: MAILER_SERVICE,
+                                        auth: {
+                                            user: MAILER_AUTH_USER,
+                                            pass: MAILER_AUTH_PASS
+                                        }
+                                    });
+                                    result = await transporter.sendMail(message);
                                     transporter.close();
-                                    console.error(err);
-                                    reject(Response.internalServerError(err));
-                                } else {
-                                    transporter.close();
-                                    console.log(info);
-                                    resolve(Response.success(info));
+                                    resolve(Response.success(result));
+                                } else if (MAILER_SERVICE === 'SENDGRIP') {
+                                    result = await sgMail.send(message)
+                                    resolve(Response.success(result));
                                 }
-                            });
+                            } catch (err) {
+                                console.error(err);
+                                reject(Response.internalServerError(err));
+                            }
                         }
                     } else {
                         reject(Response.notFound());
@@ -90,27 +96,4 @@ module.exports = function (application) {
     };
 };
 
-function getTransporter() {
-    let secure = MAILER_SECURE == "true" ? true : false;
-
-    if (MAILER_SERVICE != '') {
-        return nodemailer.createTransport({
-            service: MAILER_SERVICE,
-            auth: {
-                user: MAILER_AUTH_USER,
-                pass: MAILER_AUTH_PASS
-            }
-        });
-    } else {
-        return nodemailer.createTransport({
-            host: MAILER_HOST,
-            port: MAILER_PORT,
-            secure: secure,
-            auth: {
-                user: MAILER_AUTH_USER,
-                pass: MAILER_AUTH_PASS
-            }
-        });
-    }
-}
 
