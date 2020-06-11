@@ -11,7 +11,7 @@ resource "docker_image" "communication-service" {
 }
 
 variable "communication-network"{
-  default = "otus-platform-network"
+  default = "otus-api-network"
 }
 
 resource "docker_container" "communication-service" {
