@@ -57,4 +57,8 @@ module.exports = function (application) {
             res.status(err.code).send(err.body)
         }
     });
+
+    application.post('/api/issues', jsonParser, async function (req, res) {
+        CommunicationController.createIssue(req, res);
+    })
 };

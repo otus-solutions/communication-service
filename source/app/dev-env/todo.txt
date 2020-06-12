@@ -1,0 +1,7 @@
+- criação de issue e retorno do id
+- criação de message com uso do id da issue
+- deletar index para limpeza de base em tempo de desenvolvimento
+- listar os indexes
+
+
+DATABASE_USER=communication DATABASE_PASS=communication DATABASE_HOSTNAME=localhost DATABASE_PORT=27017 DATABASE=otus-communication API_PORT=8080 ELASTICSEARCH_PORT=9200 ELASTICSEARCH_HOSTNAME=http://localhost node app.js

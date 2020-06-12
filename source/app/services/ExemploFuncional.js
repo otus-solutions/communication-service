@@ -51,36 +51,18 @@ async function run () {
 }
 
 async function run2 () {
-    // await client.index({
-    //     index: 'issue',
-    //     // type: '_doc', // uncomment this line if you are using {es} ≤ 6
-    //     body: {
-    //         "objectType": "Issue",
-    //         "sender": "oid string do participant",
-    //         "group":"group_id - id do centro. Resolvido no otus-api",
-    //         "title": "Primeira issue. ",
-    //         "text": "Quando tento responder uma pergunta, não consigo inserir a resposta",
-    //         "creationDate": "2020-06-10T21:08:50.824Z",
-    //         "status": "OPEN"
-    //     }
-    // })
-
-    // Let's search!
     const { body } = await client.search({
         index: 'issue',
         // type: '_doc', // uncomment this line if you are using {es} ≤ 6
         body: {
             query: {
-                match: { objectType: 'Issue' }
+                match_all: {}
+                // match: { objectType: 'Issue' }
             },
             size:10
         }
-    })
-
-    // console.log(body.hits.hits.map(hit => {
-    //     return {...hit._source, _id:hit._id}
-    // }))
+    });
 
     console.log(body.hits.hits)
 }
-run2().catch(console.log)
+// run2().catch(console.log)

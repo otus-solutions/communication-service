@@ -7,6 +7,9 @@ module.exports = function (application) {
   const CommunicationService = application.app.services.CommunicationService;
   const Response = application.app.utils.Response;
 
+  const ElasticsearchService = application.app.services.ElasticsearchService;
+
+
   return {
     async sendMail(data) {
       if(ObjectId.isValid(data._id) && data.variables) {
@@ -49,6 +52,17 @@ module.exports = function (application) {
       } else {
         return Response.notAcceptable();
       }
+    },
+
+    //===============================
+    async createIssue(req, res) {
+      ElasticsearchService.createIssue(req.body)
+          .then(result => {
+            res.send(result);
+          })
+          .catch(err => {
+            res.status(err.code).send(err.body)
+          });
     }
   };
 };
