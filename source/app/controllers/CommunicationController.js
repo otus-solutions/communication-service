@@ -57,12 +57,40 @@ module.exports = function (application) {
     //===============================
     async createIssue(req, res) {
       ElasticsearchService.createIssue(req.body)
-          .then(result => {
-            res.send(result);
+        .then(result => {
+            res.status(result.code).send(result.body);
           })
           .catch(err => {
             res.status(err.code).send(err.body)
           });
-    }
+    },
+
+    async createIssue(req, res) {
+      ElasticsearchService.createMessage(req.body)
+        .then(result => {
+          res.status(result.code).send(result.body);
+        })
+        .catch(err => {
+          res.status(err.code).send(err.body)
+        });
+    },
+
+    async filter(req, res) { },
+
+    async getIssuesById(req, res) { },
+
+    async getMessageById(req, res) { },
+
+    async getMessageByIdLimit(req, res) { },
+
+    async listIssue(req, res) { },  
+    
+    async getIssuesByRn(req, res) { },
+
+    async updateReopen(req, res) { },
+
+    async updateClose(req, res) { },
+
+    async updateFinalize(req, res) { }
   };
 };

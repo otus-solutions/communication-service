@@ -1,7 +1,6 @@
 .coverage
 .idea
-./persistence/**
-./persistence/
+/persistence/**
 **/package-lock.json
 **/node_modules/
 **/*.swp
@@ -9,3 +8,4 @@
 **/.terraform/
 terraform.tfstate*
 source/.npmrc
+source/*.json
