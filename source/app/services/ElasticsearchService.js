@@ -17,8 +17,7 @@ module.exports = function (application) {
             return new Promise(async (resolve, reject) => {
                 try {
                     const { body } = await client.index({
-                        index: 'issues',
-                        // type: '_doc', // uncomment this line if you are using {es} ≤ 6
+                        index: 'issues',                     
                         body: issue
                     });
                     console.log(body);
@@ -33,8 +32,7 @@ module.exports = function (application) {
             return new Promise(async (resolve, reject) => {
                 try {
                     const { body } = await client.index({
-                        index: 'messages',
-                        // type: '_doc', // uncomment this line if you are using {es} ≤ 6
+                        index: 'messages',                      
                         body: message
                     });
                     resolve(Response.success(body));
@@ -62,6 +60,26 @@ module.exports = function (application) {
         },
         async updateIssueType(id, type) {
             //update to OPEN, CLOSE, FINALIZED
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const { body } = await client.update({                       
+                        index: 'issues',
+                        id: id,
+                        body: {
+                            script: {
+                                lang: 'painless',
+                                source: 'ctx._source.status = params.status',
+                                params: { status: type }
+                            }
+                        }                            
+                    });
+                    console.log(body);
+                    resolve(Response.success(body));
+                } catch (err) {
+                    console.error(err)
+                    reject(Response.internalServerError(err));
+                }
+            });
         }
     }
 };
