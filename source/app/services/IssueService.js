@@ -8,7 +8,7 @@ module.exports = function (application) {
         async createIssue(issue) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const { body } = await ElasticsearchService.getClient().index({
+                    const {body} = await ElasticsearchService.getClient().index({
                         index: ISSUES_INDEX,
                         body: issue
                     });
@@ -34,12 +34,15 @@ module.exports = function (application) {
         async listSenderIssues(senderId) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const { body } = await ElasticsearchService.getClient().search({
+                    const {body} = await ElasticsearchService.getClient().search({
                         index: ISSUES_INDEX,
                         body: {
                             query: {
-                                match: { sender: senderId }
+                                match: {sender: senderId}
                             },
+                            // size:1,
+                            // from:0,
+                            //order
                         }
                     });
                     console.log(body);
@@ -50,10 +53,34 @@ module.exports = function (application) {
                 }
             });
         },
+        async getIssuesByGroup(groupId) {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const {body} = await ElasticsearchService.getClient().search({
+                        index: ISSUES_INDEX,
+                        body: {
+                            query: {
+                                match: {group: groupId}
+                            },
+                            // size:1,
+                            // from:0,
+                            //order
+                        }
+                    });
+                    console.log(body);
+                    resolve(Response.success(body.hits.hits.map(transform)));
+                } catch (err) {
+                    console.error(err);
+                    reject(Response.internalServerError(err));
+                }
+            });
+        },
+
+
         async getIssue(issueId) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const { body } = await ElasticsearchService.getClient().get({
+                    const {body} = await ElasticsearchService.getClient().get({
                         index: ISSUES_INDEX,
                         id: issueId
                     });
@@ -69,7 +96,7 @@ module.exports = function (application) {
             //update to OPEN, CLOSED, FINALIZED
             return new Promise(async (resolve, reject) => {
                 try {
-                    const { body } = await ElasticsearchService.getClient().update({
+                    const {body} = await ElasticsearchService.getClient().update({
                         index: ISSUES_INDEX,
                         id: id,
                         body: {
@@ -89,6 +116,6 @@ module.exports = function (application) {
     };
 
     function transform(hit) {
-        return { ...hit._source, _id: hit._id };
+        return {...hit._source, _id: hit._id};
     }
 };

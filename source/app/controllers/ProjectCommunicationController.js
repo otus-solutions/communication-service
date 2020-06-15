@@ -10,10 +10,14 @@ module.exports = function (application) {
 
     return {
         async createIssue(req, res) {
-            console.log('controller')
+            //TODO move
+            let issue = req.body;
+            issue.status = 'OPEN';
+            //
 
             IssueService.createIssue(req.body)
                 .then(result => {
+                    //TODO check what to return. Id only?
                     res.status(result.code).send(result.body);
                 })
                 .catch(err => {
@@ -31,7 +35,18 @@ module.exports = function (application) {
                 });
         },
 
-        async filter(req, res) { },
+        async getIssuesByGroup(req, res) {
+            IssueService.getIssuesByGroup(req.params.groupId)
+                .then(result => {
+                    res.status(result.code).send(result.body);
+                })
+                .catch(err => {
+                    res.status(err.code).send(err.body)
+                });
+        },
+
+        async filter(req, res) {
+        },
 
         async getIssuesById(req, res) {
             IssueService.getIssue(req.params.id)
@@ -43,7 +58,8 @@ module.exports = function (application) {
                 });
         },
 
-        async listIssue(req, res) { },
+        async listIssue(req, res) {
+        },
 
 
         async openIssue(req, res) {
@@ -82,6 +98,8 @@ module.exports = function (application) {
 
             message.issueId = issueId;
 
+            //TODO validar se issueId existe
+
             MessageService.createMessage(message)
                 .then(result => {
                     res.status(result.code).send(result.body);
@@ -91,8 +109,10 @@ module.exports = function (application) {
                 });
         },
 
-
         async getMessageByIssueId(req, res) {
+            //TODO validar se issueId existe
+
+
             MessageService.listIssueMessages(req.params.issueId)
                 .then(result => {
                     res.status(result.code).send(result.body);
@@ -102,6 +122,7 @@ module.exports = function (application) {
                 });
         },
 
-        async getMessageByIdLimit(req, res) { }
+        async getMessageByIdLimit(req, res) {
+        }
     };
 };

@@ -23,7 +23,7 @@ module.exports = function (application) {
         async listIssueMessages(issueId) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const {body} = await ElasticsearchService.getClient().search({
+                    const result = await ElasticsearchService.getClient().search({
                         index: MESSAGES_INDEX,
                         body: {
                             query: {
@@ -31,6 +31,8 @@ module.exports = function (application) {
                             },
                         }
                     });
+                    console.log(JSON.stringify(result))
+                    const body = result.body;
                     resolve(Response.success(body.hits.hits.map(transform)));
                 } catch (err) {
                     console.error(err)

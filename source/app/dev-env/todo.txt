@@ -12,10 +12,38 @@
 - busca por status
 - query por filtros
 - consertar URLs
-- limit/skip
+- qual o jeito menos custoso de saber se uma issue existe. Find? Exists?
+- gerenciamento de exceções
 
 DATABASE_USER=communication DATABASE_PASS=communication DATABASE_HOSTNAME=localhost DATABASE_PORT=27017 DATABASE=otus-communication API_PORT=8080 ELASTICSEARCH_PORT=9200 ELASTICSEARCH_HOSTNAME=http://localhost node app.js
 
 
 - inserção e moficação levam documento para final do array
     - ordenamento natural é garantido?
+
+
+{
+  "currentQuantity": 0,
+  "quantityToGet": 15,
+  "order": {
+    "fields": [
+      "group",
+      "sender",
+      "creationDate"
+    ],
+    "mode": 1   //TODO: -1 ?
+  },
+  "filter": {
+    "status": "OPEN",
+    "group": "oijasdoijasdo",
+    "sender": "asodmaopd",
+    "creationDate": "2020-06-04T03:00:00.000Z"
+  }
+}
+
+
+-tipos de erro
+- não acha index
+- acha index mas a query vem vazia (tratado antecipadamente, com um issueExists)
+    - não acha a issue de uma mensagem
+
