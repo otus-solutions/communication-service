@@ -8,7 +8,7 @@ module.exports = function (application) {
   const Response = application.app.utils.Response;
 
   const ElasticsearchService = application.app.services.ElasticsearchService;
-
+  const IssueService = application.app.services.IssueService;
 
   return {
     async sendMail(data) {
@@ -52,86 +52,6 @@ module.exports = function (application) {
       } else {
         return Response.notAcceptable();
       }
-    },
-
-    //===============================
-    async createIssue(req, res) {
-      console.log('controller')
-      ElasticsearchService.createIssue(req.body)
-        .then(result => {
-            res.status(result.code).send(result.body);
-          })
-          .catch(err => {
-            res.status(err.code).send(err.body)
-          });
-    },
-
-    async createMessage(req, res) {
-      ElasticsearchService.createMessage(req.body)
-        .then(result => {
-          res.status(result.code).send(result.body);
-        })
-        .catch(err => {
-          res.status(err.code).send(err.body)
-        });
-    },
-
-    async getIssuesBySender(req, res) {
-      ElasticsearchService.listSenderIssues(req.params.id)
-          .then(result => {
-            res.status(result.code).send(result.body);
-          })
-          .catch(err => {
-            res.status(err.code).send(err.body)
-          });
-      },
-
-    async filter(req, res) { },
-
-    async getIssuesById(req, res) {
-      ElasticsearchService.getIssue(req.params.id)
-          .then(result => {
-            res.status(result.code).send(result.body);
-          })
-          .catch(err => {
-            res.status(err.code).send(err.body)
-          });
-    },
-
-    async getMessageById(req, res) { },
-
-    async getMessageByIdLimit(req, res) { },
-
-    async listIssue(req, res) { },  
-
-    async updateReopen(req, res) { 
-      ElasticsearchService.updateIssueType(req.params.id, "OPEN")
-        .then(result => {
-          res.status(result.code).send(result.body);
-        })
-        .catch(err => {
-          res.status(err.code).send(err.body)
-        });
-    },
-
-    async updateClose(req, res) {
-      ElasticsearchService.updateIssueType(req.params.id, "CLOSED")
-        .then(result => {
-          res.status(result.code).send(result.body);
-        })
-        .catch(err => {
-          res.status(err.code).send(err.body)
-        });
-     },
-
-    async updateFinalize(req, res) { 
-      ElasticsearchService.updateIssueType(req.params.id, "FINALIZED")
-        .then(result => {
-          res.status(result.code).send(result.body);
-        })
-        .catch(err => {
-          res.status(err.code).send(err.body)
-        });
     }
   };
 };
