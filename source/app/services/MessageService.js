@@ -10,7 +10,6 @@ module.exports = function (application) {
                 try {
                     const {body} = await ElasticsearchService.getClient().index({
                         index: MESSAGES_INDEX,
-                        // type: '_doc', // uncomment this line if you are using {es} ≤ 6
                         body: message
                     });
                     resolve(Response.success(body));
@@ -19,6 +18,29 @@ module.exports = function (application) {
                     reject(Response.internalServerError(err));
                 }
             });
+        },
+
+        async listIssueMessages(issueId) {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const {body} = await ElasticsearchService.getClient().search({
+                        index: MESSAGES_INDEX,
+                        body: {
+                            query: {
+                                match: { issueId: issueId }
+                            },
+                        }
+                    });
+                    resolve(Response.success(body.hits.hits.map(transform)));
+                } catch (err) {
+                    console.error(err)
+                    reject(Response.internalServerError(err));
+                }
+            });
         }
     };
+
+    function transform(hit) {
+        return { ...hit._source, _id: hit._id };
+    }
 };

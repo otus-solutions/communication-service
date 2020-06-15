@@ -40,13 +40,11 @@ module.exports = function (application) {
                             query: {
                                 match: { sender: senderId }
                             },
-                            //order
                         }
                     });
-                    console.log(body.hits.hits);
+                    console.log(body);
                     resolve(Response.success(body.hits.hits.map(transform)));
                 } catch (err) {
-                    console.error('err');
                     console.error(err);
                     reject(Response.internalServerError(err));
                 }
@@ -62,7 +60,6 @@ module.exports = function (application) {
                     console.log(body);
                     resolve(Response.success(body));
                 } catch (err) {
-                    console.error('err');
                     console.error(err);
                     reject(Response.internalServerError(err));
                 }
@@ -92,7 +89,6 @@ module.exports = function (application) {
     };
 
     function transform(hit) {
-        console.log(hit);
         return { ...hit._source, _id: hit._id };
     }
 };

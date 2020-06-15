@@ -1,7 +1,21 @@
-- criação de issue e retorno do id
 - criação de message com uso do id da issue
-- deletar index para limpeza de base em tempo de desenvolvimento
-- listar os indexes
+    - validação do id da issue? (exists)
 
+- ordenação
+    //order
+    //um ou mais campos
+    //ascendente ou descendente
+    //{sender:1, date:-1}
+    //creationDate ou ordenação nativa do Elastic
+
+
+- busca por status
+- query por filtros
+- consertar URLs
+- limit/skip
 
 DATABASE_USER=communication DATABASE_PASS=communication DATABASE_HOSTNAME=localhost DATABASE_PORT=27017 DATABASE=otus-communication API_PORT=8080 ELASTICSEARCH_PORT=9200 ELASTICSEARCH_HOSTNAME=http://localhost node app.js
+
+
+- inserção e moficação levam documento para final do array
+    - ordenamento natural é garantido?
