@@ -4,65 +4,36 @@ const { Client } = require('@elastic/elasticsearch')
 const client = new Client({ node: 'http://localhost:9200' })
 
 async function run () {
-    // Let's start by indexing some data
     await client.index({
         index: 'game-of-thrones',
-        // type: '_doc', // uncomment this line if you are using {es} ≤ 6
+        id: '1',
         body: {
             character: 'Ned Stark',
-            quote: 'Winter is coming.'
+            quote: 'Winter is coming.',
+            times: 0
         }
-    })
+    });
 
-    await client.index({
+    await client.update({
         index: 'game-of-thrones',
-        // type: '_doc', // uncomment this line if you are using {es} ≤ 6
+        id: '1',
         body: {
-            character: 'Daenerys Targaryen',
-            quote: 'I am the blood of the dragon.'
-        }
-    })
-
-    await client.index({
-        index: 'game-of-thrones',
-        // type: '_doc', // uncomment this line if you are using {es} ≤ 6
-        body: {
-            character: 'Tyrion Lannister',
-            quote: 'A mind needs books like a sword needs a whetstone.'
-        }
-    })
-
-    // We need to force an index refresh at this point, otherwise we will not
-    // get any result in the consequent search
-    await client.indices.refresh({ index: 'game-of-thrones' })
-
-    // Let's search!
-    const { body } = await client.search({
-        index: 'game-of-thrones',
-        // type: '_doc', // uncomment this line if you are using {es} ≤ 6
-        body: {
-            query: {
-                match: { quote: 'winter' }
+            script: {
+                lang: 'painless',
+                source: 'ctx._source.times++'
+                // you can also use parameters
+                // source: 'ctx._source.times += params.count',
+                // params: { count: 1 }
             }
         }
     })
 
-    console.log(body.hits.hits)
+    const { body } = await client.get({
+        index: 'game-of-thrones',
+        id: '1'
+    })
+
+    console.log(body)
 }
 
-async function run2 () {
-    const { body } = await client.search({
-        index: 'issue',
-        // type: '_doc', // uncomment this line if you are using {es} ≤ 6
-        body: {
-            query: {
-                match_all: {}
-                // match: { objectType: 'Issue' }
-            },
-            size:10
-        }
-    });
-
-    console.log(body.hits.hits)
-}
-// run2().catch(console.log)
+// run().catch(console.log)

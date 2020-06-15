@@ -56,6 +56,7 @@ module.exports = function (application) {
 
     //===============================
     async createIssue(req, res) {
+      console.log('controller')
       ElasticsearchService.createIssue(req.body)
         .then(result => {
             res.status(result.code).send(result.body);
@@ -65,7 +66,7 @@ module.exports = function (application) {
           });
     },
 
-    async createIssue(req, res) {
+    async createMessage(req, res) {
       ElasticsearchService.createMessage(req.body)
         .then(result => {
           res.status(result.code).send(result.body);
@@ -75,17 +76,33 @@ module.exports = function (application) {
         });
     },
 
+    async getIssuesBySender(req, res) {
+      ElasticsearchService.listSenderIssues(req.params.id)
+          .then(result => {
+            res.status(result.code).send(result.body);
+          })
+          .catch(err => {
+            res.status(err.code).send(err.body)
+          });
+      },
+
     async filter(req, res) { },
 
-    async getIssuesById(req, res) { },
+    async getIssuesById(req, res) {
+      ElasticsearchService.getIssue(req.params.id)
+          .then(result => {
+            res.status(result.code).send(result.body);
+          })
+          .catch(err => {
+            res.status(err.code).send(err.body)
+          });
+    },
 
     async getMessageById(req, res) { },
 
     async getMessageByIdLimit(req, res) { },
 
     async listIssue(req, res) { },  
-    
-    async getIssuesByRn(req, res) { },
 
     async updateReopen(req, res) { },
 

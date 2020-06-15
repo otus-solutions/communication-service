@@ -58,22 +58,39 @@ module.exports = function (application) {
         }
     });
 
-    application.post('/api/issues', jsonParser, async function (req, res) {
-        CommunicationController.createIssue(req, res);
-    });   
 
-    application.post('/api/messages/:id', jsonParser, async function (req, res) {
-        console.log("message : " + req.params.id)
-        CommunicationController.createMessage(req, res);
+    //=============================================
+    //=============================================
+    //=============================================
+    application.post('/api/issues', jsonParser, async function (req, res) {
+        console.log('rest')
+        CommunicationController.createIssue(req, res);
+    });
+
+    application.get('/api/issues/:id', async function (req, res) {
+        console.log("issue : " + req.params.id)
+        CommunicationController.getIssuesById(req, res);
+    });
+
+    application.get('/api/issues/sender/:id', async function (req, res) {
+        console.log(req.params.id);
+        CommunicationController.getIssuesBySender(req, res);
     });
 
     application.post('/api/filter', jsonParser, async function (req, res) {
         CommunicationController.filter(req, res);
     });
 
-    application.get('/api/issues/:id', async function (req, res) {
-        console.log("issue : " + req.params.id)
-        CommunicationController.getIssuesById(req, res);
+
+
+    application.get('/api/issues-list/:id', async function (req, res) {
+        console.log(req.params.id)
+        CommunicationController.listIssue(req, res);
+    });
+
+    application.post('/api/messages/:id', jsonParser, async function (req, res) {
+        console.log("message : " + req.params.id)
+        CommunicationController.createMessage(req, res);
     });
 
     application.get('/api/list-messages/:id', async function (req, res) {
@@ -83,31 +100,25 @@ module.exports = function (application) {
 
     application.get('/api/list-messages-limit/:id/:limit', async function (req, res) {
         console.log(req.params.id)
-        CommunicationController.getMessageByIdLimite(req, res); 
+        CommunicationController.getMessageByIdLimite(req, res);
     });
 
-    application.get('/api/issues-list/:id', async function (req, res) {
-        console.log(req.params.id)
-        CommunicationController.listIssue(req, res); 
-    });
 
-    application.get('/api/issues-rn/:id', async function (req, res) {
-        console.log(req.params.id)
-        CommunicationController.getIssuesByRn(req, res);
-    });
+
+
 
     application.put('/api/issues-reopen/:id', async function (req, res) {
-        console.log(req.params.id)
+        console.log(req.params.id);
         CommunicationController.updateReopen(req, res);
     });
 
     application.put('/api/issues-close/:id', async function (req, res) {
-        console.log(req.params.id)
+        console.log(req.params.id);
         CommunicationController.updateClose(req, res); 
     });
 
     application.put('/api/issues-finalize/:id', async function (req, res) {
-        console.log(req.params.id)
+        console.log(req.params.id);
         CommunicationController.updateFinalize(req, res);   
     });   
 
