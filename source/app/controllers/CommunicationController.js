@@ -65,7 +65,7 @@ module.exports = function (application) {
           });
     },
 
-    async createIssue(req, res) {
+    async createMessage(req, res) {
       ElasticsearchService.createMessage(req.body)
         .then(result => {
           res.status(result.code).send(result.body);
