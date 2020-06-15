@@ -8,4 +8,4 @@
 **/.terraform/
 terraform.tfstate*
 source/.npmrc
-source/*.json
+source/report.*.json

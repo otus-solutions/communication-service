@@ -104,10 +104,34 @@ module.exports = function (application) {
 
     async listIssue(req, res) { },  
 
-    async updateReopen(req, res) { },
+    async updateReopen(req, res) { 
+      ElasticsearchService.updateIssueType(req.params.id, "OPEN")
+        .then(result => {
+          res.status(result.code).send(result.body);
+        })
+        .catch(err => {
+          res.status(err.code).send(err.body)
+        });
+    },
 
-    async updateClose(req, res) { },
+    async updateClose(req, res) {
+      ElasticsearchService.updateIssueType(req.params.id, "CLOSED")
+        .then(result => {
+          res.status(result.code).send(result.body);
+        })
+        .catch(err => {
+          res.status(err.code).send(err.body)
+        });
+     },
 
-    async updateFinalize(req, res) { }
+    async updateFinalize(req, res) { 
+      ElasticsearchService.updateIssueType(req.params.id, "FINALIZED")
+        .then(result => {
+          res.status(result.code).send(result.body);
+        })
+        .catch(err => {
+          res.status(err.code).send(err.body)
+        });
+    }
   };
 };
