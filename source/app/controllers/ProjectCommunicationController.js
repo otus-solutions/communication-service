@@ -3,10 +3,6 @@ const ObjectId = mongoose.Types.ObjectId;
 
 /** @namespace application.app.controllers.ProjectCommunicationController**/
 module.exports = function (application) {
-    const MailerService = application.app.services.MailerService;
-    const CommunicationService = application.app.services.CommunicationService;
-    const Response = application.app.utils.Response;
-
     const ElasticsearchService = application.app.services.ElasticsearchService;
     const IssueService = application.app.services.IssueService;
 
@@ -63,7 +59,7 @@ module.exports = function (application) {
         async getMessageByIdLimit(req, res) { },
 
         async updateReopen(req, res) {
-            ElasticsearchService.updateIssueType(req.params.id, "OPEN")
+            IssueService.updateIssueType(req.params.id, "OPEN")
                 .then(result => {
                     res.status(result.code).send(result.body);
                 })
@@ -73,7 +69,7 @@ module.exports = function (application) {
         },
 
         async updateClose(req, res) {
-            ElasticsearchService.updateIssueType(req.params.id, "CLOSED")
+            IssueService.updateIssueType(req.params.id, "CLOSED")
                 .then(result => {
                     res.status(result.code).send(result.body);
                 })
@@ -83,7 +79,7 @@ module.exports = function (application) {
         },
 
         async updateFinalize(req, res) {
-            ElasticsearchService.updateIssueType(req.params.id, "FINALIZED")
+            IssueService.updateIssueType(req.params.id, "FINALIZED")
                 .then(result => {
                     res.status(result.code).send(result.body);
                 })
