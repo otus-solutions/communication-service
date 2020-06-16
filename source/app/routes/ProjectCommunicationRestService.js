@@ -19,7 +19,7 @@ module.exports = function (application) {
     });
 
     //busca issue pelo id da issue
-     application.get(BASE_URL + '/issues/:id', async function (req, res) {
+    application.get(BASE_URL + '/issues/:id', async function (req, res) {
         console.log("issue : " + req.params.id)
         ProjectCommunication.getIssuesById(req, res);
     });
@@ -67,7 +67,7 @@ module.exports = function (application) {
     });
 
     // lista messages da issue
-        application.get(BASE_URL + '/messages/:issueId/', async function (req, res) {
+    application.get(BASE_URL + '/messages/:issueId/', async function (req, res) {
         console.log("list-message : " + req.params.issueId);
         ProjectCommunication.getMessageByIssueId(req, res);
     });
@@ -76,5 +76,10 @@ module.exports = function (application) {
     application.get(BASE_URL + '/messages/:issueId/:skip/:limit', async function (req, res) {
         console.log(req.params.id)
         ProjectCommunication.getMessageByIdLimite(req, res);
+    });
+
+    application.put(BASE_URL + '/messages/edit/:messageId', jsonParser, async function (req, res) {
+        console.log(req.params.id);
+        ProjectCommunication.editTextMessage(req, res);
     });
 };

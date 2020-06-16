@@ -61,6 +61,42 @@ module.exports = function (application) {
                     reject(Response.internalServerError(err));
                 }
             });
+        },
+        async editTextMessage(id, text) {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const { body } = await ElasticsearchService.getClient().update({
+                        index: MESSAGES_INDEX,
+                        id: id,
+                        body: {
+                            doc: {
+                                text: text
+                            }
+                        }
+                    });
+                    console.log(body);
+                    resolve(Response.success(body));
+                } catch (err) {
+                    console.error(err)
+                    reject(Response.notFound(err.meta));
+                }
+            });
+        },
+        async existMessage(messageId) {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const { body } = await ElasticsearchService.getClient().exists({
+                        index: MESSAGES_INDEX,
+                        id: messageId
+                    });
+
+                    body ? resolve(body) : reject(Response.notFound(body));
+
+                } catch (err) {
+                    console.error(err);
+                    reject(Response.internalServerError(err));
+                }
+            });
         }
     };
 
