@@ -82,4 +82,9 @@ module.exports = function (application) {
         console.log(req.params.id);
         ProjectCommunication.editTextMessage(req, res);
     });
+
+    application.delete(BASE_URL + '/messages/delete/:messageId', async function (req, res) {
+        console.log(req.params.messageId);
+        ProjectCommunication.deleteMessage(req, res);
+    });
 };

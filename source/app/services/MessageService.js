@@ -97,6 +97,21 @@ module.exports = function (application) {
                     reject(Response.internalServerError(err));
                 }
             });
+        },
+        async deleteMessage(messageId) {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const { body } = await ElasticsearchService.getClient().delete({
+                        index: MESSAGES_INDEX,
+                        id: messageId
+                    });
+
+                    resolve(Response.success(body));
+                } catch (err) {
+                    console.error(err);
+                    reject(Response.notFound(err.meta));
+                }
+            });
         }
     };
 
