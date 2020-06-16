@@ -39,6 +39,28 @@ module.exports = function (application) {
                     reject(Response.notFound(err.meta));
                 }
             });
+        },
+        async getMessageByIdLimit(params) {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const { body } = await ElasticsearchService.getClient().search({
+                        index: MESSAGES_INDEX,
+                        size: params.limit,
+                        from: params.skip,
+                        body: {
+                            query: {
+                                match: { issueId: params.issueId }
+                            },
+                            //order
+                        }
+                    });
+                    console.log(body);
+                    resolve(Response.success(body.hits.hits.map(transform)));
+                } catch (err) {
+                    console.error(err);
+                    reject(Response.internalServerError(err));
+                }
+            });
         }
     };
 

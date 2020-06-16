@@ -12,8 +12,9 @@ module.exports = function (application) {
     });
 
     //cria a issue
-    application.post(BASE_URL + '/issues/:skip/:limit', jsonParser, async function (req, res) {
-        console.log('asdassadads')
+    application.get(BASE_URL + '/issues/limit/:issueId/:skip/:limit', jsonParser, async function (req, res) {
+        console.log("issue : " + req.params)
+        ProjectCommunication.getMessageByIdLimit(req, res);
         //todo
     });
 

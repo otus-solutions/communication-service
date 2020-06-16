@@ -129,6 +129,22 @@ module.exports = function (application) {
         },
 
         async getMessageByIdLimit(req, res) {
+            //TODO validar se issueId existe
+            let issueId = req.params.issueId;
+
+            IssueService.existIssue(issueId)
+                .then(() => {
+                    MessageService.getMessageByIdLimit(req.params)
+                        .then(result => {
+                            res.status(result.code).send(result.body);
+                        })
+                        .catch(err => {
+                            res.status(err.code).send(err.body)
+                        });
+                })
+                .catch(err => {
+                    res.status(err.code).send(err.body)
+                });
         }
     };
 };
