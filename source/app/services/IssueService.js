@@ -49,7 +49,7 @@ module.exports = function (application) {
                     resolve(Response.success(body.hits.hits.map(transform)));
                 } catch (err) {
                     console.error(err);
-                    reject(Response.internalServerError(err));
+                    reject(Response.notFound(err.meta));
                 }
             });
         },
@@ -71,7 +71,7 @@ module.exports = function (application) {
                     resolve(Response.success(body.hits.hits.map(transform)));
                 } catch (err) {
                     console.error(err);
-                    reject(Response.internalServerError(err));
+                    reject(Response.notFound(err.meta));
                 }
             });
         },
@@ -86,7 +86,7 @@ module.exports = function (application) {
                     resolve(Response.success(body));
                 } catch (err) {
                     console.error(err);
-                    reject(Response.internalServerError(err));
+                    reject(Response.notFound(err.meta));
                 }
             });
         },
@@ -107,7 +107,7 @@ module.exports = function (application) {
                     resolve(Response.success(body));
                 } catch (err) {
                     console.error(err)
-                    reject(Response.internalServerError(err));
+                    reject(Response.notFound(err.meta));
                 }
             });
         },

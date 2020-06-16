@@ -1,12 +1,7 @@
-const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
-
 /** @namespace application.app.controllers.ProjectCommunicationController**/
 module.exports = function (application) {
-    const Response = application.app.utils.Response;
     const IssueService = application.app.services.IssueService;
     const MessageService = application.app.services.MessageService;
-
 
     return {
         async createIssue(req, res) {

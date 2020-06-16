@@ -1,6 +1,3 @@
-- criação de message com uso do id da issue
-    - validação do id da issue? (exists)
-
 - ordenação
     //order
     //um ou mais campos
@@ -12,7 +9,6 @@
 - busca por status
 - query por filtros
 - consertar URLs
-- qual o jeito menos custoso de saber se uma issue existe. Find? Exists?
 - gerenciamento de exceções
 
 DATABASE_USER=communication DATABASE_PASS=communication DATABASE_HOSTNAME=localhost DATABASE_PORT=27017 DATABASE=otus-communication API_PORT=8080 ELASTICSEARCH_PORT=9200 ELASTICSEARCH_HOSTNAME=http://localhost node app.js
