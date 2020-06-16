@@ -99,10 +99,15 @@ module.exports = function (application) {
             message.issueId = issueId;
 
             //TODO validar se issueId existe
-
-            MessageService.createMessage(message)
-                .then(result => {
-                    res.status(result.code).send(result.body);
+            IssueService.existIssue(issueId)
+                .then(() => {
+                    MessageService.createMessage(message)
+                        .then(result => {
+                            res.status(result.code).send(result.body);
+                        })
+                        .catch(err => {
+                            res.status(err.code).send(err.body)
+                        });
                 })
                 .catch(err => {
                     res.status(err.code).send(err.body)
@@ -111,11 +116,17 @@ module.exports = function (application) {
 
         async getMessageByIssueId(req, res) {
             //TODO validar se issueId existe
+            let issueId = req.params.issueId;
 
-
-            MessageService.listIssueMessages(req.params.issueId)
-                .then(result => {
-                    res.status(result.code).send(result.body);
+            IssueService.existIssue(issueId)
+                .then(() => {
+                    MessageService.listIssueMessages(issueId)
+                        .then(result => {
+                            res.status(result.code).send(result.body);
+                        })
+                        .catch(err => {
+                            res.status(err.code).send(err.body)
+                        });
                 })
                 .catch(err => {
                     res.status(err.code).send(err.body)
