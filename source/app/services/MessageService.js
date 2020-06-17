@@ -1,8 +1,10 @@
 /** @namespace application.app.services.MessageService **/
 module.exports = function (application) {
+    const MESSAGES_INDEX = 'messages';
+
     const Response = application.app.utils.Response;
     const ElasticsearchService = application.app.services.ElasticsearchService;
-    const MESSAGES_INDEX = 'messages';
+    const MessageFactory = application.app.models.MessageFactory;
 
     return {
         async createMessage(message) {
@@ -31,9 +33,9 @@ module.exports = function (application) {
                             },
                         }
                     });
-                    console.log(JSON.stringify(result))
                     const body = result.body;
-                    resolve(Response.success(body.hits.hits.map(transform)));
+                    console.log(body.hits.hits)
+                    resolve(Response.success(body.hits.hits.map(MessageFactory.fromHit)));
                 } catch (err) {
                     console.error(err)
                     reject(Response.internalServerError(err));

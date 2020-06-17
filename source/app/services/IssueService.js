@@ -2,6 +2,7 @@
 module.exports = function (application) {
     const Response = application.app.utils.Response;
     const ElasticsearchService = application.app.services.ElasticsearchService;
+    const IssueFactory = application.app.models.IssueFactory;
     const ISSUES_INDEX = 'issues';
 
     return {
@@ -46,7 +47,7 @@ module.exports = function (application) {
                         }
                     });
                     console.log(body);
-                    resolve(Response.success(body.hits.hits.map(transform)));
+                    resolve(Response.success(body.hits.hits.map(IssueFactory.fromHit)));
                 } catch (err) {
                     console.error(err);
                     reject(Response.internalServerError(err));

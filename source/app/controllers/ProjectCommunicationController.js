@@ -4,20 +4,22 @@ const ObjectId = mongoose.Types.ObjectId;
 /** @namespace application.app.controllers.ProjectCommunicationController**/
 module.exports = function (application) {
     const Response = application.app.utils.Response;
+
     const IssueService = application.app.services.IssueService;
     const MessageService = application.app.services.MessageService;
 
+    const IssueFactory = application.app.models.IssueFactory;
+    const MessageFactory = application.app.models.MessageFactory;
 
     return {
         async createIssue(req, res) {
-            //TODO move
-            let issue = req.body;
-            issue.status = 'OPEN';
-            //
-
-            IssueService.createIssue(req.body)
+            let issue = IssueFactory.create(req.body);
+            IssueService.createIssue(issue)
                 .then(result => {
                     //TODO check what to return. Id only?
+                    console.log("post result");
+                    console.log(issue);
+                    console.log('====');
                     res.status(result.code).send(result.body);
                 })
                 .catch(err => {
@@ -94,11 +96,7 @@ module.exports = function (application) {
 
         async createMessage(req, res) {
             let issueId = req.params.issueId;
-            let message = req.body;
-
-            message.issueId = issueId;
-
-            //TODO validar se issueId existe
+            let message = MessageFactory.create(issueId, req.body);
 
             MessageService.createMessage(message)
                 .then(result => {
@@ -110,9 +108,6 @@ module.exports = function (application) {
         },
 
         async getMessageByIssueId(req, res) {
-            //TODO validar se issueId existe
-
-
             MessageService.listIssueMessages(req.params.issueId)
                 .then(result => {
                     res.status(result.code).send(result.body);
