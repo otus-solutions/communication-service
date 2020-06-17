@@ -4,12 +4,9 @@ const ObjectId = mongoose.Types.ObjectId;
 /** @namespace application.app.controllers.ProjectCommunicationController**/
 module.exports = function (application) {
     const Response = application.app.utils.Response;
-
     const IssueService = application.app.services.IssueService;
     const MessageService = application.app.services.MessageService;
 
-    const IssueFactory = application.app.models.IssueFactory;
-    const MessageFactory = application.app.models.MessageFactory;
 
     return {
         async createIssue(req, res) {
@@ -17,9 +14,6 @@ module.exports = function (application) {
             IssueService.createIssue(issue)
                 .then(result => {
                     //TODO check what to return. Id only?
-                    console.log("post result");
-                    console.log(issue);
-                    console.log('====');
                     res.status(result.code).send(result.body);
                 })
                 .catch(err => {
@@ -94,23 +88,56 @@ module.exports = function (application) {
                 });
         },
 
-        async createMessage(req, res) {
+        async deleteIssue(req, res) {
             let issueId = req.params.issueId;
-            let message = MessageFactory.create(issueId, req.body);
 
-            MessageService.createMessage(message)
-                .then(result => {
-                    res.status(result.code).send(result.body);
+            IssueService.deleteIssue(issueId)
+                .then(() => {
+                    MessageService.deleteMessagesByIssue(issueId)
+                        .then(result => {
+                            res.status(result.code).send(result.body);
+                        })
+                        .catch(err => {
+                            res.status(err.code).send(err.body)
+                        });
                 })
                 .catch(err => {
                     res.status(err.code).send(err.body)
                 });
         },
 
-        async getMessageByIssueId(req, res) {
-            MessageService.listIssueMessages(req.params.issueId)
-                .then(result => {
-                    res.status(result.code).send(result.body);
+        async createMessage(req, res) {
+            let issueId = req.params.issueId;
+            let message = MessageFactory.create(issueId, req.body);
+
+            IssueService.existIssue(issueId)
+                .then(() => {
+                    MessageService.createMessage(message)
+                        .then(result => {
+                            res.status(result.code).send(result.body);
+                        })
+                        .catch(err => {
+                            res.status(err.code).send(err.body)
+                        });
+                })
+                .catch(err => {
+                    res.status(err.code).send(err.body)
+                });
+        },
+
+         async getMessageByIssueId(req, res) {
+            //TODO validar se issueId existe
+            let issueId = req.params.issueId;
+
+            IssueService.existIssue(issueId)
+                .then(() => {
+                    MessageService.listIssueMessages(issueId)
+                        .then(result => {
+                            res.status(result.code).send(result.body);
+                        })
+                        .catch(err => {
+                            res.status(err.code).send(err.body)
+                        });
                 })
                 .catch(err => {
                     res.status(err.code).send(err.body)
@@ -118,6 +145,48 @@ module.exports = function (application) {
         },
 
         async getMessageByIdLimit(req, res) {
+            //TODO validar se issueId existe
+            let issueId = req.params.issueId;
+
+            IssueService.existIssue(issueId)
+                .then(() => {
+                    MessageService.getMessageByIdLimit(req.params)
+                        .then(result => {
+                            res.status(result.code).send(result.body);
+                        })
+                        .catch(err => {
+                            res.status(err.code).send(err.body)
+                        });
+                })
+                .catch(err => {
+                    res.status(err.code).send(err.body)
+                });
+        },
+
+        async editTextMessage(req, res) {
+            let messageId = req.params.messageId;
+            let text = req.body.text;
+
+            MessageService.editTextMessage(messageId, text)
+                .then(result => {
+                    res.status(result.code).send(result.body);
+                })
+                .catch(err => {
+                    res.status(err.code).send(err.body)
+                });
+
+        },
+
+        async deleteMessage(req, res) {
+            let messageId = req.params.messageId;
+
+            MessageService.deleteMessage(messageId)
+                .then(result => {
+                    res.status(result.code).send(result.body);
+                })
+                .catch(err => {
+                    res.status(err.code).send(err.body)
+                });
         }
     };
 };

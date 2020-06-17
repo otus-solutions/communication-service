@@ -12,13 +12,14 @@ module.exports = function (application) {
     });
 
     //cria a issue
-    application.post(BASE_URL + '/issues/:skip/:limit', jsonParser, async function (req, res) {
-        console.log('asdassadads')
+    application.get(BASE_URL + '/issues/limit/:issueId/:skip/:limit', jsonParser, async function (req, res) {
+        console.log("issue : " + req.params)
+        ProjectCommunication.getMessageByIdLimit(req, res);
         //todo
     });
 
     //busca issue pelo id da issue
-     application.get(BASE_URL + '/issues/:id', async function (req, res) {
+    application.get(BASE_URL + '/issues/:id', async function (req, res) {
         console.log("issue : " + req.params.id)
         ProjectCommunication.getIssuesById(req, res);
     });
@@ -58,6 +59,11 @@ module.exports = function (application) {
         ProjectCommunication.finalizeIssue(req, res);
     });
     //--
+    //-- delete issue
+    application.delete(BASE_URL + '/issues/delete/:issueId', async function (req, res) {
+        console.log(req.params.issueId);
+        ProjectCommunication.deleteIssue(req, res);
+    });
 
     //cria message
     application.post(BASE_URL + '/messages/:issueId/', jsonParser, async function (req, res) {
@@ -66,7 +72,7 @@ module.exports = function (application) {
     });
 
     // lista messages da issue
-        application.get(BASE_URL + '/messages/:issueId/', async function (req, res) {
+    application.get(BASE_URL + '/messages/:issueId/', async function (req, res) {
         console.log("list-message : " + req.params.issueId);
         ProjectCommunication.getMessageByIssueId(req, res);
     });
@@ -75,5 +81,14 @@ module.exports = function (application) {
     application.get(BASE_URL + '/messages/:issueId/:skip/:limit', async function (req, res) {
         console.log(req.params.id)
         ProjectCommunication.getMessageByIdLimite(req, res);
+    });
+
+    application.put(BASE_URL + '/messages/edit/:messageId', jsonParser, async function (req, res) {
+        ProjectCommunication.editTextMessage(req, res);
+    });
+
+    application.delete(BASE_URL + '/messages/delete/:messageId', async function (req, res) {
+        console.log(req.params.messageId);
+        ProjectCommunication.deleteMessage(req, res);
     });
 };
