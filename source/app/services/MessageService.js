@@ -27,7 +27,7 @@ module.exports = function (application) {
                         body: {
                             query: {
                                 match: { issueId: issueId }
-                            },
+                            }
                         }
                     });
                     console.log(JSON.stringify(result))
@@ -85,6 +85,25 @@ module.exports = function (application) {
                     const { body } = await ElasticsearchService.getClient().delete({
                         index: MESSAGES_INDEX,
                         id: messageId
+                    });
+
+                    resolve(Response.success(body));
+                } catch (err) {
+                    console.error(err);
+                    reject(Response.notFound(err.meta));
+                }
+            });
+        },
+        async deleteMessagesByIssue(issueId) {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const { body } = await ElasticsearchService.getClient().deleteByQuery({
+                        index: MESSAGES_INDEX,
+                        body: {
+                            query: {
+                                match: { issueId: issueId }
+                            }
+                        }
                     });
 
                     resolve(Response.success(body));

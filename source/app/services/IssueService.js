@@ -126,6 +126,21 @@ module.exports = function (application) {
                 }
             });
         },
+        async deleteIssue(issueId) {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const { body } = await ElasticsearchService.getClient().delete({
+                        index: ISSUES_INDEX,
+                        id: issueId
+                    });
+
+                    resolve(Response.success(body));
+                } catch (err) {
+                    console.error(err);
+                    reject(Response.notFound(err.meta));
+                }
+            });
+        }
     };
 
     function transform(hit) {

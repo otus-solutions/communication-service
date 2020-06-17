@@ -87,6 +87,24 @@ module.exports = function (application) {
                 });
         },
 
+        async deleteIssue(req, res) {
+            let issueId = req.params.issueId;
+
+            IssueService.deleteIssue(issueId)
+                .then(() => {
+                    MessageService.deleteMessagesByIssue(issueId)
+                        .then(result => {
+                            res.status(result.code).send(result.body);
+                        })
+                        .catch(err => {
+                            res.status(err.code).send(err.body)
+                        });
+                })
+                .catch(err => {
+                    res.status(err.code).send(err.body)
+                });
+        },
+
         async createMessage(req, res) {
             let issueId = req.params.issueId;
             let message = req.body;
@@ -127,6 +145,7 @@ module.exports = function (application) {
                     res.status(err.code).send(err.body)
                 });
         },
+
         async getMessageByIdLimit(req, res) {
             //TODO validar se issueId existe
             let issueId = req.params.issueId;
@@ -145,6 +164,7 @@ module.exports = function (application) {
                     res.status(err.code).send(err.body)
                 });
         },
+
         async editTextMessage(req, res) {
             let messageId = req.params.messageId;
             let text = req.body.text;
@@ -158,6 +178,7 @@ module.exports = function (application) {
                 });
 
         },
+
         async deleteMessage(req, res) {
             let messageId = req.params.messageId;
 

@@ -59,6 +59,11 @@ module.exports = function (application) {
         ProjectCommunication.finalizeIssue(req, res);
     });
     //--
+    //-- delete issue
+    application.delete(BASE_URL + '/issues/delete/:issueId', async function (req, res) {
+        console.log(req.params.issueId);
+        ProjectCommunication.deleteIssue(req, res);
+    });
 
     //cria message
     application.post(BASE_URL + '/messages/:issueId/', jsonParser, async function (req, res) {
@@ -79,7 +84,6 @@ module.exports = function (application) {
     });
 
     application.put(BASE_URL + '/messages/edit/:messageId', jsonParser, async function (req, res) {
-        console.log(req.params.id);
         ProjectCommunication.editTextMessage(req, res);
     });
 
