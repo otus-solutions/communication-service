@@ -82,8 +82,7 @@ module.exports = function (application) {
                         index: ISSUES_INDEX,
                         id: issueId
                     });
-                    console.log(body);
-                    resolve(Response.success(body));
+                    resolve(Response.success(transform(body)));
                 } catch (err) {
                     console.error(err);
                     reject(Response.notFound(err.meta));
