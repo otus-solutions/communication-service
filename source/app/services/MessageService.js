@@ -104,12 +104,14 @@ module.exports = function (application) {
                                 match: { issueId: issueId }
                             }
                         }
+                    }, {
+                        ignore: [404]
                     });
 
                     resolve(Response.success(body));
                 } catch (err) {
                     console.error(err);
-                    reject(Response.notFound(err.meta));
+                    reject(Response.internalServerError(err));
                 }
             });
         }
