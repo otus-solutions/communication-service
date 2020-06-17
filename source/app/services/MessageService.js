@@ -8,7 +8,7 @@ module.exports = function (application) {
         async createMessage(message) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const {body} = await ElasticsearchService.getClient().index({
+                    const { body } = await ElasticsearchService.getClient().index({
                         index: MESSAGES_INDEX,
                         body: message
                     });
@@ -19,7 +19,6 @@ module.exports = function (application) {
                 }
             });
         },
-
         async listIssueMessages(issueId) {
             return new Promise(async (resolve, reject) => {
                 try {
@@ -54,7 +53,6 @@ module.exports = function (application) {
                             //order
                         }
                     });
-                    console.log(body);
                     resolve(Response.success(body.hits.hits.map(transform)));
                 } catch (err) {
                     console.error(err);
@@ -74,27 +72,10 @@ module.exports = function (application) {
                             }
                         }
                     });
-                    console.log(body);
                     resolve(Response.success(body));
                 } catch (err) {
                     console.error(err)
                     reject(Response.notFound(err.meta));
-                }
-            });
-        },
-        async existMessage(messageId) {
-            return new Promise(async (resolve, reject) => {
-                try {
-                    const { body } = await ElasticsearchService.getClient().exists({
-                        index: MESSAGES_INDEX,
-                        id: messageId
-                    });
-
-                    body ? resolve(body) : reject(Response.notFound(body));
-
-                } catch (err) {
-                    console.error(err);
-                    reject(Response.internalServerError(err));
                 }
             });
         },

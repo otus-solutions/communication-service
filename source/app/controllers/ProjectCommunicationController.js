@@ -149,19 +149,14 @@ module.exports = function (application) {
             let messageId = req.params.messageId;
             let text = req.body.text;
 
-            MessageService.existMessage(messageId)
-                .then(() => {
-                    MessageService.editTextMessage(messageId, text)
-                        .then(result => {
-                            res.status(result.code).send(result.body);
-                        })
-                        .catch(err => {
-                            res.status(err.code).send(err.body)
-                        });
+            MessageService.editTextMessage(messageId, text)
+                .then(result => {
+                    res.status(result.code).send(result.body);
                 })
                 .catch(err => {
                     res.status(err.code).send(err.body)
                 });
+
         },
         async deleteMessage(req, res) {
             let messageId = req.params.messageId;
