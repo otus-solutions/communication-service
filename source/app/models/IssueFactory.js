@@ -34,7 +34,7 @@ function Issue(json) {
         json.status = self.status;
         json.title = self.title;
         json.text = self.text;
-
+        json.creationDate = self.creationDate;
         return json;
     };
 
