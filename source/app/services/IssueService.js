@@ -22,12 +22,39 @@ module.exports = function (application) {
         },
 
         async queryIssue(query) {
-            return client.search({
-                index: 'issue',
-                body: {
-                    query: {
-                        match_all: {}
-                    }
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const { body } = await ElasticsearchService.getClient().search({
+                        index: ISSUES_INDEX,
+                        from: query.currentQuantity,
+                        size: query.quantityToGet,
+                        // stored_fields: query.order.fields,
+                        // q: query.filter
+                        body: {
+                            query: {
+                                // match_all: {},
+                                match: {
+                                    group: "1"
+                                }
+                                    // query.filter,    
+                                
+                            },
+                            sort:
+                                [
+                                    { "group": "asc" }
+                                    // { "price": { "order": "asc", "mode": "avg" } }
+                                ],
+                                    // { "_id": { "order": "desc" } }
+                                    // { "sender": "asc" }
+                                    // { "group":  "asc" }
+                                    // { "creationDate": { "order": "asc" } }
+                        }
+                    });
+
+                    resolve(Response.success(body));
+                } catch (err) {
+                    console.error(err);
+                    reject(Response.internalServerError(err));
                 }
             });
         },
@@ -120,7 +147,7 @@ module.exports = function (application) {
                     });
 
                     body ? resolve(body) : reject(Response.notFound(body));
-                   
+
                 } catch (err) {
                     console.error(err);
                     reject(Response.internalServerError(err));

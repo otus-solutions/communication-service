@@ -3,7 +3,8 @@ const ObjectId = mongoose.Types.ObjectId;
 
 /** @namespace application.app.controllers.ProjectCommunicationController**/
 module.exports = function (application) {
-    const Response = application.app.utils.Response;
+    const IssueFactory = application.app.models.IssueFactory;
+    const MessageFactory = application.app.models.MessageFactory;
     const IssueService = application.app.services.IssueService;
     const MessageService = application.app.services.MessageService;
 
@@ -42,6 +43,13 @@ module.exports = function (application) {
         },
 
         async filter(req, res) {
+            IssueService.queryIssue(req.body)
+                .then(result => {
+                    res.status(result.code).send(result.body);
+                })
+                .catch(err => {
+                    res.status(err.code).send(err.body)
+                });
         },
 
         async getIssuesById(req, res) {
@@ -125,7 +133,7 @@ module.exports = function (application) {
                 });
         },
 
-         async getMessageByIssueId(req, res) {
+        async getMessageByIssueId(req, res) {
             //TODO validar se issueId existe
             let issueId = req.params.issueId;
 
@@ -174,7 +182,6 @@ module.exports = function (application) {
                 .catch(err => {
                     res.status(err.code).send(err.body)
                 });
-
         },
 
         async deleteMessage(req, res) {
