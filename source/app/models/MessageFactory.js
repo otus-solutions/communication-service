@@ -35,6 +35,7 @@ function Message(json) {
         json.sender = self.sender;
         json.issueId = self.issueId;
         json._id = self._id;
+        json.creationDate = self.creationDate;
 
         return json;
     };
