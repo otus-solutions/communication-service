@@ -11,6 +11,22 @@ module.exports = function () {
             let object = new Issue(hit._source);
             object._id = hit._id;
             return object;
+        },
+        getMapping: () => {
+            return {
+                mappings: {
+                    properties: {
+                        // _id: {type: "keyword"},
+                        objectType: {type: "keyword"},
+                        sender: {type: "keyword"},
+                        group: {type: "keyword"},
+                        title: {type: "text"},
+                        text: {type: "text"},
+                        creationDate: {type: "date"},
+                        status: {type: "keyword"}
+                    }
+                }
+            }
         }
     };
 };

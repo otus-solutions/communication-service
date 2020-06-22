@@ -5,11 +5,24 @@ module.exports = function () {
             return new Message(json);
         },
         fromHit: (hit) => {
-            console.log(hit)
+            console.log(hit);
             let object = new Message(hit._source);
 
             object._id = hit._id;
             return object;
+        },
+        getMapping: () => {
+            return {
+                mappings: {
+                    properties: {
+                        text: {type: 'text'},
+                        sender: {type: 'keyword'},
+                        issueId: {type: 'keyword'},
+                        // _id: {type: 'keyword'},
+                        creationDate: {type: 'date'}
+                    }
+                }
+            }
         }
     };
 };
