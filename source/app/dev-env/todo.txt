@@ -41,7 +41,7 @@ DATABASE_USER=communication DATABASE_PASS=communication DATABASE_HOSTNAME=localh
 
 ===
     "sort" : [
-        "sender",                                                  <= Agrupa as respostas por grupos, sem definir ordem (daria para colocar o issueID para agrupar por issue)
+        "sender",                                        body{query{match}} aceite um argumento <= Agrupa as respostas por grupos, sem definir ordem (daria para colocar o issueID para agrupar por issue)
         { "group" : {"order" : "asc"}},                   <= ordena os resultados por group, em ordem crescente (fica explícito no código que quero ordenar)
         { "creationDate" : "asc" }                        <= ordena por creationDate
     ]
