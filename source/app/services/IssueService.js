@@ -21,33 +21,48 @@ module.exports = function (application) {
             });
         },
 
-        async queryIssue(query) {
+        async queryIssue(data) {
             return new Promise(async (resolve, reject) => {
                 try {
+                    let query;
+                    if (data.filter.sender || data.filter.group || data.filter.status || data.filter.creationDate) {
+                        console.log(data.filter)
+                        query = { match: data.filter }
+                    } else {
+                        query = { match_all: {} }
+                    }
+
+                    let order = (data.order.mode == 1) ? "asc" : "desc";
+
                     const { body } = await ElasticsearchService.getClient().search({
                         index: ISSUES_INDEX,
-                        from: query.currentQuantity,
-                        size: query.quantityToGet,
+                        from: data.currentQuantity,
+                        size: data.quantityToGet,
                         // stored_fields: query.order.fields,
-                        // q: query.filter
+                        // q: query.filter,
                         body: {
-                            query: {
-                                // match_all: {},
-                                match: {
-                                    group: "1"
-                                }
-                                    // query.filter,    
-                                
-                            },
-                            sort:
-                                [
-                                    { "group": "asc" }
-                                    // { "price": { "order": "asc", "mode": "avg" } }
-                                ],
-                                    // { "_id": { "order": "desc" } }
-                                    // { "sender": "asc" }
-                                    // { "group":  "asc" }
-                                    // { "creationDate": { "order": "asc" } }
+                            query: query,
+                            // {
+                            // match_all: {},
+                                // match: {
+                                //     group: "1"
+                                // }
+                            //     match:
+                            //         // { group: "1" },
+                            //         (query.filter.length != 0) ? match : query.filter : match_all: {},
+
+                            // },
+                            // stored_fields: query.order.fields,
+                            sort: [
+                                { "sender": order },
+                                { "group": order },
+                                { "creationDate": order }
+                                // { "price": { "order": "asc", "mode": "avg" } }
+                            ],
+                            // { "_id": { "order": "desc" } }
+                            // { "sender": "asc" }
+                            // { "group":  "asc" }
+                            // { "creationDate": { "order": "asc" } }
                         }
                     });
 
