@@ -16,17 +16,17 @@ module.exports = function (application) {
 
     return {
          getClient() {
-            if(configReady){
-                return new Client({node: ELASTICSEARCH_HOSTNAME + ":" + ELASTICSEARCH_PORT});
-
-            } else {
-                throw new Error("Elasticservice initialization error");
+            if(!configReady){
+                throw new Error("ElasticService.getClient initialization error");
             }
+            return new Client({node: ELASTICSEARCH_HOSTNAME + ":" + ELASTICSEARCH_PORT});
         },
 
         setState(state) {
+            console.log('\nElasticService.setState before: configReady =', configReady)
+            console.log('ElasticService.setState', state)
             configReady = !!state;
-            console.log(configReady, 'd')
+            console.log('ElasticService.setState after : configReady =', configReady)
         }
     }
 
