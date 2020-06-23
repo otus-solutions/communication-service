@@ -24,18 +24,13 @@ module.exports = function (application) {
         async queryIssue(data) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    let should = [];
+                    let must = Object.entries(data.filter).map( ([key, value]) => {
+                        let jsonString = "{ \"term\": {\"" + key + "\":\"" + value + "\"}}";
+                        return JSON.parse(jsonString);
+                    });
 
-                    if (Object.keys(data.filter).length > 0) {
-
-                        for (const [key, value] of Object.entries(data.filter)) {
-                            let jsonString = "{ \"term\": {\"" + key + "\":\"" + value + "\"}}";
-                            let jsonObj = JSON.parse(jsonString);
-
-                            should.push(jsonObj);
-                        }
-                    } else {
-                        query = { match_all: {} }
+                    if(must.length === 0){
+                        must = { match_all: {} }
                     }
 
                     let order = (data.order.mode === 1) ? "asc" : "desc";
@@ -51,16 +46,11 @@ module.exports = function (application) {
                         size: data.quantityToGet,
                         body: {
                             query: {
-                                "bool": {
-                                    "should": should
+                                bool: {
+                                    must: must
                                 }
                             },
                             sort: orderFields
-                            // sort: [
-                            //     { "sender": order },
-                            //     { "group": order },
-                            //     { "creationDate": order }
-                            // ],
                         }
                     });
 
