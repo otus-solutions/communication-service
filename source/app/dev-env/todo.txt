@@ -1,13 +1,13 @@
 - ordenação
-    //order
-    //um ou mais campos
-    //ascendente ou descendente
-    //{sender:1, date:-1}
-    //creationDate ou ordenação nativa do Elastic
+    //order                                         CHECK
+    //um ou mais campos                             CHECK
+    //ascendente ou descendente                     CHECK
+    //{sender:1, date:-1}                           CHECK (nao ocorre)
+    //creationDate ou ordenação nativa do Elastic   CHECK - creationDate
 
 
 - busca por status
-- query por filtros
+- query por filtros                                 CHECK
 - consertar URLs
 
 - gerenciamento de exceções
@@ -16,7 +16,7 @@
 DATABASE_USER=communication DATABASE_PASS=communication DATABASE_HOSTNAME=localhost DATABASE_PORT=27017 DATABASE=otus-communication API_PORT=8080 ELASTICSEARCH_PORT=9200 ELASTICSEARCH_HOSTNAME=http://localhost node app.js
 
 
-- inserção e moficação levam documento para final do array
+- inserção e modificação levam documento para final do array
     - ordenamento natural é garantido?
 
 
@@ -45,10 +45,10 @@ DATABASE_USER=communication DATABASE_PASS=communication DATABASE_HOSTNAME=localh
         { "group" : {"order" : "asc"}},                   <= ordena os resultados por group, em ordem crescente (fica explícito no código que quero ordenar)
         { "creationDate" : "asc" }                        <= ordena por creationDate
     ]
-
+    CHECK
 
 -tipos de erro
 - não acha index
 - acha index mas a query vem vazia (tratado antecipadamente, com um issueExists)
-    - não acha a issue de uma mensagem
+    - não acha a issue de uma mensagem  CHECK
 
