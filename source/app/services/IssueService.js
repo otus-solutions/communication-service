@@ -25,7 +25,7 @@ module.exports = function (application) {
             return new Promise(async (resolve, reject) => {
                 try {
                     let must = Object.entries(data.filter).map( ([key, value]) => {
-                        let jsonString = "{ \"term\": {\"" + key + "\":\"" + value + "\"}}";
+                        let jsonString = "{ \"match\": {\"" + key + "\":\"" + value + "\"}}";
                         return JSON.parse(jsonString);
                     });
 
