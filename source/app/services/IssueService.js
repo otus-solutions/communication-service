@@ -38,7 +38,12 @@ module.exports = function (application) {
                         query = { match_all: {} }
                     }
 
-                    let order = (data.order.mode == 1) ? "asc" : "desc";
+                    let order = (data.order.mode === 1) ? "asc" : "desc";
+                    let orderFields = data.order.fields.map(field => {
+                        let obj = {};
+                        obj[field] = order;
+                        return obj;
+                    });
 
                     const { body } = await ElasticsearchService.getClient().search({
                         index: ISSUES_INDEX,
@@ -50,11 +55,12 @@ module.exports = function (application) {
                                     "should": should
                                 }
                             },
-                            sort: [
-                                { "sender": order },
-                                { "group": order },
-                                { "creationDate": order }
-                            ],
+                            sort: orderFields
+                            // sort: [
+                            //     { "sender": order },
+                            //     { "group": order },
+                            //     { "creationDate": order }
+                            // ],
                         }
                     });
 
