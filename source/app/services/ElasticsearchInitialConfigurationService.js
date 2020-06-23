@@ -1,4 +1,5 @@
 const {Client} = require('@elastic/elasticsearch');
+const ElasticsearchService = require('./ElasticsearchService');
 
 const {
     ELASTICSEARCH_PORT,
@@ -10,8 +11,6 @@ const {
 /** @namespace application.app.services.ElasticsearchInitialConfigurationService **/
 module.exports = function (application) {
     const ElasticsearchIndexes = application.app.services.ElasticsearchIndexes;
-    const ElasticsearchService = require('./ElasticsearchService');
-
 
     if (ELASTICSEARCH_INITIALIZE === 'true') {
         ElasticsearchService().setState(false);
