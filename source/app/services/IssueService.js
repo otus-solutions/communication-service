@@ -24,10 +24,16 @@ module.exports = function (application) {
         async queryIssue(data) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    let query;
-                    if (data.filter.sender || data.filter.group || data.filter.status || data.filter.creationDate) {
-                        console.log(data.filter)
-                        query = { match: data.filter }
+                    let should = [];
+
+                    if (Object.keys(data.filter).length > 0) {
+
+                        for (const [key, value] of Object.entries(data.filter)) {
+                            let jsonString = "{ \"term\": {\"" + key + "\":\"" + value + "\"}}";
+                            let jsonObj = JSON.parse(jsonString);
+
+                            should.push(jsonObj);
+                        }
                     } else {
                         query = { match_all: {} }
                     }
@@ -38,31 +44,17 @@ module.exports = function (application) {
                         index: ISSUES_INDEX,
                         from: data.currentQuantity,
                         size: data.quantityToGet,
-                        // stored_fields: query.order.fields,
-                        // q: query.filter,
                         body: {
-                            query: query,
-                            // {
-                            // match_all: {},
-                                // match: {
-                                //     group: "1"
-                                // }
-                            //     match:
-                            //         // { group: "1" },
-                            //         (query.filter.length != 0) ? match : query.filter : match_all: {},
-
-                            // },
-                            // stored_fields: query.order.fields,
+                            query: {
+                                "bool": {
+                                    "should": should
+                                }
+                            },
                             sort: [
                                 { "sender": order },
                                 { "group": order },
                                 { "creationDate": order }
-                                // { "price": { "order": "asc", "mode": "avg" } }
                             ],
-                            // { "_id": { "order": "desc" } }
-                            // { "sender": "asc" }
-                            // { "group":  "asc" }
-                            // { "creationDate": { "order": "asc" } }
                         }
                     });
 
