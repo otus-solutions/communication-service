@@ -1,0 +1,5 @@
+{
+    "expMap": {
+        "js": "node --inspect -r sucrase/register"
+    }
+}
