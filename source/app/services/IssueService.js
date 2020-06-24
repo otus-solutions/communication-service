@@ -54,7 +54,7 @@ module.exports = function (application) {
                         }
                     });
 
-                    resolve(Response.success(body));
+                    resolve(Response.success(body.hits.hits.map(IssueFactory.fromHit)));
                 } catch (err) {
                     console.error(err);
                     reject(Response.internalServerError(err));
@@ -98,7 +98,6 @@ module.exports = function (application) {
                             //order
                         }
                     });
-                    console.log(body);
                     resolve(Response.success(body.hits.hits.map(transform)));
                 } catch (err) {
                     console.error(err);

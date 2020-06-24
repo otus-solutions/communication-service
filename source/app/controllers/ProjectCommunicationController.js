@@ -1,6 +1,3 @@
-const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
-
 /** @namespace application.app.controllers.ProjectCommunicationController**/
 module.exports = function (application) {
     const IssueFactory = application.app.models.IssueFactory;
