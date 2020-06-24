@@ -10,28 +10,25 @@ const {
 //todo: test if env var are present
 
 /** @namespace application.app.services.ElasticsearchService **/
-module.exports = {
+module.exports = (function() {
 
-    getClient: function() {
-        let configReady = (process.env.CONFIG_READY === 'true');
-        console.log('\nElasticService.getClient: configReady =', configReady)
+    return {
+        getClient() {
+            let configReady = (process.env.CONFIG_READY === 'true');
+            console.log('\nElasticService.getClient: configReady =', configReady)
 
-        if(!configReady){
-            throw new Error("ElasticService.getClient initialization error");
+            if (!configReady) {
+                throw new Error("ElasticService.getClient initialization error");
+            }
+            return new Client({node: ELASTICSEARCH_HOSTNAME + ":" + ELASTICSEARCH_PORT});
+        },
+
+        setState(state) {
+            console.log('\nElasticService.setState before: configReady =', process.env.CONFIG_READY)
+            console.log('ElasticService.setState', state)
+            process.env.CONFIG_READY = (!!state).toString();
+            console.log('ElasticService.setState after : configReady =', process.env.CONFIG_READY)
         }
-        return new Client({node: ELASTICSEARCH_HOSTNAME + ":" + ELASTICSEARCH_PORT});
-    },
-
-    setState: function(state) {
-        console.log('\nElasticService.setState before: configReady =', process.env.CONFIG_READY)
-        console.log('ElasticService.setState', state)
-        process.env.CONFIG_READY = (!!state).toString();
-        console.log('ElasticService.setState after : configReady =', process.env.CONFIG_READY)
-    },
-
-    print: function () {//.
-        let configReady = (process.env.CONFIG_READY === 'true');
-        console.log('configReady =', configReady);
     }
 
-};
+})();
