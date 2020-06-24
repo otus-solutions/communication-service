@@ -4,6 +4,7 @@ module.exports = function (application) {
     const MessageFactory = application.app.models.MessageFactory;
     const IssueService = application.app.services.IssueService;
     const MessageService = application.app.services.MessageService;
+    const Response = application.app.utils.Response;
 
 
     return {

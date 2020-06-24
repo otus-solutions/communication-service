@@ -24,6 +24,10 @@ module.exports = function (application) {
         async queryIssue(data) {
             return new Promise(async (resolve, reject) => {
                 try {
+                    if (Object.keys(data).length == 0) {
+                        return reject(Response.notAcceptable()); 
+                    }
+                        
                     let must = Object.entries(data.filter).map( ([key, value]) => {
                         let jsonString = "{ \"match\": {\"" + key + "\":\"" + value + "\"}}";
                         return JSON.parse(jsonString);
@@ -76,7 +80,6 @@ module.exports = function (application) {
                             //order
                         }
                     });
-                    console.log(body);
                     resolve(Response.success(body.hits.hits.map(IssueFactory.fromHit)));
                 } catch (err) {
                     console.error(err);
@@ -84,6 +87,7 @@ module.exports = function (application) {
                 }
             });
         },
+
         async getIssuesByGroup(groupId) {
             return new Promise(async (resolve, reject) => {
                 try {
@@ -105,6 +109,7 @@ module.exports = function (application) {
                 }
             });
         },
+
         async getIssue(issueId) {
             return new Promise(async (resolve, reject) => {
                 try {
@@ -119,6 +124,7 @@ module.exports = function (application) {
                 }
             });
         },
+
         async updateIssueType(id, type) {
             //update to OPEN, CLOSED, FINALIZED
             return new Promise(async (resolve, reject) => {
@@ -140,6 +146,7 @@ module.exports = function (application) {
                 }
             });
         },
+
         async existIssue(issueId) {
             return new Promise(async (resolve, reject) => {
                 try {
@@ -156,6 +163,7 @@ module.exports = function (application) {
                 }
             });
         },
+
         async deleteIssue(issueId) {
             return new Promise(async (resolve, reject) => {
                 try {
