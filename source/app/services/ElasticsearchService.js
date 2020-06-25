@@ -1,9 +1,9 @@
 const {Client} = require('@elastic/elasticsearch');
-require('custom-env').env('staging');
 
 const {
     ELASTICSEARCH_PORT,
-    ELASTICSEARCH_HOSTNAME
+    ELASTICSEARCH_HOSTNAME,
+    CONFIG_READY
 } = process.env;
 
 
@@ -12,22 +12,24 @@ const {
 /** @namespace application.app.services.ElasticsearchService **/
 module.exports = (function() {
 
+    function _createClient(){
+        return new Client({node: 'http://' + ELASTICSEARCH_HOSTNAME + ":" + ELASTICSEARCH_PORT})
+    }
+
     return {
         getClient() {
-            let configReady = (process.env.CONFIG_READY === 'true');
-            console.log('\nElasticService.getClient: configReady =', configReady)
-
-            if (!configReady) {
-                throw new Error("ElasticService.getClient initialization error");
+            if (CONFIG_READY !== 'true') {
+                throw "ElasticsearchService initialization error";
             }
-            return new Client({node: ELASTICSEARCH_HOSTNAME + ":" + ELASTICSEARCH_PORT});
+            return _createClient();
+        },
+
+        getIndices(){
+            return _createClient().indices;
         },
 
         setState(state) {
-            console.log('\nElasticService.setState before: configReady =', process.env.CONFIG_READY)
-            console.log('ElasticService.setState', state)
             process.env.CONFIG_READY = (!!state).toString();
-            console.log('ElasticService.setState after : configReady =', process.env.CONFIG_READY)
         }
     }
 
