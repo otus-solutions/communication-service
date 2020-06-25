@@ -24,7 +24,7 @@ module.exports = function (application) {
         async queryIssue(data) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    if (Object.keys(data).length == 0) {
+                    if (Object.keys(data).length === 0) {
                         return reject(Response.notAcceptable()); 
                     }
                         
@@ -138,7 +138,6 @@ module.exports = function (application) {
                             }
                         }
                     });
-                    console.log(body);
                     resolve(Response.success(body));
                 } catch (err) {
                     console.error(err)
