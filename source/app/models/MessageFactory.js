@@ -1,7 +1,7 @@
 /** @namespace application.app.models.MessageFactory**/
 module.exports = function () {
     return {
-        create: (issueId, json) => {
+        create: (json) => {
             return new Message(json);
         },
         fromHit: (hit) => {

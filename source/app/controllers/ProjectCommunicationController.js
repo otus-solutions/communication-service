@@ -4,8 +4,6 @@ module.exports = function (application) {
     const MessageFactory = application.app.models.MessageFactory;
     const IssueService = application.app.services.IssueService;
     const MessageService = application.app.services.MessageService;
-    const Response = application.app.utils.Response;
-
 
     return {
         async createIssue(req, res) {
@@ -114,7 +112,7 @@ module.exports = function (application) {
 
         async createMessage(req, res) {
             let issueId = req.params.issueId;
-            let message = MessageFactory.create(issueId, req.body);
+            let message = MessageFactory.create(req.body);
 
             IssueService.existIssue(issueId)
                 .then(() => {

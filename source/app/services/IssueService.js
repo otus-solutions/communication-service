@@ -102,7 +102,7 @@ module.exports = function (application) {
                             //order
                         }
                     });
-                    resolve(Response.success(body.hits.hits.map(transform)));
+                    resolve(Response.success(body.hits.hits.map(IssueFactory.fromHit)));
                 } catch (err) {
                     console.error(err);
                     reject(Response.notFound(err.meta));
@@ -117,7 +117,7 @@ module.exports = function (application) {
                         index: ISSUES_INDEX,
                         id: issueId
                     });
-                    resolve(Response.success(transform(body)));
+                    resolve(Response.success(body.hits.hits.map(IssueFactory.fromHit)));
                 } catch (err) {
                     console.error(err);
                     reject(Response.notFound(err.meta));
@@ -180,8 +180,4 @@ module.exports = function (application) {
             });
         }
     };
-
-    function transform(hit) {
-        return { ...hit._source, _id: hit._id };
-    }
 };

@@ -21,10 +21,11 @@ module.exports = function (application) {
                 }
             });
         },
+
         async listIssueMessages(issueId) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const result = await ElasticsearchService.getClient().search({
+                    const { body } = await ElasticsearchService.getClient().search({
                         index: MESSAGES_INDEX,
                         body: {
                             query: {
@@ -32,15 +33,16 @@ module.exports = function (application) {
                             }
                         }
                     });
-                    const body = result.body;
-                    console.log(body.hits.hits)
-                    resolve(Response.success(body.hits.hits.map(MessageFactory.fromHit)));
+
+                    (Object.keys(body.hits.hits).length != 0) ? resolve(Response.success(body.hits.hits.map(MessageFactory.fromHit))) : reject(Response.notFound());
+
                 } catch (err) {
                     console.error(err)
                     reject(Response.notFound(err.meta));
                 }
             });
         },
+
         async getMessageByIdLimit(params) {
             return new Promise(async (resolve, reject) => {
                 try {
@@ -55,13 +57,16 @@ module.exports = function (application) {
                             //order
                         }
                     });
-                    resolve(Response.success(body.hits.hits.map(transform)));
+
+                    (Object.keys(body.hits.hits).length != 0) ? resolve(Response.success(body.hits.hits.map(MessageFactory.fromHit))) : reject(Response.notFound());
+
                 } catch (err) {
                     console.error(err);
                     reject(Response.internalServerError(err));
                 }
             });
         },
+
         async editTextMessage(id, text) {
             return new Promise(async (resolve, reject) => {
                 try {
@@ -74,13 +79,14 @@ module.exports = function (application) {
                             }
                         }
                     });
-                    resolve(Response.success(body));
+                    resolve(Response.success(resolve(Response.success(body.hits.hits.map(MessageFactory.fromHit)))));
                 } catch (err) {
                     console.error(err)
                     reject(Response.notFound(err.meta));
                 }
             });
         },
+
         async deleteMessage(messageId) {
             return new Promise(async (resolve, reject) => {
                 try {
@@ -96,6 +102,7 @@ module.exports = function (application) {
                 }
             });
         },
+
         async deleteMessagesByIssue(issueId) {
             return new Promise(async (resolve, reject) => {
                 try {
@@ -118,8 +125,4 @@ module.exports = function (application) {
             });
         }
     };
-
-    function transform(hit) {
-        return { ...hit._source, _id: hit._id };
-    }
 };
