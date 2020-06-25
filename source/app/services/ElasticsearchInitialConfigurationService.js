@@ -13,18 +13,18 @@ module.exports = function (application) {
     const ElasticsearchIndexes = application.app.services.ElasticsearchIndexes;
 
     if (ELASTICSEARCH_INITIALIZE === 'true') {
-        ElasticsearchService().setState(false);
+        ElasticsearchService.setState(false);
         setup()
             .then(result => {
                 console.log('then')
-                ElasticsearchService().setState(true);
+                ElasticsearchService.setState(true);
             })
             .catch(err => {
                 console.error("Elasticservice initialization error");
-                ElasticsearchService().setState(false);
+                ElasticsearchService.setState(false);
             });
     } else {
-        ElasticsearchService().setState(true);
+        ElasticsearchService.setState(true);
     }
 
     async function setup() {
