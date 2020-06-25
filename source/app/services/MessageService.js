@@ -34,7 +34,12 @@ module.exports = function (application) {
                         }
                     });
 
-                    (Object.keys(body.hits.hits).length != 0) ? resolve(Response.success(body.hits.hits.map(MessageFactory.fromHit))) : reject(Response.notFound());
+                    if(Object.keys(body.hits.hits).length !== 0){
+                        reject(Response.notFound());
+                    }
+                    else{
+                        resolve(Response.success(body.hits.hits.map(MessageFactory.fromHit)));
+                    }
 
                 } catch (err) {
                     console.error(err)
@@ -58,7 +63,12 @@ module.exports = function (application) {
                         }
                     });
 
-                    (Object.keys(body.hits.hits).length != 0) ? resolve(Response.success(body.hits.hits.map(MessageFactory.fromHit))) : reject(Response.notFound());
+                    if(Object.keys(body.hits.hits).length === 0){
+                        reject(Response.notFound());
+                    }
+                    else{
+                        resolve(Response.success(body.hits.hits.map(MessageFactory.fromHit)));
+                    }
 
                 } catch (err) {
                     console.error(err);
