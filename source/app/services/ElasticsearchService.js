@@ -1,6 +1,7 @@
 const {Client} = require('@elastic/elasticsearch');
 
 const {
+    PROTOCOL,
     ELASTICSEARCH_PORT,
     ELASTICSEARCH_HOSTNAME,
     CONFIG_READY
@@ -13,7 +14,7 @@ const {
 module.exports = (function() {
 
     function _createClient(){
-        return new Client({node: 'http://' + ELASTICSEARCH_HOSTNAME + ":" + ELASTICSEARCH_PORT})
+        return new Client({node: PROTOCOL + '://' + ELASTICSEARCH_HOSTNAME + ":" + ELASTICSEARCH_PORT})
     }
 
     return {
