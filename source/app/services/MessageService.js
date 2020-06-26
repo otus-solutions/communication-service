@@ -59,7 +59,7 @@ module.exports = function (application) {
                             query: {
                                 match: { issueId: params.issueId }
                             },
-                            //order
+                            sort: { _id:  "desc"}
                         }
                     });
 
