@@ -1,9 +1,10 @@
 /** @namespace application.app.services.IssueService **/
 module.exports = function (application) {
+    const ISSUES_INDEX = 'issues'; 
+    
     const Response = application.app.utils.Response;
     const ElasticsearchService = application.app.services.ElasticsearchService;
     const IssueFactory = application.app.models.IssueFactory;
-    const ISSUES_INDEX = 'issues';
 
     return {
         async createIssue(issue) {
@@ -28,13 +29,13 @@ module.exports = function (application) {
                         return reject(Response.notAcceptable()); 
                     }
                         
-                    let must = Object.entries(data.filter).map( ([key, value]) => {
+                    let query = Object.entries(data.filter).map( ([key, value]) => {
                         let jsonString = "{ \"match\": {\"" + key + "\":\"" + value + "\"}}";
                         return JSON.parse(jsonString);
                     });
 
                     if(must.length === 0){
-                        must = { match_all: {} }
+                        query = { match_all: {} }
                     }
 
                     let order = (data.order.mode === 1) ? "asc" : "desc";
@@ -51,7 +52,7 @@ module.exports = function (application) {
                         body: {
                             query: {
                                 bool: {
-                                    must: must
+                                    must: query
                                 }
                             },
                             sort: orderFields

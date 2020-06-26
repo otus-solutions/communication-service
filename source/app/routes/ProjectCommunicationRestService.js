@@ -41,8 +41,6 @@ module.exports = function (application) {
         ProjectCommunication.filter(req, res);
     });
 
-    //TODO list issues by center
-
     //update de status
     application.put(BASE_URL + '/issues-reopen/:id', async function (req, res) {
         console.log(req.params.id);

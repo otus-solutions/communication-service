@@ -58,10 +58,6 @@ module.exports = function (application) {
                 });
         },
 
-        async listIssue(req, res) {
-        },
-
-
         async openIssue(req, res) {
             IssueService.updateIssueType(req.params.id, "OPEN")
                 .then(result => {
