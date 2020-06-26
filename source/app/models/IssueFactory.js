@@ -1,18 +1,17 @@
 /** @namespace application.app.models.IssueFactory**/
 module.exports = function () {
     return {
-        create: (json) => {
+        create(json) {
             let object = new Issue(json);
             object.status = 'OPEN';
-
             return object;
         },
-        fromHit: (hit) => {
+        fromHit(hit){
             let object = new Issue(hit._source);
             object._id = hit._id;
             return object;
         },
-        getMapping: () => {
+        getMapping() {
             return {
                 mappings: {
                     properties: {
@@ -38,20 +37,20 @@ function Issue(json) {
     };
 
 
-    self.isValid = () => {
+    self.isValid = function() {
         return true;
     };
 
-    self.toJSON = () => {
-        let json = {};
-        json._id = self._id;
-        json.sender = self.sender;
-        json.group = self.group;
-        json.status = self.status;
-        json.title = self.title;
-        json.text = self.text;
-        json.creationDate = self.creationDate;
-        return json;
+    self.toJSON = function() {
+        return {
+            _id: self._id,
+            sender: self.sender,
+            group: self.group,
+            status: self.status,
+            title: self.title,
+            text: self.text,
+            creationDate: self.creationDate
+        };
     };
 
     return self;

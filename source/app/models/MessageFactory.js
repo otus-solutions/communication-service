@@ -1,17 +1,17 @@
 /** @namespace application.app.models.MessageFactory**/
 module.exports = function () {
     return {
-        create: (json) => {
+        create(json) {
             return new Message(json);
         },
-        fromHit: (hit) => {
+        fromHit(hit) {
             console.log(hit);
             let object = new Message(hit._source);
 
             object._id = hit._id;
             return object;
         },
-        getMapping: () => {
+        getMapping() {
             return {
                 mappings: {
                     properties: {
@@ -34,7 +34,7 @@ function Message(json) {
     };
 
 
-    self.isValid = () => {
+    self.isValid = function() {
         return !!(
             self.text &&
             self.sender &&
@@ -42,15 +42,14 @@ function Message(json) {
         )
     };
 
-    self.toJSON = () => {
-        let json = {};
-        json.text = self.text;
-        json.sender = self.sender;
-        json.issueId = self.issueId;
-        json._id = self._id;
-        json.creationDate = self.creationDate;
-
-        return json;
+    self.toJSON = function() {
+        return{
+            text: self.text,
+            sender: self.sender,
+            issueId: self.issueId,
+            _id: self._id,
+            creationDate: self.creationDate
+        };
     };
 
     return self;
