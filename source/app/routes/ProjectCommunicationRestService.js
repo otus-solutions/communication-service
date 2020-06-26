@@ -7,32 +7,21 @@ module.exports = function (application) {
 
     //cria a issue
     application.post(BASE_URL + '/issues', jsonParser, async function (req, res) {
-        console.log('rest');
         ProjectCommunication.createIssue(req, res);
-    });
-
-    //cria a issue
-    application.get(BASE_URL + '/issues/limit/:issueId/:skip/:limit', jsonParser, async function (req, res) {
-        console.log("issue : " + req.params)
-        ProjectCommunication.getMessageByIdLimit(req, res);
-        //todo
     });
 
     //busca issue pelo id da issue
     application.get(BASE_URL + '/issues/:id', async function (req, res) {
-        console.log("issue : " + req.params.id)
         ProjectCommunication.getIssuesById(req, res);
     });
 
     //busca issue pelo  id do sender
     application.get(BASE_URL + '/issues/sender/:id', async function (req, res) {
-        console.log(req.params.id);
         ProjectCommunication.getIssuesBySender(req, res);
     });
 
-    //busca issue pelo  id do sender
+    //busca issue pelo  id do group
     application.get(BASE_URL + '/issues/group/:groupId', async function (req, res) {
-        console.log(req.params.groupId);
         ProjectCommunication.getIssuesByGroup(req, res);
     });
 
@@ -43,50 +32,42 @@ module.exports = function (application) {
 
     //update de status
     application.put(BASE_URL + '/issues-reopen/:id', async function (req, res) {
-        console.log(req.params.id);
         ProjectCommunication.openIssue(req, res);
     });
 
     application.put(BASE_URL + '/issues-close/:id', async function (req, res) {
-        console.log(req.params.id);
         ProjectCommunication.closeIssue(req, res);
     });
 
     application.put(BASE_URL + '/issues-finalize/:id', async function (req, res) {
-        console.log(req.params.id);
         ProjectCommunication.finalizeIssue(req, res);
     });
     //--
     //-- delete issue
-    application.delete(BASE_URL + '/issues/delete/:issueId', async function (req, res) {
-        console.log(req.params.issueId);
+    application.delete(BASE_URL + '/issues/:issueId', async function (req, res) {
         ProjectCommunication.deleteIssue(req, res);
     });
 
     //cria message
     application.post(BASE_URL + '/messages/:issueId/', jsonParser, async function (req, res) {
-        console.log("message : " + req.params.issueId)
         ProjectCommunication.createMessage(req, res);
     });
 
     // lista messages da issue
-    application.get(BASE_URL + '/messages/:issueId/', async function (req, res) {
-        console.log("list-message : " + req.params.issueId);
+    application.get(BASE_URL + '/messages/:issueId', async function (req, res) {
         ProjectCommunication.getMessageByIssueId(req, res);
     });
 
     // lista messages com limit  TODO: pensar em como fazer
-    application.get(BASE_URL + '/messages/:issueId/:skip/:limit', async function (req, res) {
-        console.log(req.params.id)
-        ProjectCommunication.getMessageByIdLimite(req, res);
+    application.get(BASE_URL + '/messages/limit/:issueId/:skip/:limit', async function (req, res) {
+        ProjectCommunication.getMessageByIdLimit(req, res);
     });
 
-    application.put(BASE_URL + '/messages/edit/:messageId', jsonParser, async function (req, res) {
+    application.put(BASE_URL + '/messages/:messageId', jsonParser, async function (req, res) {
         ProjectCommunication.editTextMessage(req, res);
     });
 
-    application.delete(BASE_URL + '/messages/delete/:messageId', async function (req, res) {
-        console.log(req.params.messageId);
+    application.delete(BASE_URL + '/messages/:messageId', async function (req, res) {
         ProjectCommunication.deleteMessage(req, res);
     });
 };

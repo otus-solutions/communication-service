@@ -34,7 +34,7 @@ module.exports = function (application) {
                         return JSON.parse(jsonString);
                     });
 
-                    if(must.length === 0){
+                    if(query.length === 0){
                         query = { match_all: {} }
                     }
 
