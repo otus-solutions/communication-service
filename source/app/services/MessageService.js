@@ -34,7 +34,7 @@ module.exports = function (application) {
                         }
                     });
 
-                    if(Object.keys(body.hits.hits).length !== 0){
+                    if(Object.keys(body.hits.hits).length == 0){
                         reject(Response.notFound());
                     }
                     else{
