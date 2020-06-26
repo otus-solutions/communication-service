@@ -3,8 +3,7 @@ const {Client} = require('@elastic/elasticsearch');
 const {
     PROTOCOL,
     ELASTICSEARCH_PORT,
-    ELASTICSEARCH_HOSTNAME,
-    CONFIG_READY
+    ELASTICSEARCH_HOSTNAME
 } = process.env;
 
 
@@ -19,7 +18,7 @@ module.exports = (function() {
 
     return {
         getClient() {
-            if (CONFIG_READY !== 'true') {
+            if (process.env.CONFIG_READY !== 'true') {
                 throw "ElasticsearchService initialization error";
             }
             return _createClient();

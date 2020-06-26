@@ -4,6 +4,8 @@ const {
     ELASTICSEARCH_INITIALIZE
 } = process.env;
 
+const RESOURCE_ALREADY_EXISTS_ERROR_MESSAGE = 'resource_already_exists_exception';
+
 
 /** @namespace application.app.services.ElasticsearchInitialConfigurationService **/
 module.exports = function (application) {
@@ -12,12 +14,13 @@ module.exports = function (application) {
     if (ELASTICSEARCH_INITIALIZE === 'true') {
         ElasticsearchService.setState(false);
         setup()
-            .then(result => {
-                ElasticsearchService.setState(true);
-            })
+            .then(result => ElasticsearchService.setState(true))
             .catch(err => {
-                console.error("Elasticservice initialization error");
-                ElasticsearchService.setState(false);
+                const isAlreadyExistsError = (err.message === RESOURCE_ALREADY_EXISTS_ERROR_MESSAGE);
+                ElasticsearchService.setState(isAlreadyExistsError);
+                if(!isAlreadyExistsError){
+                    console.error("Elasticservice initialization error");
+                }
             });
     } else {
         ElasticsearchService.setState(true);
@@ -32,7 +35,12 @@ module.exports = function (application) {
                 creations.push(creationPromise);
                 creationPromise
                     .catch(err => {
-                        console.error('Failed to create index - ' + config.indice + ' - ' + err.message);
+                        if(err.message === RESOURCE_ALREADY_EXISTS_ERROR_MESSAGE){
+                            console.warn('WARNING: ' + config.indice + ' index already exists');
+                        }
+                        else{
+                            console.error('Failed to create index - ' + config.indice + ' - ' + err.message);
+                        }
                         return err;
                     });
             });
