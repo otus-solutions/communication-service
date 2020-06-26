@@ -89,7 +89,7 @@ module.exports = function (application) {
                             }
                         }
                     });
-                    resolve(Response.success(resolve(Response.success(body.hits.hits.map(MessageFactory.fromHit)))));
+                    resolve(Response.success(body));
                 } catch (err) {
                     console.error(err)
                     reject(Response.notFound(err.meta));
