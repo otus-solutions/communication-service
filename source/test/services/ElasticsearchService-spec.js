@@ -6,12 +6,12 @@ describe('ElasticsearchService_Suite_Tests', function () {
         ElasticsearchService.setState(true);
     });
 
-    test('getClient_in_case_CONFIG_READY_true', async function () {
+    test('getClient_in_case_state_true', async function () {
         const client = ElasticsearchService.getClient();
         expect(client).toBeDefined();
     });
 
-    test('getClient_in_case_CONFIG_READY_false', async function () {
+    test('getClient_in_case_state_false', async function () {
         ElasticsearchService.setState(false);
         expect(() => ElasticsearchService.getClient()).toThrow();
     });

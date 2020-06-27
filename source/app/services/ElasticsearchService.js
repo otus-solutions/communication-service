@@ -15,10 +15,12 @@
 
     var self = this;
     self.configReady = true;
+    self.client = null;
 
     function _createClient() {
-        try{
-            return new Client({node: CLIENT_URL})
+        try {
+            self.client = new Client({node: CLIENT_URL});
+            return self.client;
         } catch (e) {
             self.configReady = false;
             throw "ElasticsearchService initialization error - Couldn't connect to URL " + CLIENT_URL;
@@ -27,10 +29,14 @@
 
     module.exports = {
         getClient() {
-            console.log(ELASTICSEARCH_PROTOCOL)
             if (!self.configReady) {
                 throw "ElasticsearchService initialization error";
             }
+
+            if (self.client) {
+                return self.client;
+            }
+            
             return _createClient();
         },
 
