@@ -35,7 +35,8 @@
 
     function _closeClient() {
         if (self.client) {
-            self.client.close()
+            self.client.close();
+            self.client = null;
         }
     }
 

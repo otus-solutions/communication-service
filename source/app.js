@@ -52,10 +52,6 @@ function listen() {
   const server = app.listen(port);
   console.log('Express app started on port ' + port);
 
-  setInterval(() => server.getConnections(
-      (err, connections) => console.log(`${connections} connections currently open`)
-  ), 1000);
-
   let connections = [];
 
   server.on('connection', connection => {
