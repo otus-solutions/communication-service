@@ -36,6 +36,7 @@
             if (self.client) {
                 return self.client;
             }
+            
             return _createClient();
         },
 
