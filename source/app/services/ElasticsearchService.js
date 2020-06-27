@@ -2,6 +2,7 @@
     //stateful (but cacheable) service.
     //use self for stateful variables
     const {Client} = require('@elastic/elasticsearch');
+    const ShutdownEventService = require('../utils/ShutdownEventService');
 
     const {
         ELASTICSEARCH_PROTOCOL,
@@ -20,10 +21,21 @@
     function _createClient() {
         try {
             self.client = new Client({node: CLIENT_URL});
+            _subscribeClientClosing();
             return self.client;
         } catch (e) {
             self.configReady = false;
             throw "ElasticsearchService initialization error - Couldn't connect to URL " + CLIENT_URL;
+        }
+    }
+
+    function _subscribeClientClosing() {
+        ShutdownEventService.subscribe('ElasticsearchService', _closeClient)
+    }
+
+    function _closeClient() {
+        if (self.client) {
+            self.client.close()
         }
     }
 

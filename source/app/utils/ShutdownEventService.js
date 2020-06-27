@@ -9,14 +9,16 @@
     let fireEvent = () => {
         console.log('Received kill signal, shutting down gracefully');
 
-        Promise.all(Object.values(self.subscriptions).map(sub => {
+        let promises = Object.values(self.subscriptions).map(sub => {
             try {
                 return sub();
             } catch (e) {
                 console.error(e);
             }
 
-        }))
+        });
+
+        Promise.all(promises)
             .then(() => {
                 process.exit(0);
             })
