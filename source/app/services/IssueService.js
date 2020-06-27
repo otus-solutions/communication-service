@@ -3,7 +3,7 @@ module.exports = function (application) {
     const ISSUES_INDEX = 'issues'; 
     
     const Response = application.app.utils.Response;
-    const ElasticsearchService = application.app.services.ElasticsearchService;
+    const ElasticsearchService = require('./ElasticsearchService');
     const IssueFactory = application.app.models.IssueFactory;
 
     return {

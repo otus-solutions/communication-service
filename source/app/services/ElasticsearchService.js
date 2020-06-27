@@ -1,36 +1,49 @@
-const {Client} = require('@elastic/elasticsearch');
+(function () {
+    //stateful (but cacheable) service.
+    //use self for stateful variables
+    const {Client} = require('@elastic/elasticsearch');
 
-const {
-    PROTOCOL,
-    ELASTICSEARCH_PORT,
-    ELASTICSEARCH_HOSTNAME
-} = process.env;
+    const {
+        ELASTICSEARCH_PROTOCOL,
+        ELASTICSEARCH_PORT,
+        ELASTICSEARCH_HOSTNAME,
+        ELASTICSEARCH_URL
+    } = process.env;
+
+    const CLIENT_URL = ELASTICSEARCH_URL ? ELASTICSEARCH_URL : ELASTICSEARCH_PROTOCOL + '://' + ELASTICSEARCH_HOSTNAME + ":" + ELASTICSEARCH_PORT;
 
 
-//todo: test if env var are present
+    var self = this;
+    self.configReady = true;
 
-/** @namespace application.app.services.ElasticsearchService **/
-module.exports = (function() {
-
-    function _createClient(){
-        return new Client({node: PROTOCOL + '://' + ELASTICSEARCH_HOSTNAME + ":" + ELASTICSEARCH_PORT})
+    function _createClient() {
+        try{
+            return new Client({node: CLIENT_URL})
+        } catch (e) {
+            self.configReady = false;
+            throw "ElasticsearchService initialization error - Couldn't connect to URL " + CLIENT_URL;
+        }
     }
 
-    return {
+    module.exports = {
         getClient() {
-            if (process.env.CONFIG_READY !== 'true') {
+            console.log(ELASTICSEARCH_PROTOCOL)
+            if (!self.configReady) {
                 throw "ElasticsearchService initialization error";
             }
             return _createClient();
         },
 
-        getIndices(){
+        getIndicesAPI() {
             return _createClient().indices;
         },
 
         setState(state) {
-            process.env.CONFIG_READY = (!!state).toString();
-        }
-    }
+            self.configReady = !!(state);
+        },
 
-})();
+        getState() {
+            return self.configReady;
+        }
+    };
+}());

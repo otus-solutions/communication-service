@@ -52,7 +52,7 @@ module.exports = function (application) {
     }
 
     async function createIndexWithMapping(index, mapping) {
-        return ElasticsearchService.getIndices().create({
+        return ElasticsearchService.getIndicesAPI().create({
             index: index,
             body: mapping
         });

@@ -126,7 +126,6 @@ module.exports = function (application) {
         },
 
         async getMessageByIssueId(req, res) {
-            //TODO validar se issueId existe
             let issueId = req.params.issueId;
 
             IssueService.existIssue(issueId)
@@ -145,7 +144,6 @@ module.exports = function (application) {
         },
 
         async getMessageByIdLimit(req, res) {
-            //TODO validar se issueId existe
             let issueId = req.params.issueId;
 
             IssueService.existIssue(issueId)

@@ -3,7 +3,7 @@ module.exports = function (application) {
     const MESSAGES_INDEX = 'messages';
 
     const Response = application.app.utils.Response;
-    const ElasticsearchService = application.app.services.ElasticsearchService;
+    const ElasticsearchService = require('./ElasticsearchService');
     const MessageFactory = application.app.models.MessageFactory;
 
     return {
@@ -23,6 +23,7 @@ module.exports = function (application) {
         },
 
         async listIssueMessages(issueId) {
+            console.log('veio aqui')
             return new Promise(async (resolve, reject) => {
                 try {
                     const { body } = await ElasticsearchService.getClient().search({

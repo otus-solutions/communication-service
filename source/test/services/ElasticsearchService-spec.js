@@ -3,7 +3,7 @@ describe('ElasticsearchService_Suite_Tests', function () {
 
     beforeEach(function () {
         ElasticsearchService = require("../../app/services/ElasticsearchService");
-        process.env.CONFIG_READY = 'true';
+        ElasticsearchService.setState(true);
     });
 
     test('getClient_in_case_CONFIG_READY_true', async function () {
@@ -12,22 +12,13 @@ describe('ElasticsearchService_Suite_Tests', function () {
     });
 
     test('getClient_in_case_CONFIG_READY_false', async function () {
-        process.env.CONFIG_READY = 'false';
+        ElasticsearchService.setState(false);
         expect(() => ElasticsearchService.getClient()).toThrow();
     });
 
     test('getIndices', async function () {
-        const indices = ElasticsearchService.getIndices();
+        const indices = ElasticsearchService.getIndicesAPI();
         expect(indices).toBeDefined();
-    });
-
-    test('setState_should_invertCONFIG_READY_to_false', async function () {
-        expect(process.env.CONFIG_READY).toBe('true');
-    });
-
-    test('setState_should_invertCONFIG_READY_to_true', async function () {
-        process.env.CONFIG_READY = 'false';
-        expect(process.env.CONFIG_READY).toBe('false');
     });
 
 });

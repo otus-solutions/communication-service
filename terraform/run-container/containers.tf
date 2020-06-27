@@ -54,6 +54,14 @@ variable "elasticsearch-port"{
   default = "9200"
 }
 
+variable "elasticsearch-protocol"{
+  default = "http"
+}
+
+variable "elasticsearch-url"{
+  default = ""
+}
+
 resource "docker_container" "communication-service" {
   name = "communication-service"
   image = "${docker_image.communication-service.name}"
@@ -68,6 +76,8 @@ resource "docker_container" "communication-service" {
     "DATABASE_HOSTNAME=${var.communication-database-hostname}",
     "ELASTICSEARCH_PORT=${var.elasticsearch-port}",
     "ELASTICSEARCH_HOSTNAME=${var.elasticsearch-hostname}"
+    "ELASTICSEARCH_PROTOCOL=${var.elasticsearch-protocol}"
+    "ELASTICSEARCH_URL=${var.elasticsearch-url}"
   ]
   ports {
 	internal = 8080
