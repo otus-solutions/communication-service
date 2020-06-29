@@ -29,6 +29,14 @@ module.exports = {
         "creationDate": "2020-04-12T11:30:07.533Z",
         "issueId": "fqX38XIBU9yBIlNWf2l5"
     },
-    messageHit: {}
+    messageHit: {},
+    client: {
+        index: function(obj) {return {}},
+        search: function(obj) {return {}},
+        get: function(obj) {return {}},
+        update: function(obj) {return {}},
+        exists: function(obj) {return {}},
+        delete: function(obj) {return {}}
+    }
 
 };
