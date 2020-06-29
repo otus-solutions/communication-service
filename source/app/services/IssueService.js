@@ -118,7 +118,7 @@ module.exports = function (application) {
                         index: ISSUES_INDEX,
                         id: issueId
                     });
-                    resolve(Response.success(body.hits.hits.map(IssueFactory.fromHit)));
+                    resolve(Response.success(IssueFactory.fromHit(body)));
                 } catch (err) {
                     console.error(err);
                     reject(Response.notFound(err.meta));
