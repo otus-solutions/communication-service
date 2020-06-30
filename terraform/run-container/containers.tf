@@ -58,10 +58,6 @@ variable "elasticsearch-protocol"{
   default = "http"
 }
 
-variable "elasticsearch-url"{
-  default = ""
-}
-
 variable "elasticsearch-initialize"{
   default = "true"
 }
@@ -81,7 +77,6 @@ resource "docker_container" "communication-service" {
     "ELASTICSEARCH_PORT=${var.elasticsearch-port}",
     "ELASTICSEARCH_HOSTNAME=${var.elasticsearch-hostname}",
     "ELASTICSEARCH_PROTOCOL=${var.elasticsearch-protocol}",
-    "ELASTICSEARCH_URL=${var.elasticsearch-url}",
     "ELASTICSEARCH_INITIALIZE=${var.elasticsearch-initialize}"
   ]
   ports {
