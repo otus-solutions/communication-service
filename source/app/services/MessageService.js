@@ -16,14 +16,13 @@ module.exports = function (application) {
                     });
                     resolve(Response.success(body));
                 } catch (err) {
-                    console.error(err)
+                    console.error(err);
                     reject(Response.internalServerError(err));
                 }
             });
         },
 
         async listIssueMessages(issueId) {
-            console.log('veio aqui')
             return new Promise(async (resolve, reject) => {
                 try {
                     const { body } = await ElasticsearchService.getClient().search({
@@ -35,7 +34,7 @@ module.exports = function (application) {
                         }
                     });
 
-                    if(Object.keys(body.hits.hits).length == 0){
+                    if(Object.keys(body.hits.hits).length === 0){
                         reject(Response.notFound());
                     }
                     else{
@@ -43,7 +42,7 @@ module.exports = function (application) {
                     }
 
                 } catch (err) {
-                    console.error(err)
+                    console.error(err);
                     reject(Response.notFound(err.meta));
                 }
             });
@@ -92,7 +91,7 @@ module.exports = function (application) {
                     });
                     resolve(Response.success(body));
                 } catch (err) {
-                    console.error(err)
+                    console.error(err);
                     reject(Response.notFound(err.meta));
                 }
             });
