@@ -72,6 +72,10 @@ data.client = {
     deleteByQuery: function(obj) {return {}},
 };
 
+data.indices = {
+   create: function(obj) {return {}} 
+};
+
 data.filter = {
         "currentQuantity": 0,
         "quantityToGet": 10,
