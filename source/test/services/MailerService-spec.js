@@ -21,38 +21,6 @@ describe('MailerService.js Tests', function () {
         expect(service).toBeDefined();
     });
 
-    it('should call sendMail method to send', async () => {
-        jest.spyOn(CommunicationModel, "findOne").mockImplementation(() => {
-            return Promise.resolve({ "name": "fulano", "template": "<html>{{name}}</html>" });
-        });
-        try {
-            jest.spyOn(Mock.nodemailer, 'createTransport').mockImplementation(() => Mock.transport);
-            jest.spyOn(Mock.Response, 'success').mockImplementation(() => Promise.resolve("Ok"));
-
-            const result = await service.sendMail(Mock.data);
-            expect(service.sendMail).toBeDefined();
-            expect(CommunicationModel.findOne).toBeCalledWith({ _id: "5e17cab5b613222e9d19a76e" });
-            expect(Mock.Response.success).toHaveBeenCalledTimes(1);
-            expect(result).toEqual('Ok')
-        } catch (err) {
-            expect(err).toBe(false)
-        }
-    });
-
-    it('should call sendMail method to send return Error', async () => {
-        try {
-            jest.spyOn(CommunicationModel, "findOne").mockImplementation(() => {
-                return Promise.resolve({ name: "fulano", template: "<html>{{name}}</html>" });
-            });
-            jest.spyOn(Mock.Response, 'notFound');
-
-            await service.sendMail(Mock.dataTwo);
-            expect(Mock.Response.notFound).toHaveBeenCalledTimes(1);
-        } catch (err) {
-            expect(JSON.stringify(err)).toBe(JSON.stringify(Mock.error))
-        }
-    });
-
     function mocks() {
         Mock.error =
         {
