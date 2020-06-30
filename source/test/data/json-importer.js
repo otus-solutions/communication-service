@@ -37,6 +37,21 @@ module.exports = {
         update: function(obj) {return {}},
         exists: function(obj) {return {}},
         delete: function(obj) {return {}}
+    },
+    filter: {
+        "currentQuantity": 0,
+        "quantityToGet": 10,
+        "order": {
+            "fields": [
+                "group",
+                "sender",
+                "creationDate"
+            ],
+            "mode": -1
+        },
+        "filter": {
+            "sender": "5",
+            "group": "3"
+        }
     }
-
 };
