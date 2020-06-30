@@ -62,6 +62,10 @@ variable "elasticsearch-url"{
   default = ""
 }
 
+variable "elasticsearch-initialize"{
+  default = "true"
+}
+
 resource "docker_container" "communication-service" {
   name = "communication-service"
   image = "${docker_image.communication-service.name}"
@@ -75,9 +79,10 @@ resource "docker_container" "communication-service" {
     "DATABASE_PASS=${var.communication-database-pass}",
     "DATABASE_HOSTNAME=${var.communication-database-hostname}",
     "ELASTICSEARCH_PORT=${var.elasticsearch-port}",
-    "ELASTICSEARCH_HOSTNAME=${var.elasticsearch-hostname}"
-    "ELASTICSEARCH_PROTOCOL=${var.elasticsearch-protocol}"
-    "ELASTICSEARCH_URL=${var.elasticsearch-url}"
+    "ELASTICSEARCH_HOSTNAME=${var.elasticsearch-hostname}",
+    "ELASTICSEARCH_PROTOCOL=${var.elasticsearch-protocol}",
+    "ELASTICSEARCH_URL=${var.elasticsearch-url}",
+    "ELASTICSEARCH_INITIALIZE=${var.elasticsearch-initialize}"
   ]
   ports {
 	internal = 8080
