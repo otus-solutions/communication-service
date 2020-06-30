@@ -72,7 +72,7 @@ data.client = {
     deleteByQuery: function(obj) {return {}},
 };
 
-data.filter: {
+data.filter = {
         "currentQuantity": 0,
         "quantityToGet": 10,
         "order": {
