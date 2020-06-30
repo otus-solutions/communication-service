@@ -11,7 +11,7 @@ describe('ProjectCommunicationRest_Suite_Tests', () => {
   function _setSpyOn(controllerMethod){
     jest.spyOn(server.app.controllers.ProjectCommunicationController, controllerMethod)
         .mockImplementation(()=>{
-          return Promise.resolve({code:200,body: {}})
+          return Promise.reject({code:500,body: {}})
         });
   }
 
@@ -19,32 +19,35 @@ describe('ProjectCommunicationRest_Suite_Tests', () => {
     _setSpyOn(controllerMethod);
     await request(server)
         .post(BASE_URL + urlSuffix)
-        .expect('Content-Type', /json/)
-        .expect(200);
+        // .expect('Content-Type', /json/)
+        .expect(500);
   }
 
   async function _spyCtrlMethodAndSendPutRequest(controllerMethod, urlSuffix){
     _setSpyOn(controllerMethod);
     await request(server)
         .put(BASE_URL + urlSuffix)
-        .expect('Content-Type', /json/)
-        .expect(200);
+        // .expect('Content-Type', /json/)
+        // .expect(200);
+        .expect(500);
   }
 
   async function _spyCtrlMethodAndSendGetRequest(controllerMethod, urlSuffix){
     _setSpyOn(controllerMethod);
     await request(server)
         .get(BASE_URL + urlSuffix)
-        .expect('Content-Type', /json/)
-        .expect(200);
+        // .expect('Content-Type', /json/)
+        // .expect(200);
+        .expect(500);
   }
 
   async function _spyCtrlMethodAndSendDeleteRequest(controllerMethod, urlSuffix){
     _setSpyOn(controllerMethod);
     await request(server)
         .delete(BASE_URL + urlSuffix)
-        .expect('Content-Type', /json/)
-        .expect(200);
+        // .expect('Content-Type', /json/)
+        // .expect(200);
+        .expect(500);
   }
 
   test('/issues', async () => {
@@ -101,6 +104,11 @@ describe('ProjectCommunicationRest_Suite_Tests', () => {
   test('GET_/messages/:issueId', async () => {
     await _spyCtrlMethodAndSendGetRequest("getMessageByIssueId", '/messages/'+MESSAGE_ID);
     expect(server.app.controllers.ProjectCommunicationController.getMessageByIssueId).toBeCalledTimes(1);
+  });
+
+  test('GET_/messages/limit/:issueId/:skip/:limit', async () => {
+    await _spyCtrlMethodAndSendGetRequest("getMessageByIdLimit", '/messages/limit/1/0/10/');
+    expect(server.app.controllers.ProjectCommunicationController.getMessageByIdLimit).toBeCalledTimes(1);
   });
 
   test('PUT_/messages/:issueId', async () => {
