@@ -1,9 +1,7 @@
 describe('ElasticsearchConfigurationService_Suite_Tests', function () {
-    const data = require('../data/json-importer');
     let ElasticsearchConfigurationService;
-    let Mock;
-    let ElasticsearchService = require("../../app/services/ElasticsearchService");
-    let ElasticsearchIndexes = require("../../app/services/ElasticsearchIndexes")({
+
+    const ElasticsearchIndexes = require("../../app/services/ElasticsearchIndexes")({
         app: {
             models: {
                 IssueFactory: require("../../app/models/IssueFactory")(),
@@ -12,20 +10,23 @@ describe('ElasticsearchConfigurationService_Suite_Tests', function () {
         }
     });
 
-    let app = {
+    const app = {
         services: {
             ElasticsearchIndexes: ElasticsearchIndexes
         }
-    }
+    };
 
-    Mock.client = data.client;
-
-    beforeEach(function () {       
+    test('initialization_with_ELASTICSEARCH_INITIALIZE_true', async function () {
+        process.env.ELASTICSEARCH_INITIALIZE = 'true';
         ElasticsearchConfigurationService = require("../../app/services/ElasticsearchInitialConfigurationService")({ app });
+        expect(ElasticsearchConfigurationService).not.toBeDefined();
     });
 
-    test('setup', async function () {
-        console.log(ElasticsearchConfigurationService);        
+    test('initialization_with_ELASTICSEARCH_INITIALIZE_false', async function () {
+        process.env.ELASTICSEARCH_INITIALIZE = 'false';
+        ElasticsearchConfigurationService = require("../../app/services/ElasticsearchInitialConfigurationService")({ app });
+        expect(ElasticsearchConfigurationService).not.toBeDefined();
+        process.env.ELASTICSEARCH_INITIALIZE = 'true';
     });
 
 });
