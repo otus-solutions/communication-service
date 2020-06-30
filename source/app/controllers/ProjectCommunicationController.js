@@ -127,7 +127,6 @@ module.exports = function (application) {
 
         async getMessageByIssueId(req, res) {
             let issueId = req.params.issueId;
-
             IssueService.existIssue(issueId)
                 .then(() => {
                     MessageService.listIssueMessages(issueId)
