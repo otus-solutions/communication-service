@@ -5,9 +5,7 @@ module.exports = function () {
             return new Message(json);
         },
         fromHit(hit) {
-            console.log(hit);
             let object = new Message(hit._source);
-
             object._id = hit._id;
             return object;
         },
