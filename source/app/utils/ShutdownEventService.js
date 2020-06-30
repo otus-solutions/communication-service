@@ -6,8 +6,9 @@
 
     self.subscriptions = {};
 
-    let fireEvent = () => {
+    let fireEvent = function () {
         console.log('Received kill signal, shutting down gracefully');
+
 
         let promises = Object.values(self.subscriptions).map(sub => {
             try {
@@ -15,18 +16,17 @@
             } catch (e) {
                 console.error(e);
             }
-
         });
 
         Promise.all(promises)
             .then(() => {
+                console.log('tudo certo')
                 process.exit(0);
             })
             .catch((err) => {
                 console.error("Error while shutting down", err);
                 process.exit(1);
             });
-
 
         setTimeout(() => {
             console.error('Could not finish evey shutting down tasks, forcefully shutting down');
