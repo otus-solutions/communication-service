@@ -39,7 +39,11 @@ module.exports = function (application) {
                             console.warn('WARNING: ' + config.indice + ' index already exists');
                         }
                         else{
-                            console.error('Failed to create index - ' + config.indice + ' - ' + err.message);
+                            if(err.message){
+                                console.error('Failed to create index - ' + config.indice + ' - ' + err.message);
+                            } else {
+                                console.error('Failed to create index - ' + config.indice, err);
+                            }
                         }
                         return err;
                     });
