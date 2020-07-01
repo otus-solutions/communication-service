@@ -1,6 +1,7 @@
 /** @namespace application.app.services.MessageService **/
 module.exports = function (application) {
     const MESSAGES_INDEX = 'messages';
+    const INDEX_LIMIT = 10000;
 
     const Response = application.app.utils.Response;
     const ElasticsearchService = require('./ElasticsearchService');
@@ -27,7 +28,7 @@ module.exports = function (application) {
                 try {
                     const { body } = await ElasticsearchService.getClient().search({
                         index: MESSAGES_INDEX,
-                        size: 10000,
+                        size: INDEX_LIMIT,
                         body: {
                             query: {
                                 match: { issueId: issueId }

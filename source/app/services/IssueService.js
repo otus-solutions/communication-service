@@ -1,6 +1,7 @@
 /** @namespace application.app.services.IssueService **/
 module.exports = function (application) {
     const ISSUES_INDEX = 'issues'; 
+    const INDEX_LIMIT = 10000;
     
     const Response = application.app.utils.Response;
     const ElasticsearchService = require('./ElasticsearchService');
@@ -72,7 +73,7 @@ module.exports = function (application) {
                 try {
                     const { body } = await ElasticsearchService.getClient().search({
                         index: ISSUES_INDEX,
-                        size: 10000,
+                        size: INDEX_LIMIT,
                         body: {
                             query: {
                                 match: { sender: senderId }
@@ -92,7 +93,7 @@ module.exports = function (application) {
                 try {
                     const { body } = await ElasticsearchService.getClient().search({
                         index: ISSUES_INDEX,
-                        size: 10000,
+                        size: INDEX_LIMIT,
                         body: {
                             query: {
                                 match: { group: groupId }
