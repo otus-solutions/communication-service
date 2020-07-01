@@ -72,6 +72,7 @@ module.exports = function (application) {
                 try {
                     const { body } = await ElasticsearchService.getClient().search({
                         index: ISSUES_INDEX,
+                        size: 10000,
                         body: {
                             query: {
                                 match: { sender: senderId }
@@ -91,6 +92,7 @@ module.exports = function (application) {
                 try {
                     const { body } = await ElasticsearchService.getClient().search({
                         index: ISSUES_INDEX,
+                        size: 10000,
                         body: {
                             query: {
                                 match: { group: groupId }
