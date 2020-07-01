@@ -27,6 +27,7 @@ module.exports = function (application) {
                 try {
                     const { body } = await ElasticsearchService.getClient().search({
                         index: MESSAGES_INDEX,
+                        size: 10000,
                         body: {
                             query: {
                                 match: { issueId: issueId }
