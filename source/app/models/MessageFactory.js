@@ -16,7 +16,6 @@ module.exports = function () {
                         text: {type: 'text'},
                         sender: {type: 'keyword'},
                         issueId: {type: 'keyword'},
-                        // _id: {type: 'keyword'},
                         creationDate: {type: 'date'}
                     }
                 }

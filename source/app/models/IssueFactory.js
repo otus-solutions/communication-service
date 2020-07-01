@@ -15,7 +15,6 @@ module.exports = function () {
             return {
                 mappings: {
                     properties: {
-                        // _id: {type: "keyword"},
                         objectType: {type: "keyword"},
                         sender: {type: "keyword"},
                         group: {type: "keyword"},

@@ -1,14 +1,11 @@
 (function () {
-    //stateful (but cacheable) service.
-    //use self for stateful variables
     const {Client} = require('@elastic/elasticsearch');
     const ShutdownEventService = require('../utils/ShutdownEventService');
 
     const {
         ELASTICSEARCH_PROTOCOL,
         ELASTICSEARCH_PORT,
-        ELASTICSEARCH_HOSTNAME,
-        ELASTICSEARCH_URL
+        ELASTICSEARCH_HOSTNAME
     } = process.env;
 
     const CLIENT_URL = ELASTICSEARCH_PROTOCOL + '://' + ELASTICSEARCH_HOSTNAME + ":" + ELASTICSEARCH_PORT;

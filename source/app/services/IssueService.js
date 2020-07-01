@@ -75,10 +75,7 @@ module.exports = function (application) {
                         body: {
                             query: {
                                 match: { sender: senderId }
-                            },
-                            // size:1,
-                            // from:0,
-                            //order
+                            }
                         }
                     });
                     resolve(Response.success(body.hits.hits.map(IssueFactory.fromHit)));
@@ -97,10 +94,7 @@ module.exports = function (application) {
                         body: {
                             query: {
                                 match: { group: groupId }
-                            },
-                            // size:1,
-                            // from:0,
-                            //order
+                            }
                         }
                     });
                     resolve(Response.success(body.hits.hits.map(IssueFactory.fromHit)));
@@ -127,7 +121,6 @@ module.exports = function (application) {
         },
 
         async updateIssueType(id, type) {
-            //update to OPEN, CLOSED, FINALIZED
             return new Promise(async (resolve, reject) => {
                 try {
                     const { body } = await ElasticsearchService.getClient().update({

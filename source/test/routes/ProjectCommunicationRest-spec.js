@@ -19,7 +19,6 @@ describe('ProjectCommunicationRest_Suite_Tests', () => {
     _setSpyOn(controllerMethod);
     await request(server)
         .post(BASE_URL + urlSuffix)
-        // .expect('Content-Type', /json/)
         .expect(500);
   }
 
@@ -27,8 +26,6 @@ describe('ProjectCommunicationRest_Suite_Tests', () => {
     _setSpyOn(controllerMethod);
     await request(server)
         .put(BASE_URL + urlSuffix)
-        // .expect('Content-Type', /json/)
-        // .expect(200);
         .expect(500);
   }
 
@@ -36,8 +33,6 @@ describe('ProjectCommunicationRest_Suite_Tests', () => {
     _setSpyOn(controllerMethod);
     await request(server)
         .get(BASE_URL + urlSuffix)
-        // .expect('Content-Type', /json/)
-        // .expect(200);
         .expect(500);
   }
 
@@ -45,8 +40,6 @@ describe('ProjectCommunicationRest_Suite_Tests', () => {
     _setSpyOn(controllerMethod);
     await request(server)
         .delete(BASE_URL + urlSuffix)
-        // .expect('Content-Type', /json/)
-        // .expect(200);
         .expect(500);
   }
 
@@ -95,7 +88,6 @@ describe('ProjectCommunicationRest_Suite_Tests', () => {
     expect(server.app.controllers.ProjectCommunicationController.deleteIssue).toBeCalledTimes(1);
   });
 
-
   test('POST_/messages/:issueId', async () => {
     await _spyCtrlMethodAndSendPostRequest("createMessage", '/messages/'+ISSUE_ID);
     expect(server.app.controllers.ProjectCommunicationController.createMessage).toBeCalledTimes(1);
@@ -120,6 +112,5 @@ describe('ProjectCommunicationRest_Suite_Tests', () => {
     await _spyCtrlMethodAndSendDeleteRequest("deleteMessage", '/messages/'+MESSAGE_ID);
     expect(server.app.controllers.ProjectCommunicationController.deleteMessage).toBeCalledTimes(1);
   });
-
 
 });

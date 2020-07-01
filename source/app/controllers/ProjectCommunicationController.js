@@ -10,7 +10,6 @@ module.exports = function (application) {
             let issue = IssueFactory.create(req.body);
             IssueService.createIssue(issue)
                 .then(result => {
-                    //TODO check what to return. Id only?
                     res.status(result.code).send(result.body);
                 })
                 .catch(err => {
