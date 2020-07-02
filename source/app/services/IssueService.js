@@ -11,11 +11,11 @@ module.exports = function (application) {
         async createIssue(issue) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const { body } = await ElasticsearchService.getClient().index({
+                    await ElasticsearchService.getClient().index({
                         index: ISSUES_INDEX,
                         body: issue
                     });
-                    resolve(Response.success(body));
+                    resolve(Response.success());
                 } catch (err) {
                     console.error(err);
                     reject(Response.internalServerError(err));
@@ -83,7 +83,7 @@ module.exports = function (application) {
                     resolve(Response.success(body.hits.hits.map(IssueFactory.fromHit)));
                 } catch (err) {
                     console.error(err);
-                    reject(Response.notFound(err.meta));
+                    reject(Response.notFound());
                 }
             });
         },
@@ -103,7 +103,7 @@ module.exports = function (application) {
                     resolve(Response.success(body.hits.hits.map(IssueFactory.fromHit)));
                 } catch (err) {
                     console.error(err);
-                    reject(Response.notFound(err.meta));
+                    reject(Response.notFound());
                 }
             });
         },
@@ -118,7 +118,7 @@ module.exports = function (application) {
                     resolve(Response.success(IssueFactory.fromHit(body)));
                 } catch (err) {
                     console.error(err);
-                    reject(Response.notFound(err.meta));
+                    reject(Response.notFound());
                 }
             });
         },
@@ -138,7 +138,7 @@ module.exports = function (application) {
                     resolve(Response.success(body));
                 } catch (err) {
                     console.error(err)
-                    reject(Response.notFound(err.meta));
+                    reject(Response.notFound());
                 }
             });
         },
@@ -171,7 +171,7 @@ module.exports = function (application) {
                     resolve(Response.success(body));
                 } catch (err) {
                     console.error(err);
-                    reject(Response.notFound(err.meta));
+                    reject(Response.notFound());
                 }
             });
         }
