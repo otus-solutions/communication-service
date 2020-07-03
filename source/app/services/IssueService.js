@@ -13,7 +13,8 @@ module.exports = function (application) {
                 try {
                     const { body } = await ElasticsearchService.getClient().index({
                         index: ISSUES_INDEX,
-                        body: issue
+                        body: issue,
+                        refresh: true
                     });
                     resolve(Response.success(body._id));
                 } catch (err) {
@@ -77,7 +78,8 @@ module.exports = function (application) {
                         body: {
                             query: {
                                 match: { sender: senderId }
-                            }
+                            },
+                            sort: { creationDate: "desc" }
                         }
                     });
                     resolve(Response.success(body.hits.hits.map(IssueFactory.fromHit)));
@@ -97,7 +99,8 @@ module.exports = function (application) {
                         body: {
                             query: {
                                 match: { group: groupId }
-                            }
+                            },
+                            sort: { creationDate: "desc" }
                         }
                     });
                     resolve(Response.success(body.hits.hits.map(IssueFactory.fromHit)));
@@ -129,6 +132,7 @@ module.exports = function (application) {
                     const { body } = await ElasticsearchService.getClient().update({
                         index: ISSUES_INDEX,
                         id: id,
+                        refresh: true,
                         body: {
                             doc: {
                                 status: type
@@ -148,7 +152,8 @@ module.exports = function (application) {
                 try {
                     const { body } = await ElasticsearchService.getClient().exists({
                         index: ISSUES_INDEX,
-                        id: issueId
+                        id: issueId,
+                        refresh: true
                     });
 
                     body ? resolve(body) : reject(Response.notFound(body));
@@ -165,7 +170,8 @@ module.exports = function (application) {
                 try {
                     const { body } = await ElasticsearchService.getClient().delete({
                         index: ISSUES_INDEX,
-                        id: issueId
+                        id: issueId,
+                        refresh: true
                     });
 
                     resolve(Response.success(body));

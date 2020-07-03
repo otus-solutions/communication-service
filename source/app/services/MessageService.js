@@ -13,7 +13,8 @@ module.exports = function (application) {
                 try {
                     const { body } = await ElasticsearchService.getClient().index({
                         index: MESSAGES_INDEX,
-                        body: message
+                        body: message,
+                        refresh: true
                     });
                     resolve(Response.success(body._id));
                 } catch (err) {
@@ -32,7 +33,8 @@ module.exports = function (application) {
                         body: {
                             query: {
                                 match: { issueId: issueId }
-                            }
+                            },
+                            sort: { creationDate: "desc" }
                         }
                     });
 
@@ -61,7 +63,7 @@ module.exports = function (application) {
                             query: {
                                 match: { issueId: params.issueId }
                             },
-                            sort: { _id:  "desc"}
+                            sort: { creationDate: "desc" }
                         }
                     });
 
@@ -85,6 +87,7 @@ module.exports = function (application) {
                     const { body } = await ElasticsearchService.getClient().update({
                         index: MESSAGES_INDEX,
                         id: id,
+                        refresh: true,
                         body: {
                             doc: {
                                 text: text
@@ -104,7 +107,8 @@ module.exports = function (application) {
                 try {
                     const { body } = await ElasticsearchService.getClient().delete({
                         index: MESSAGES_INDEX,
-                        id: messageId
+                        id: messageId,
+                        refresh: true
                     });
 
                     resolve(Response.success(body));
@@ -120,6 +124,7 @@ module.exports = function (application) {
                 try {
                     const { body } = await ElasticsearchService.getClient().deleteByQuery({
                         index: MESSAGES_INDEX,
+                        refresh: true,
                         body: {
                             query: {
                                 match: { issueId: issueId }
