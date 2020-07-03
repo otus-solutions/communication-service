@@ -29,7 +29,7 @@ describe('IssueService_Suite_Tests', function () {
         Mock.issuesSearchSettings = data.issuesSearchSettings;
         Mock.senderId = '1';
 
-        Mock.expectedEmptyBody = {data : true};
+        Mock.expectedEmptyBody = { data: "1067FXMBfnuOBlCe39eo"};
         Mock.errorFunction = function() {throw 'ops'};
         Mock.expectedErrorBody = {data: 'ops'};
         Mock.returnHitArray = function(obj) {return {body: {hits: {hits: []}}}};

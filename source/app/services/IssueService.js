@@ -1,8 +1,8 @@
 /** @namespace application.app.services.IssueService **/
 module.exports = function (application) {
-    const ISSUES_INDEX = 'issues'; 
+    const ISSUES_INDEX = 'issues';
     const INDEX_LIMIT = 10000;
-    
+
     const Response = application.app.utils.Response;
     const ElasticsearchService = require('./ElasticsearchService');
     const IssueFactory = application.app.models.IssueFactory;
@@ -11,11 +11,11 @@ module.exports = function (application) {
         async createIssue(issue) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    await ElasticsearchService.getClient().index({
+                    const { body } = await ElasticsearchService.getClient().index({
                         index: ISSUES_INDEX,
                         body: issue
                     });
-                    resolve(Response.success());
+                    resolve(Response.success(body._id));
                 } catch (err) {
                     console.error(err);
                     reject(Response.internalServerError(err));
@@ -27,15 +27,15 @@ module.exports = function (application) {
             return new Promise(async (resolve, reject) => {
                 try {
                     if (Object.keys(data).length === 0) {
-                        return reject(Response.notAcceptable()); 
+                        return reject(Response.notAcceptable());
                     }
-                        
-                    let query = Object.entries(data.filter).map( ([key, value]) => {
+
+                    let query = Object.entries(data.filter).map(([key, value]) => {
                         let jsonString = "{ \"match\": {\"" + key + "\":\"" + value + "\"}}";
                         return JSON.parse(jsonString);
                     });
 
-                    if(query.length === 0){
+                    if (query.length === 0) {
                         query = { match_all: {} }
                     }
 

@@ -11,11 +11,11 @@ module.exports = function (application) {
         async createMessage(message) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    await ElasticsearchService.getClient().index({
+                    const { body } = await ElasticsearchService.getClient().index({
                         index: MESSAGES_INDEX,
                         body: message
                     });
-                    resolve(Response.success());
+                    resolve(Response.success(body._id));
                 } catch (err) {
                     console.error(err);
                     reject(Response.internalServerError(err));
