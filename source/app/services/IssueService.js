@@ -39,8 +39,7 @@ module.exports = function (application) {
                             json = {
                                 "range": {
                                     "creationDate": {
-                                        "gte": dayPart + 'T00:00:00.000Z',
-                                        "lte": dayPart + 'T23:59:59.000Z',
+                                        "lte": dayPart + 'T23:59:59.000Z'
                                     }
                                 }
                             }
