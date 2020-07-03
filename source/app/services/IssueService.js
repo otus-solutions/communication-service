@@ -11,9 +11,10 @@ module.exports = function (application) {
         async createIssue(issue) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const {body} = await ElasticsearchService.getClient().index({
+                    const { body } = await ElasticsearchService.getClient().index({
                         index: ISSUES_INDEX,
-                        body: issue
+                        body: issue,
+                        refresh: true
                     });
                     resolve(Response.success(body._id));
                 } catch (err) {
@@ -26,7 +27,6 @@ module.exports = function (application) {
         async queryIssue(data) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    console.log(data);
                     if (Object.keys(data).length === 0) {
                         return reject(Response.notAcceptable());
                     }
@@ -87,13 +87,14 @@ module.exports = function (application) {
         async listSenderIssues(senderId) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const {body} = await ElasticsearchService.getClient().search({
+                    const { body } = await ElasticsearchService.getClient().search({
                         index: ISSUES_INDEX,
                         size: INDEX_LIMIT,
                         body: {
                             query: {
-                                match: {sender: senderId}
-                            }
+                                match: { sender: senderId }
+                            },
+                            sort: { creationDate: "desc" }
                         }
                     });
                     resolve(Response.success(body.hits.hits.map(IssueFactory.fromHit)));
@@ -107,13 +108,14 @@ module.exports = function (application) {
         async getIssuesByGroup(groupId) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const {body} = await ElasticsearchService.getClient().search({
+                    const { body } = await ElasticsearchService.getClient().search({
                         index: ISSUES_INDEX,
                         size: INDEX_LIMIT,
                         body: {
                             query: {
-                                match: {group: groupId}
-                            }
+                                match: { group: groupId }
+                            },
+                            sort: { creationDate: "desc" }
                         }
                     });
                     resolve(Response.success(body.hits.hits.map(IssueFactory.fromHit)));
@@ -127,7 +129,7 @@ module.exports = function (application) {
         async getIssue(issueId) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const {body} = await ElasticsearchService.getClient().get({
+                    const { body } = await ElasticsearchService.getClient().get({
                         index: ISSUES_INDEX,
                         id: issueId
                     });
@@ -142,9 +144,10 @@ module.exports = function (application) {
         async updateIssueType(id, type) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const {body} = await ElasticsearchService.getClient().update({
+                    const { body } = await ElasticsearchService.getClient().update({
                         index: ISSUES_INDEX,
                         id: id,
+                        refresh: true,
                         body: {
                             doc: {
                                 status: type
@@ -162,9 +165,10 @@ module.exports = function (application) {
         async existIssue(issueId) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const {body} = await ElasticsearchService.getClient().exists({
+                    const { body } = await ElasticsearchService.getClient().exists({
                         index: ISSUES_INDEX,
-                        id: issueId
+                        id: issueId,
+                        refresh: true
                     });
 
                     body ? resolve(body) : reject(Response.notFound(body));
@@ -179,9 +183,10 @@ module.exports = function (application) {
         async deleteIssue(issueId) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const {body} = await ElasticsearchService.getClient().delete({
+                    const { body } = await ElasticsearchService.getClient().delete({
                         index: ISSUES_INDEX,
-                        id: issueId
+                        id: issueId,
+                        refresh: true
                     });
 
                     resolve(Response.success(body));
