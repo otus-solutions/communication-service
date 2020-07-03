@@ -20,7 +20,6 @@
 
         Promise.all(promises)
             .then(() => {
-                console.log('tudo certo')
                 process.exit(0);
             })
             .catch((err) => {
