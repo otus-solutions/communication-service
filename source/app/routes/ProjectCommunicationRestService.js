@@ -36,7 +36,7 @@ module.exports = function (application) {
     application.put(BASE_URL + '/issues-finalize/:id', async function (req, res) {
         await _callControllerMethod(ProjectCommunicationController.finalizeIssue, req, res);
     });
-    
+
     application.delete(BASE_URL + '/issues/:issueId', async function (req, res) {
         await _callControllerMethod(ProjectCommunicationController.deleteIssue, req, res);
     });
@@ -61,12 +61,15 @@ module.exports = function (application) {
         await _callControllerMethod(ProjectCommunicationController.deleteMessage, req, res);
     });
 
+    application.get(BASE_URL + '/aaa/input', async function (req, res) {
+        await _callControllerMethod(ProjectCommunicationController.mds, req, res);
+    });
 };
 
 async function _callControllerMethod(func, req, res) {
-     func(req, res)
-         .catch(err => {
-             console.error(err);
-             res.status(500).send();
-         });
+    func(req, res)
+        .catch(err => {
+            console.error(err);
+            res.status(500).send();
+        });
 }

@@ -182,6 +182,48 @@ module.exports = function (application) {
                 .catch(err => {
                     res.status(err.code).send(err.body)
                 });
+        },
+
+        async mds(req, res) {
+            let randomStarterIssueCreator = Math.floor(Math.random() * 10) * 14;
+            let quantityToCreate = 200;
+
+            let lastIssueCreatorIndex = randomStarterIssueCreator + quantityToCreate;
+
+            console.log('criando ' + quantityToCreate + ' issues começando em ' + randomStarterIssueCreator);
+
+            for (let i = randomStarterIssueCreator; i <= lastIssueCreatorIndex; i++) {
+                let issue = IssueFactory.create({
+                    "sender": "participant" + i,
+                    "group": "rsId",
+                    "title": "primeira issue. ",
+                    "text": "Quando tento responder uma pergunta, não consigo inserir a resposta",
+                    "creationDate": new Date().toISOString()
+                });
+                let result = await IssueService.createIssue(issue);
+
+                let issueId = result.body.data;
+
+                let randomMessageQuantity = Math.floor(Math.random() * 10);
+                console.log('criando ' + randomMessageQuantity + ' mensagens para a issue ' + issueId);
+
+
+                for (let m = 0; m <= randomMessageQuantity; m++) {
+                    let message = MessageFactory.create({
+                        "sender": "brenoId",
+                        "text": "Aqui está a solução para o seu problema ",
+                        "issueId": issueId,
+                        "creationDate": new Date().toISOString()
+                    });
+
+                    let result = await MessageService.createMessage(message);
+                    console.log(result);
+                }
+            }
+
+
+            res.status(200).send()
+
         }
     };
 };
