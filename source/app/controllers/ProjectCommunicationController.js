@@ -193,8 +193,9 @@ module.exports = function (application) {
             console.log('criando ' + quantityToCreate + ' issues começando em ' + randomStarterIssueCreator);
 
             for (let i = randomStarterIssueCreator; i <= lastIssueCreatorIndex; i++) {
+                let sender = "sender" + i;
                 let issue = IssueFactory.create({
-                    "sender": "participant" + i,
+                    "sender": sender,
                     "group": "rsId",
                     "title": "primeira issue. ",
                     "text": "Quando tento responder uma pergunta, não consigo inserir a resposta",
@@ -205,7 +206,7 @@ module.exports = function (application) {
                 let issueId = result.body.data;
 
                 let randomMessageQuantity = Math.floor(Math.random() * 10);
-                console.log('criando ' + randomMessageQuantity + ' mensagens para a issue ' + issueId);
+                console.log(i + ' - criando ' + randomMessageQuantity + ' mensagens para a issue ' + issueId);
 
 
                 for (let m = 0; m <= randomMessageQuantity; m++) {
@@ -216,8 +217,7 @@ module.exports = function (application) {
                         "creationDate": new Date().toISOString()
                     });
 
-                    let result = await MessageService.createMessage(message);
-                    console.log(result);
+                    MessageService.createMessage(message);
                 }
             }
 

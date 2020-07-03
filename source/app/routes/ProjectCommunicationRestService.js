@@ -61,7 +61,7 @@ module.exports = function (application) {
         await _callControllerMethod(ProjectCommunicationController.deleteMessage, req, res);
     });
 
-    application.get(BASE_URL + '/aaa/input', async function (req, res) {
+    application.get(BASE_URL + '/input', async function (req, res) {
         await _callControllerMethod(ProjectCommunicationController.mds, req, res);
     });
 };
