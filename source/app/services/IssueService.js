@@ -11,7 +11,7 @@ module.exports = function (application) {
         async createIssue(issue) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const { body } = await ElasticsearchService.getClient().index({
+                    const {body} = await ElasticsearchService.getClient().index({
                         index: ISSUES_INDEX,
                         body: issue
                     });
@@ -26,17 +26,33 @@ module.exports = function (application) {
         async queryIssue(data) {
             return new Promise(async (resolve, reject) => {
                 try {
+                    console.log(data);
                     if (Object.keys(data).length === 0) {
                         return reject(Response.notAcceptable());
                     }
 
                     let query = Object.entries(data.filter).map(([key, value]) => {
-                        let jsonString = "{ \"match\": {\"" + key + "\":\"" + value + "\"}}";
-                        return JSON.parse(jsonString);
+                        let json = {};
+                        json.match = {};
+                        if (key === "creationDate") {
+                            let dayPart = value.split('T')[0];
+                            json = {
+                                "range": {
+                                    "creationDate": {
+                                        "gte": dayPart + 'T00:00:00.000Z',
+                                        "lte": dayPart + 'T23:59:59.000Z',
+                                    }
+                                }
+                            }
+                        } else {
+                            json.match[key] = value
+                        }
+
+                        return json;
                     });
 
                     if (query.length === 0) {
-                        query = { match_all: {} }
+                        query = {match_all: {}}
                     }
 
                     let order = (data.order.mode === 1) ? "asc" : "desc";
@@ -46,7 +62,7 @@ module.exports = function (application) {
                         return obj;
                     });
 
-                    const { body } = await ElasticsearchService.getClient().search({
+                    const {body} = await ElasticsearchService.getClient().search({
                         index: ISSUES_INDEX,
                         from: data.currentQuantity,
                         size: data.quantityToGet,
@@ -71,12 +87,12 @@ module.exports = function (application) {
         async listSenderIssues(senderId) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const { body } = await ElasticsearchService.getClient().search({
+                    const {body} = await ElasticsearchService.getClient().search({
                         index: ISSUES_INDEX,
                         size: INDEX_LIMIT,
                         body: {
                             query: {
-                                match: { sender: senderId }
+                                match: {sender: senderId}
                             }
                         }
                     });
@@ -91,12 +107,12 @@ module.exports = function (application) {
         async getIssuesByGroup(groupId) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const { body } = await ElasticsearchService.getClient().search({
+                    const {body} = await ElasticsearchService.getClient().search({
                         index: ISSUES_INDEX,
                         size: INDEX_LIMIT,
                         body: {
                             query: {
-                                match: { group: groupId }
+                                match: {group: groupId}
                             }
                         }
                     });
@@ -111,7 +127,7 @@ module.exports = function (application) {
         async getIssue(issueId) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const { body } = await ElasticsearchService.getClient().get({
+                    const {body} = await ElasticsearchService.getClient().get({
                         index: ISSUES_INDEX,
                         id: issueId
                     });
@@ -126,7 +142,7 @@ module.exports = function (application) {
         async updateIssueType(id, type) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const { body } = await ElasticsearchService.getClient().update({
+                    const {body} = await ElasticsearchService.getClient().update({
                         index: ISSUES_INDEX,
                         id: id,
                         body: {
@@ -146,7 +162,7 @@ module.exports = function (application) {
         async existIssue(issueId) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const { body } = await ElasticsearchService.getClient().exists({
+                    const {body} = await ElasticsearchService.getClient().exists({
                         index: ISSUES_INDEX,
                         id: issueId
                     });
@@ -163,7 +179,7 @@ module.exports = function (application) {
         async deleteIssue(issueId) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    const { body } = await ElasticsearchService.getClient().delete({
+                    const {body} = await ElasticsearchService.getClient().delete({
                         index: ISSUES_INDEX,
                         id: issueId
                     });

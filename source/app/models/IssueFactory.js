@@ -20,7 +20,7 @@ module.exports = function () {
                         group: {type: "keyword"},
                         title: {type: "text"},
                         text: {type: "text"},
-                        creationDate: {type: "date"},
+                        creationDate: {type: "date", format:"date_optional_time"},
                         status: {type: "keyword"}
                     }
                 }
