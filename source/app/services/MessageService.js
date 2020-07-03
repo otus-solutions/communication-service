@@ -33,8 +33,7 @@ module.exports = function (application) {
                         body: {
                             query: {
                                 match: { issueId: issueId }
-                            },
-                            sort: { creationDate: "desc" }
+                            }
                         }
                     });
 
@@ -62,8 +61,7 @@ module.exports = function (application) {
                         body: {
                             query: {
                                 match: { issueId: params.issueId }
-                            },
-                            sort: { creationDate: "desc" }
+                            }
                         }
                     });
 

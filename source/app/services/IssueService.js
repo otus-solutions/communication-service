@@ -93,8 +93,7 @@ module.exports = function (application) {
                         body: {
                             query: {
                                 match: { sender: senderId }
-                            },
-                            sort: { creationDate: "desc" }
+                            }
                         }
                     });
                     resolve(Response.success(body.hits.hits.map(IssueFactory.fromHit)));
@@ -114,8 +113,7 @@ module.exports = function (application) {
                         body: {
                             query: {
                                 match: { group: groupId }
-                            },
-                            sort: { creationDate: "desc" }
+                            }
                         }
                     });
                     resolve(Response.success(body.hits.hits.map(IssueFactory.fromHit)));
