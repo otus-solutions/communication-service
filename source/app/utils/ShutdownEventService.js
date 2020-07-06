@@ -1,6 +1,4 @@
 (function () {
-    //stateful (but cacheable) service.
-    //use self for stateful variables
     var self = this;
     const SHUTDOWN_TIMEOUT = 10000;
 
