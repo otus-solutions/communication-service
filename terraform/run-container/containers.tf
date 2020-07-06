@@ -1,5 +1,5 @@
 variable "communication-service-port"{
-  default = 8080
+  default = 53004
 }
 
 variable "communication-service-name"{
