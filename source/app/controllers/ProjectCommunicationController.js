@@ -106,10 +106,9 @@ module.exports = function (application) {
         },
 
         async createMessage(req, res) {
-            let issueId = req.params.issueId;
             let message = MessageFactory.create(req.body);
 
-            IssueService.existIssue(issueId)
+            IssueService.existIssue(message.issueId)
                 .then(() => {
                     MessageService.createMessage(message)
                         .then(result => {
