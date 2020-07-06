@@ -37,10 +37,10 @@ module.exports = function (application) {
                         }
                     });
 
-                    if(Object.keys(body.hits.hits).length === 0){
+                    if (Object.keys(body.hits.hits).length === 0) {
                         reject(Response.notFound());
                     }
-                    else{
+                    else {
                         resolve(Response.success(body.hits.hits.map(MessageFactory.fromHit)));
                     }
 
@@ -54,6 +54,8 @@ module.exports = function (application) {
         async getMessageByIdLimit(params) {
             return new Promise(async (resolve, reject) => {
                 try {
+                    let mode = (params.order == "desc") ? "desc" : "asc";                
+
                     const { body } = await ElasticsearchService.getClient().search({
                         index: MESSAGES_INDEX,
                         size: params.limit,
@@ -61,14 +63,15 @@ module.exports = function (application) {
                         body: {
                             query: {
                                 match: { issueId: params.issueId }
-                            }
+                            },
+                            sort: { creationDate: mode }
                         }
                     });
 
-                    if(Object.keys(body.hits.hits).length === 0){
+                    if (Object.keys(body.hits.hits).length === 0) {
                         reject(Response.notFound());
                     }
-                    else{
+                    else {
                         resolve(Response.success(body.hits.hits.map(MessageFactory.fromHit)));
                     }
 
