@@ -98,8 +98,8 @@ describe('ProjectCommunicationRest_Suite_Tests', () => {
     expect(server.app.controllers.ProjectCommunicationController.getMessageByIssueId).toBeCalledTimes(1);
   });
 
-  test('GET_/messages/limit/:issueId/:skip/:limit', async () => {
-    await _spyCtrlMethodAndSendGetRequest("getMessageByIdLimit", '/messages/limit/1/0/10/');
+  test('GET_/messages/limit/:issueId/:skip/:limit/:order', async () => {
+    await _spyCtrlMethodAndSendGetRequest("getMessageByIdLimit", '/messages/limit/1/0/10/-1');
     expect(server.app.controllers.ProjectCommunicationController.getMessageByIdLimit).toBeCalledTimes(1);
   });
 

@@ -49,7 +49,7 @@ module.exports = function (application) {
         await _callControllerMethod(ProjectCommunicationController.getMessageByIssueId, req, res);
     });
 
-    application.get(BASE_URL + '/messages/limit/:issueId/:skip/:limit', async function (req, res) {
+    application.get(BASE_URL + '/messages/limit/:issueId/:skip/:limit/:order?', async function (req, res) {
         await _callControllerMethod(ProjectCommunicationController.getMessageByIdLimit, req, res);
     });
 
