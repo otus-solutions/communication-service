@@ -28,7 +28,7 @@ describe('MessageService_Suite_Tests', function () {
         Mock.messageId = data.messageId;
         Mock.messageHit = data.messageHit;
 
-        Mock.expectedEmptyBody = {data : true};
+        Mock.expectedEmptyBody = { data: "1067FXMBfnuOBlCe39eo" };
         Mock.errorFunction = function() {throw 'ops'};
         Mock.expectedErrorBody = {data: 'ops'};
         Mock.returnEmptyHitArray = function(obj) {return {body: {hits: {hits: []}}}};

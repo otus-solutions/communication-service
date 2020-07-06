@@ -1,6 +1,4 @@
 (function () {
-    //stateful (but cacheable) service.
-    //use self for stateful variables
     var self = this;
     const SHUTDOWN_TIMEOUT = 10000;
 
@@ -20,7 +18,6 @@
 
         Promise.all(promises)
             .then(() => {
-                console.log('tudo certo')
                 process.exit(0);
             })
             .catch((err) => {

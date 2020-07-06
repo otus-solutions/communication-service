@@ -63,7 +63,7 @@ data.messageHit = {
 };
 
 data.client = {
-    index: function(obj) {return {}},
+    index: function (obj) { return { body: { _id: "1067FXMBfnuOBlCe39eo"}}},
     search: function(obj) {return {}},
     get: function(issueId) {return {}},
     update: function(obj) {return {}},

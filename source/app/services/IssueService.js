@@ -1,8 +1,8 @@
 /** @namespace application.app.services.IssueService **/
 module.exports = function (application) {
-    const ISSUES_INDEX = 'issues'; 
+    const ISSUES_INDEX = 'issues';
     const INDEX_LIMIT = 10000;
-    
+
     const Response = application.app.utils.Response;
     const ElasticsearchService = require('./ElasticsearchService');
     const IssueFactory = application.app.models.IssueFactory;
@@ -11,11 +11,12 @@ module.exports = function (application) {
         async createIssue(issue) {
             return new Promise(async (resolve, reject) => {
                 try {
-                    await ElasticsearchService.getClient().index({
+                    const { body } = await ElasticsearchService.getClient().index({
                         index: ISSUES_INDEX,
-                        body: issue
+                        body: issue,
+                        refresh: true
                     });
-                    resolve(Response.success());
+                    resolve(Response.success(body._id));
                 } catch (err) {
                     console.error(err);
                     reject(Response.internalServerError(err));
@@ -27,16 +28,30 @@ module.exports = function (application) {
             return new Promise(async (resolve, reject) => {
                 try {
                     if (Object.keys(data).length === 0) {
-                        return reject(Response.notAcceptable()); 
+                        return reject(Response.notAcceptable());
                     }
-                        
-                    let query = Object.entries(data.filter).map( ([key, value]) => {
-                        let jsonString = "{ \"match\": {\"" + key + "\":\"" + value + "\"}}";
-                        return JSON.parse(jsonString);
+
+                    let query = Object.entries(data.filter).map(([key, value]) => {
+                        let json = {};
+                        json.match = {};
+                        if (key === "creationDate") {
+                            let dayPart = value.split('T')[0];
+                            json = {
+                                "range": {
+                                    "creationDate": {
+                                        "lte": dayPart + 'T23:59:59.000Z'
+                                    }
+                                }
+                            }
+                        } else {
+                            json.match[key] = value
+                        }
+
+                        return json;
                     });
 
-                    if(query.length === 0){
-                        query = { match_all: {} }
+                    if (query.length === 0) {
+                        query = {match_all: {}}
                     }
 
                     let order = (data.order.mode === 1) ? "asc" : "desc";
@@ -46,7 +61,7 @@ module.exports = function (application) {
                         return obj;
                     });
 
-                    const { body } = await ElasticsearchService.getClient().search({
+                    const {body} = await ElasticsearchService.getClient().search({
                         index: ISSUES_INDEX,
                         from: data.currentQuantity,
                         size: data.quantityToGet,
@@ -129,6 +144,7 @@ module.exports = function (application) {
                     const { body } = await ElasticsearchService.getClient().update({
                         index: ISSUES_INDEX,
                         id: id,
+                        refresh: true,
                         body: {
                             doc: {
                                 status: type
@@ -148,7 +164,8 @@ module.exports = function (application) {
                 try {
                     const { body } = await ElasticsearchService.getClient().exists({
                         index: ISSUES_INDEX,
-                        id: issueId
+                        id: issueId,
+                        refresh: true
                     });
 
                     body ? resolve(body) : reject(Response.notFound(body));
@@ -165,7 +182,8 @@ module.exports = function (application) {
                 try {
                     const { body } = await ElasticsearchService.getClient().delete({
                         index: ISSUES_INDEX,
-                        id: issueId
+                        id: issueId,
+                        refresh: true
                     });
 
                     resolve(Response.success(body));
