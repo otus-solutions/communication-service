@@ -7,48 +7,47 @@ module.exports = function (application) {
   const CommunicationService = application.app.services.CommunicationService;
   const Response = application.app.utils.Response;
 
+  const ElasticsearchService = application.app.services.ElasticsearchService;
+  const IssueService = application.app.services.IssueService;
+
   return {
     async sendMail(data) {
-      if(ObjectId.isValid(data._id) && data.variables) {
-        return MailerService.sendMail(data)
-      } else {
+      if(!ObjectId.isValid(data._id) || !data.variables) {
         return Response.notAcceptable();
       }
+      return MailerService.sendMail(data);
     },
+
     async create(data) {
-      if(data.name && data.template) {
-        return CommunicationService.create(data)
-      } else {
+      if(!data.name || !data.template) {
         return Response.notAcceptable();
       }
+      return CommunicationService.create(data);
     },
+
     async get(id) {
-      if(ObjectId.isValid(id)){
-        return CommunicationService.get(id)
-      } else {
+      if(!ObjectId.isValid(id)){
         return Response.notAcceptable();
       }
+      return CommunicationService.get(id);
     },
+
     async getAll() {
       return CommunicationService.getAll()
     },
+
     async update(data) {
-      if(ObjectId.isValid(data._id)) {
-        if (data.name && data.template) {
-          return CommunicationService.update(data)
-        } else {
-          return Response.notAcceptable();
-        }
-      } else {
+      if(!ObjectId.isValid(data._id) || !data.name || !data.template) {
         return Response.notAcceptable();
       }
+      return CommunicationService.update(data);
     },
+
     async delete(id) {
-      if(ObjectId.isValid(id)){
-        return CommunicationService.delete(id)
-      } else {
+      if(!ObjectId.isValid(id)){
         return Response.notAcceptable();
       }
+      return CommunicationService.delete(id);
     }
   };
 };

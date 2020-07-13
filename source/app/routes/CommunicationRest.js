@@ -57,4 +57,5 @@ module.exports = function (application) {
             res.status(err.code).send(err.body)
         }
     });
+
 };
