@@ -5,7 +5,7 @@
   "main": "app.js ",
   "scripts": {
     "test": "jest --silent",
-    "production": "npm install && npm test && npm prune --production",
+    "production": "rm -rf node_modules package-lock.json && npm install && npm test && npm prune --production",
     "debug": "nodemon --inspect app.js"
   },
   "keywords": [],
