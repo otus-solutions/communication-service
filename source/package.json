@@ -1,11 +1,11 @@
 {
   "name": "communication-service",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Node api for communication",
   "main": "app.js ",
   "scripts": {
     "test": "jest --silent",
-    "production": "npm install && npm test && npm prune --production",
+    "production": "rm -rf node_modules package-lock.json && npm install && npm test && npm prune --production",
     "debug": "nodemon --inspect app.js"
   },
   "keywords": [],
